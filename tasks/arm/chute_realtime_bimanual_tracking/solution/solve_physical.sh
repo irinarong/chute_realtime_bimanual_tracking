@@ -7,7 +7,10 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$SUB"
 # Only remove this variant's stale oracle artifact; retain other user outputs.
 rm -f "$SUB/ideal_answer.json"
-cp "$HERE/privileged/oracle.py" "$HERE/privileged/kin.py" "$HERE/privileged/reference_main.py" "$HERE/privileged/reference_params.json" "$SUB/"
+for f in "$HERE"/privileged/*; do
+    case "$(basename "$f")" in oracle_token|run.sh|ideal_answer.json|__pycache__) continue ;; esac
+    if [ -f "$f" ]; then cp "$f" "$SUB/"; fi
+done
 cp "$HERE/privileged/oracle_token" "$SUB/.oracle_token"
 cat > "$SUB/run.sh" <<'SH'
 #!/usr/bin/env bash

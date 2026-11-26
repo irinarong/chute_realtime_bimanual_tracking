@@ -18,7 +18,7 @@ from outcomes import inside_tote, layout_offsets, released_and_resting, summariz
 
 HZ = 30
 FRAME_COST_STEPS = 3
-FEED_INTERVAL_S = (7.0, 11.0)   # seconds between two releases: the line feeds at random intervals of its own
+FEED_INTERVAL_S = (9.0, 13.0)   # seconds between two releases: the line feeds at random intervals of its own
 LATENCY_STEPS = (3, 6)          # 0.10 to 0.20 s between a frame being taken and the controller receiving it
 FAST = os.environ.get("CELL_FAST", "1") != "0"
 ITEMS_JSON = Path(os.environ.get("CELL_ITEMS", "/opt/cell_items/items.json"))
@@ -272,7 +272,10 @@ class Cell:
         # what rules out parking a hand in the part's way and picking it up at leisure: it must be taken while it moves.
         self.still_run = self.still_run + 1 if (on_prop and not in_tote and not holding and speed < 0.03) else 0
         if self.still_run >= HZ: return self._end_event("lost", "jam")
-        if self.station == "track" and not any(any(f) for f in fing.values()) and float((pos - self.low_end) @ self.up_chute) < 0.5 * max(self.catalog[self.item_names[self.event_i]]["size_m"]) + 0.05 and speed < 0.15 and abs(float((pos - self.low_end) @ self.left)) < 0.3 and on_prop:
+        if self.station == "track" and not any(any(f) for f in fing.values()) and float((pos - self.low_end) @ self.up_chute) < 0.5 * max(self.catalog[self.item_names[self.event_i]]["size_m"]) + 0.05 and speed < 0.15 and abs(float((pos - self.low_end) @ self.left)) < 0.3 and on_prop \
+                and not in_tote and float((pos - self.low_end) @ self.up_chute) > -0.12 and not self._touch(part.links.values(), [self.tote]):
+            # (at the chute's low end, not in or on the tote: a part just let go in the near half of the tote, still settling,
+            # used to be taken for one lying at the end stop and was lost: found 2026-11-26 from parts that ended in the tote unplaced)
             return self._end_event("lost", "end_stop")
         if self.step_id >= self._deadline(): return self._end_event("lost", "time_limit")      # the next part is due
 
@@ -293,6 +296,12 @@ class Cell:
         """One action row, then the fixed price of the frames asked for. Returns the observation."""
         if not self.done:
             row = self.hold if row is None else np.asarray(row, float)
+            # Commands are bounded here, whatever a controller sends: base velocity and grippers to [-1, 1], joint targets to
+            # a sane range. An unbounded command once drove the base pose to NaN and took the simulator down with it, which
+            # would have been a task error instead of that controller's score.
+            row = np.nan_to_num(row, nan=0.0, posinf=0.0, neginf=0.0).copy(); S = self.R.ACTION_SLICES
+            for key in ("base", "gripper_left", "gripper_right"): row[S[key]] = np.clip(row[S[key]], -1.0, 1.0)
+            for key in ("trunk", "arm_left", "arm_right"): row[S[key]] = np.clip(row[S[key]], -6.3, 6.3)
             frames = [c for c in cameras if c in self.sensors]
             # Steps that lead to a requested frame are rendered, every one of them (the action's own step and the three
             # steps each frame costs), as Environment.step() renders every step: a frame read after unrendered steps and

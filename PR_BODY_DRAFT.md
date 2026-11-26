@@ -21,11 +21,11 @@
 
 The requested default reference writes protected terminal snapshots and a reference-only authorization token. The verifier reconstructs the hidden tote layouts and applies the simulator's placement predicates and credit aggregation. Author CPU Docker checks measured reference reward 1 twice and untouched, wrong and unauthorized answers at 0.
 
-These verdicts explicitly report `synthetic_reference=1` and `physical_rollout=0`. They validate the direct-answer scoring path; they do not establish that a feasible physical trajectory exists. Acceptance of this reference design for a closed-loop task remains a maintainer-review item. The privileged assisted controller remains available separately as `solution/solve_physical.sh`.
+These verdicts explicitly report `synthetic_reference=1` and `physical_rollout=0`. They validate the direct-answer scoring path; they do not establish that a feasible physical trajectory exists. Acceptance of this reference design for a closed-loop task remains a maintainer-review item. The stronger upstream privileged controller is available separately as `solution/solve_physical.sh`; all motion/geometry dependencies are staged and any stale synthetic fixture is removed.
 
 ## Build and validation evidence
 
-GPU startup exposed two defects that import-only checks missed: a missing `omnigibson_6_1_0.kit` and mismatched standalone/bundled Warp versions. The Dockerfile now copies the pinned Kit, pins standalone Warp to Isaac's 1.16.0, and checks both at build time. The exact corrected image build, CPU checks and export are running as job 62728274; conversion 62728280 and GPU checks 62728568/62728569 depend on it. No final-image success is claimed before those jobs finish.
+GPU startup exposed two defects that import-only checks missed: a missing `omnigibson_6_1_0.kit` and mismatched standalone/bundled Warp versions. The Dockerfile now copies the pinned Kit, pins standalone Warp to Isaac's 1.16.0, and checks both at build time. The corrected image build/CPU checks/export (62728274), conversion (62728280), and two old-source GPU checks (62728568/62728569) all completed with exit0. Collected image identity is `sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd`; its CPU cases pass. GPU result details still need collection. The upstream merge leaves all Docker build inputs unchanged, but its updated runtime needs separate checks.
 
 Earlier CPU Docker checks passed the protected-reference cases, root-to-user solver execution and three real Linux child-process CPU-accounting cases. The intermediate Kit-only image also passed those checks but retained the Warp mismatch, so it is historical evidence only.
 
@@ -33,7 +33,13 @@ Controlled development rendering on RTX 5000 Ada identified an Apptainer host-li
 
 ## Frontier-model results
 
-No qualifying result exists for this candidate. The old four-hour controller ran against an assisted-grasp, gated-feeder environment. Under the current ordinary-grasp, independent-feeder environment, a clean-camera replay placed 0/20 parts with no contacts or timing violations. This is an archived-controller replay, not fresh frontier difficulty evidence. The joint-only observation lock can reject image-driven absolute-target policies; its fairness remains unresolved. Controller diagnostics are closed; their records are preserved.
+The upstream update at `bc8ba0c` reports a fresh camera-only controller raw mean0.3375 and
+physical-reference mean0.8583. Its reported reward0.41 uses physical normalization0.8583/full_at0.95;
+our requested direct-answer variant uses a synthetic ceiling1.0. Those rewards are not interchangeable.
+The upstream run bypassed account separation and was not `ale run`; its source reports are retained
+as attributed snapshots in RESULTS.md and PR_BODY.md. They have not been independently reproduced
+on this merged configuration. The older zero-contact replay concerned the previous task version.
+The joint-only observation-lock fairness concern remains; no lock was silently removed during merging.
 
 ## Notes for maintainers
 
@@ -41,6 +47,6 @@ Both stages request 8 CPUs, 32 GiB RAM and one `RTX-5000-Ada`; the agent budget 
 
 The image uses Isaac Sim 6.1, patched OmniGibson at a fixed commit, the R1Pro model and pinned NVIDIA YCB/Simple_Room assets. Licence details are in `environment/NOTICE.md`. Robot assets have an immutable Hugging Face revision and SHA256; all 277 NVIDIA files have size/hash pins.
 
-Remaining qualifications: final image checks, ordinary physical feasibility, fair observation lock, numerical portability, official ALE lifecycle and repeated anchors, and current frontier-agent trajectories. Native/SIF/CPU-container evidence does not replace the official GPU lifecycle.
+Remaining qualifications: merged-runtime image checks, ordinary physical feasibility, fair observation lock, numerical portability, official ALE lifecycle and repeated anchors, and current frontier-agent trajectories. Native/SIF/CPU-container evidence does not replace the official GPU lifecycle.
 
-Source: `489b139b0dba3d84016bccea07777b01153bea16`. Source archive SHA256: `030d3a1fac6f4196b72006d381fad8c8011cc53b9ca08adebf776149c20e3db1`. Only `task.toml` differs from runtime/build source `17b6d4f`; Docker and grading code are byte-identical.
+Current merge provenance and checks: `validation/MERGE_REPORT.md`. Source-package identity will be refreshed after the merge commit.

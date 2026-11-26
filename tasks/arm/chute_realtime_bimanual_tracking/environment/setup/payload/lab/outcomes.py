@@ -18,7 +18,7 @@ def layout_offsets(seed, salt, low_end, tote_at):
 def inside_tote(position, tote_position, tote_rotation, inner):
     local = np.asarray(tote_rotation).T @ (np.asarray(position) - np.asarray(tote_position))
     a, b, h = inner
-    return bool(abs(local[0]) < a / 2 and abs(local[1]) < b / 2 and -0.01 < local[2] < h + 0.1)
+    return bool(abs(local[0]) < a / 2 and abs(local[1]) < b / 2 and -0.01 < local[2] < h + 0.30)
 
 
 def released_and_resting(in_tote, finger_contact, speed, rest_speed):

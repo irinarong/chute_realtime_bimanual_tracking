@@ -3,6 +3,6 @@
   "direction": "higher",
   "value": 1.0,
   "full_at": 1.0,
-  "source": "Measured 2026-11-26 by solution/solve.sh + tests/verify.py on all six hidden shifts (120 synthetic terminal snapshots), bootstrap verdict archived under validation/bootstrap/verdict.json. Raw part_pickup_score=1.0. This is a scoring-fixture ceiling, NOT a physical controller measurement; acceptance of this oracle mode requires maintainer review.",
-  "note": "Ideal terminal snapshots, evaluated using the shared placement predicates and credit aggregation. No physics rollout or match-lock validation. Historical physical anchor is in tests/review/historical_physical_anchor.json."
+  "source": "Remeasured 2026-11-26 after merging upstream bc8ba0c and regenerating the fixture for its six hidden shifts: solution/solve.sh plus tests/verify.py measured raw part_pickup_score=1.0 over120 synthetic terminal snapshots, twice (validation/host-runs/oracle-1.json and oracle-2.json). Author CPU checks only, not official ALE GPU validation or physical control.",
+  "note": "Synthetic scoring-fixture ceiling, no physics rollout or match-lock validation. Physical calibration reported upstream is retained separately in tests/review/upstream_physical_anchor.json; it is not the denominator of this variant."
 }

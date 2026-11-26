@@ -78,10 +78,10 @@ A part's event ends when one of these happens:
 - it touches the floor;
 - **it stands still on the chute for 1 s without being held** (a jam: blocking a part and picking it up at leisure is
   not a way to take it);
-- the next part is put on the chute (7 to 11 s after this one's release).
+- the next part is put on the chute (6 to 12 s after this one's release).
 
 **The line feeds at its own pace.** Its schedule is fixed before the shift starts and nothing your controller does
-changes it: a new part is let go every 7 to 11 s, at random, and is put at the top of the chute 1 to 3 s before that.
+changes it: a new part is let go every 9 to 13 s, at random, and is put at the top of the chute 1 to 3 s before that.
 A part's event is over at the latest when the next part is put on the chute: whatever is still in the hand or on the
 chute then is gone. You are not told the schedule.
 

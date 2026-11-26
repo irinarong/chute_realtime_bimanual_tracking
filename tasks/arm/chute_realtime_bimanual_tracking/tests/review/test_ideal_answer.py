@@ -109,7 +109,7 @@ def test_layout_and_raw_metric_regression():
         assert got["score_last_third"] == sum(c[-6:]) / 6
         local = rng.uniform(-0.5, 0.5, 3)
         a, b, h = TOTE["inner"]
-        expected = abs(local[0]) < a / 2 and abs(local[1]) < b / 2 and -0.01 < local[2] < h + 0.1
+        expected = abs(local[0]) < a / 2 and abs(local[1]) < b / 2 and -0.01 < local[2] < h + 0.30
         assert inside_tote(local + TOTE_AT, TOTE_AT, np.eye(3), TOTE["inner"]) == expected
     assert not released_and_resting(True, False, 0.05, 0.05)
     assert not released_and_resting(True, True, 0, 0.05)
@@ -139,3 +139,23 @@ def test_agent_payload_has_no_reference_material():
             assert path.name not in {ARTIFACT, ".oracle_token", "anchor.json", "ideal_answer.py"}
     for name in ("cell_env.py", "outcomes.py", "cell_server.py", "sim_client.py", "props.py", "shift.py", "cpu_meter.py"):
         assert (payload / "lab" / name).read_bytes() == (HERE / name).read_bytes()
+
+
+def test_physical_entrypoint_stages_complete_controller(tmp_path):
+    """Selecting the physical variant must not accidentally evaluate a stale fixture."""
+    submission = tmp_path / "submission"
+    submission.mkdir()
+    (submission / ARTIFACT).write_text("stale fixture")
+    (submission / "keep.txt").write_text("user output")
+    env = dict(os.environ, ALE_HOME=str(tmp_path), REFERENCE_PYTHON=sys.executable,
+               PYTHONDONTWRITEBYTECODE="1")
+    subprocess.run(["bash", str(HERE.parent / "solution/solve_physical.sh")], env=env, check=True)
+    assert not (submission / ARTIFACT).exists()
+    assert (submission / "keep.txt").read_text() == "user output"
+    for name in ("motion.py", "narrow.py", "wide.py", "dual.py", "assist.py",
+                 "packing.py", "robot.urdf", "shapes.json", ".oracle_token"):
+        assert (submission / name).is_file(), name
+    run = subprocess.run(["bash", str(submission / "run.sh")], env=env,
+                         input='{"type":"reset"}\n{"type":"close"}\n', text=True,
+                         capture_output=True, timeout=30, check=True)
+    assert run.stdout.splitlines() == ["READY", '{"ok": true}', '{"ok": true}']

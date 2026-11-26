@@ -1,0 +1,52 @@
+{
+  "created_at_utc": "2026-11-26T17:48:50.798162+00:00",
+  "parents": {
+    "ours": "502f9a53cd0c27743a87d5b2799d967bb288d5ff",
+    "upstream": "bc8ba0cbe9450f962364a9b8354ef100e557d05a"
+  },
+  "kept": [
+    "Pinned Docker assets, custom Kit and Warp1.16 build checks",
+    "Corrected child-process CPU accounting and wall-cap budget charging",
+    "Protected direct-answer default and synthetic anchor1",
+    "Canonical nine-file robotics_grader and tested GPU restriction"
+  ],
+  "adopted": [
+    "Upstream composite physical controller and all dependency/geometry files",
+    "9\u201313s release intervals",
+    "Tote/end-stop false-loss fix",
+    "0.30m pile-height predicate in both physical and fixture scoring",
+    "Bounded control commands",
+    "New hidden seeds1105,1334,2162,3070,3390,4191",
+    "Derived-shapes licence notice"
+  ],
+  "fixture_regenerated": true,
+  "portable_tests": {
+    "passed": 21,
+    "skipped_linux_only": 3
+  },
+  "host_entrypoint_rewards": {
+    "untouched": 0,
+    "oracle_1": 1,
+    "oracle_2": 1,
+    "unauthorized": 0,
+    "wrong_answer": 0
+  },
+  "ale_lint": "passed",
+  "official_ale_validate": false,
+  "docker_rebuild_required": false,
+  "verified_build_inputs_match_source17b6d4f": {
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/Dockerfile": "9c49df18bbd4563331a15d3b43a7fc54ca9fc1e74dccf67610ce7f66762b63a4",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/build_items.py": "4fa79c2e54ce492bdc5efc8713d4afd822fb6e8c5f2abffaf189286bdf927766",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/check_sim_assets.py": "b93c5745e57862f40e7030fdcac4da6e08f27684cd84fdf89fd843447530193f",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/fetch_robot_assets.py": "865e8c1fd4316fbb8e97647190860e904641b202cf7d5646723d5bb59516f552",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/mirror_assets.py": "b5219cc61b27e53c69b6a9544ab29f7977e173b11f68f8663e6d91e2f83b243d",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/nvidia-assets.json": "591a2cc037312329da1f441961d54a88de6d384977f8044a4a71b55c5dab0a22",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/omnigibson-isaac61.patch": "982cff6144eabfcb6f379d491162c0ef57008199832cc160813e8eeaddcfce34",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/omnigibson_6_1_0.kit": "36d0df3b6fdee2c8a83a63a2ee0f6818f8ef4c1c272a0de32cdc5d3be74f0c79",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/requirements-sim.txt": "0ff018988f4292f411096ade6d55ebe6a72a6ce9ece3880fa4ff16a2cfcb57a8",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/requirements.txt": "b62f3172494130cd7d3577b3becb13bdbbdcbeb74d661024a065c1f44af7889e"
+  },
+  "merged_runtime_gpu_tested": false,
+  "upstream_scores_independently_reproduced": false,
+  "push_to_origin": "denied403; no remote branch changed"
+}

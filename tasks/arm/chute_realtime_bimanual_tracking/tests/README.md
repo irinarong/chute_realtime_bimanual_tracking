@@ -9,7 +9,7 @@ This candidate has two explicitly different evaluation paths.
 not controller-reported outcomes. A placed part earns 1, a part held for one second earns 0.5, and a lost part earns
 0. Each bystander moved more than 5 cm subtracts 0.5 before division by 20. The six shift scores are averaged.
 
-The DCC snapshot imported on 2026-11-26 uses a fixed independent feeding schedule (7–11 s release intervals),
+The DCC snapshot imported on 2026-11-26 uses a fixed independent feeding schedule (9–13 s release intervals),
 4–7 degree chute slopes, camera latency of 3–6 control steps, physical grasping for ordinary controllers, and
 secret-salted shifts. Each requested camera frame costs three additional 30 Hz steps. Timing thresholds are in
 `grader_config.json`. Private and practice grading share the same CPU meter. It discovers
@@ -55,15 +55,21 @@ fixture measurement. The generator supports this task's current 20-part configur
 
 ## Optional physical reference
 
-`bash solution/solve_physical.sh` prepares the previous ground-truth controller and removes only the stale
-`ideal_answer.json` artifact. The reference token provides privileged state and assisted grasping; motions still run
-in the simulator. Its historical anchor is retained in `review/historical_physical_anchor.json` as history, not
-calibration for the hardened snapshot. `privileged/reference_main.py` contains a small proprioceptive correction to
-satisfy the existing match lock; this must not be presented as visual dependence. For author diagnosis with physical grasping, the controller uses its existing
-stalled-finger-gap fallback instead of waiting for an attachment that cannot occur.
-The pending GPU smoke selects that mode while retaining truth access, and scores
-actual simulator outcomes. Remeasure physical feasibility on the current snapshot
-before claiming the task is ready for acceptance.
+`bash solution/solve_physical.sh` prepares the stronger controller merged from upstream commit
+`bc8ba0c`, including its geometry, URDF, motion and grasp modules. It removes only a stale
+`ideal_answer.json`, then stages the physical controller without copying the synthetic fixture.
+The token provides ground truth, future schedule and assisted grasping; ordinary submissions
+retain friction-only grasping. The reference's proprioceptive correction is not visual dependence.
+
+Upstream reports a physical anchor of 0.8583/full_at0.95 and a fresh camera-controller raw mean
+of 0.3375. Its reported reward0.41 uses that physical anchor; our default synthetic normalization
+remains1.0, so the two normalized rewards must not be equated. The original physical calibration
+is retained in `review/upstream_physical_anchor.json`, with its source claims unmodified. It is
+not a measured result for the merged image or official ALE lifecycle.
+
+The merge also adopts the corrected tote/end-stop predicate, the 0.30m pile-height allowance,
+bounded action commands and the new six-shift hidden set. The same outcome predicates apply
+to physical rollouts and synthetic snapshots. Regenerate the fixture after any hidden-set change.
 
 ## Reproduction
 
@@ -79,7 +85,7 @@ regression equivalence of the factored scene RNG and scoring. The common `tests/
 require Linux and skip on other systems. Against the prior meter all three failed;
 with the corrected meter they passed on DCC (about 0.26--0.29 CPU seconds retained
 for 0.25-second worker workloads, with no extra charge when a live worker was reaped).
-`review/select_shifts.py` is historical physical-anchor tooling; do not run it to overwrite the current fixture anchor.
+`review/select_shifts.py` writes physical calibration only to `review/upstream_physical_anchor.json`; it cannot overwrite the fixture anchor. It still changes the hidden set, so regenerate and remeasure the synthetic fixture afterward.
 
 For production validation use the pinned ALE engine and the unmodified Dockerfile on a GPU-capable Docker host.
 A CPU Docker VM can verify image construction, user imports, asset paths, and the synthetic oracle plumbing, but

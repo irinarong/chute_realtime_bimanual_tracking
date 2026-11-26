@@ -1,3 +1,26 @@
+# Latest upstream merge checkpoint
+
+User requested merging the friend's new GitHub main (`bc8ba0c`). Merge resolutions are in
+`validation/MERGE_REPORT.md`. The earlier package489b139 is a pre-merge snapshot and must not
+be submitted as the merged task. Refresh its package after committing this merge.
+
+The corrected image build62728274 completed2h15m26s/exit0; conversion62728280 completed24m41s;
+GPU checks62728568 and62728569 completed7m10s and7m34s. All exit0. ImageIDf2155903 and old-source
+CPU smoke verified; GPU detail collection is pending. Build inputs are unchanged by the merge,
+so reuse this image and verify the new staged source. Do not rebuild solely for runtime/source staging.
+
+UAV remains source8c0ae7a: complete reference training and hidden CPU Docker inference passed,
+AP50=.5451401442 on2475 hidden frames. Official GPU lifecycle and new agent trajectories remain pending.
+
+Current merge portable tests:21 passed,3 Linux-only skips; real entrypoints0/1/1/0/0; ALE lint passed.
+Synthetic fixture regenerated for the upstream hidden seeds. Upstream physical reference and
+reported scores are separate from our synthetic default/anchor. No official ALE admission is claimed.
+
+GitHub push to friend origin denied403 for yuanboP; no remote branch changed.
+The previous progress record below is historical and its source/job references are superseded above.
+
+---
+
 # Two-task submission preparation — admission pending
 
 Both task packages remain in scope. Mandatory model training applies only to UAV.

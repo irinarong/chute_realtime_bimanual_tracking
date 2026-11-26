@@ -2,14 +2,14 @@
 
 Rule (fixed before the screening ran, 2026-11-25): the candidates are 12 seeds drawn once with
 numpy.random.default_rng(20261125).choice(arange(1000, 10000), 12, replace=False). Every candidate is graded once with
-the reference over the real grading path (solution/solve.sh + tests/verify.py, 20 parts). The hidden set is the 6
+the reference over the real grading path (solution/solve_physical.sh + tests/verify.py, 20 parts). The hidden set is the 6
 candidates with the highest part_pickup_score (ties: the smaller seed). The anchor value is the mean of the reference's
 score over the hidden set in a SECOND, independent grading run of those 6 shifts; full_at is the lower of the two
 runs' means divided by the higher, less 0.05, capped at 0.98.
 
     python select_shifts.py screen <dir with seed*/verdict.json>            -> prints the ranking and the 6 kept
     python select_shifts.py anchor <screen dir> <second-run dir> <task dir> -> writes hidden/shifts.json,
-                                                                               hidden/shift_selection.json, anchor.json
+                                                                               hidden/shift_selection.json, review/upstream_physical_anchor.json
 """
 import glob, hashlib, json, os, sys
 
@@ -38,13 +38,14 @@ if __name__ == "__main__":
         frozen = {f: hashlib.sha256(open(os.path.join(task, f), "rb").read()).hexdigest() for f in
                   ("tests/verify.py", "tests/cell_env.py", "tests/shift.py", "tests/props.py", "tests/grader_config.json", "solution/privileged/oracle.py", "solution/privileged/reference_params.json")}
         os.makedirs(os.path.join(task, "tests", "hidden"), exist_ok=True)
-        json.dump({"seeds": kept}, open(os.path.join(task, "tests", "hidden", "shifts.json"), "w"))
+        hp = os.path.join(task, "tests", "hidden", "shifts.json"); hid = json.load(open(hp)) if os.path.exists(hp) else {}
+        hid["seeds"] = kept; json.dump(hid, open(hp, "w"))      # the salt already in the file is kept
         json.dump({"format": "chute_realtime_bimanual_tracking shift selection 1", "rule": __doc__.split("Rule")[1].split("python select")[0].strip(),
                    "candidates": {str(s): sc[s] for s in sorted(sc)}, "kept": kept, "second_run": {str(s): second[s] for s in kept}, "frozen": frozen},
                   open(os.path.join(task, "tests", "hidden", "shift_selection.json"), "w"), indent=1)
-        anc = json.load(open(os.path.join(task, "tests", "anchor.json")))
+        anc = json.load(open(os.path.join(task, "tests", "review", "upstream_physical_anchor.json")))
         anc.update(value=round(b, 4), full_at=full_at,
-                   source="Own measurement, 2026-11-25: the privileged reference (solution/solve.sh, token-gated ground truth) on the 6 hidden shifts of tests/hidden/shifts.json over the real grading path (tests/verify.py, 20 parts a shift, PhysX on the CPU, Isaac Sim 6.1 on an NVIDIA H200). value is the mean of the second of two independent runs ({:.4f}); the first, which selected the shifts, gave {:.4f} (tests/hidden/shift_selection.json).".format(b, a),
+                   source="Own measurement, 2026-11-25: the privileged reference (solution/solve_physical.sh, token-gated ground truth) on the 6 hidden shifts of tests/hidden/shifts.json over the real grading path (tests/verify.py, 20 parts a shift, PhysX on the CPU, Isaac Sim 6.1 on an NVIDIA H200). value is the mean of the second of two independent runs ({:.4f}); the first, which selected the shifts, gave {:.4f} (tests/hidden/shift_selection.json).".format(b, a),
                    note="part_pickup_score = mean per-part credit (1.0 in the tote, 0.5 held for 1 s, 0 lost, -0.5 per disturbed bystander), mean over the hidden shifts. The reference is a ground-truth controller, not a ceiling: it leaves alone the parts wider than the gripper opens and still loses parts in motion. full_at is sized from the two runs' means (the lower over the higher, less 0.05).")
-        json.dump(anc, open(os.path.join(task, "tests", "anchor.json"), "w"), indent=2)
+        json.dump(anc, open(os.path.join(task, "tests", "review", "upstream_physical_anchor.json"), "w"), indent=2)
         print("anchor", anc["value"], "full_at", full_at, "runs", round(a, 4), round(b, 4))

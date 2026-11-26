@@ -30,3 +30,6 @@ Standalone `warp-lang` is pinned to 1.16.0 to match Isaac 6.1's bundled
 `omni.warp.core`. Loading standalone 1.19 with the bundled 1.16 modules fails
 during simulator initialization. The build check also verifies that these
 versions agree before the image can be exported.
+
+`solution/privileged/shapes.json` holds surface points sampled from the 21 YCB items above (1,000 to 2,300 points each),
+used by the physical reference to choose grasp sections; it is derived from those models and carries their licence.
