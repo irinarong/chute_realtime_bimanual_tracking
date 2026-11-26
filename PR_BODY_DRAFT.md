@@ -49,4 +49,4 @@ The image uses Isaac Sim 6.1, patched OmniGibson at a fixed commit, the R1Pro mo
 
 Remaining qualifications: merged-runtime image checks, ordinary physical feasibility, fair observation lock, numerical portability, official ALE lifecycle and repeated anchors, and current frontier-agent trajectories. Native/SIF/CPU-container evidence does not replace the official GPU lifecycle.
 
-Current merge provenance and checks: `validation/MERGE_REPORT.md`. Source-package identity will be refreshed after the merge commit.
+Current merge provenance and checks: `validation/MERGE_REPORT.md`. Source `960d2c32f247443b5a4fb057e6bb15c2dbfe39e4`; archive SHA256 `1e5f3c80d6a70cd9ec3d34a40257f8a7147d9c13af220f555d66ebce0469d378`.

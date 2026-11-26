@@ -1,86 +1,49 @@
-# Latest upstream merge checkpoint
+# Two-task status after upstream merge
 
-User requested merging the friend's new GitHub main (`bc8ba0c`). Merge resolutions are in
-`validation/MERGE_REPORT.md`. The earlier package489b139 is a pre-merge snapshot and must not
-be submitted as the merged task. Refresh its package after committing this merge.
+Chute merged source:`960d2c32f247443b5a4fb057e6bb15c2dbfe39e4` (parents502f9a5 and upstreambc8ba0c).
+Archive SHA256:`1e5f3c80d6a70cd9ec3d34a40257f8a7147d9c13af220f555d66ebce0469d378`;80 source files. `PACKAGE.json` and
+`package-integrity.json` are refreshed; earlier packages are archived as pre-merge snapshots.
+Branch:`codex/chute-submission-ready`. Origin push denied403 for yuanboP; no remote write.
 
-The corrected image build62728274 completed2h15m26s/exit0; conversion62728280 completed24m41s;
-GPU checks62728568 and62728569 completed7m10s and7m34s. All exit0. ImageIDf2155903 and old-source
-CPU smoke verified; GPU detail collection is pending. Build inputs are unchanged by the merge,
-so reuse this image and verify the new staged source. Do not rebuild solely for runtime/source staging.
+## Chute
 
-UAV remains source8c0ae7a: complete reference training and hidden CPU Docker inference passed,
-AP50=.5451401442 on2475 hidden frames. Official GPU lifecycle and new agent trajectories remain pending.
+Adopted the stronger physical reference and its geometry/URDF/modules, updated hidden seeds,
+9–13s feed timing, tote/end-stop correction,0.30m pile allowance and bounded actions.
+Retained pinned Docker/Kit/Warp fixes, canonical shared grader, corrected CPU accounting,
+and the requested direct-answer default. Physical reference is `solve_physical.sh`; its
+staging now excludes a stale synthetic answer and retains unrelated user outputs.
 
-Current merge portable tests:21 passed,3 Linux-only skips; real entrypoints0/1/1/0/0; ALE lint passed.
-Synthetic fixture regenerated for the upstream hidden seeds. Upstream physical reference and
-reported scores are separate from our synthetic default/anchor. No official ALE admission is claimed.
+Merged-version portable tests:21 passed,3 Linux-only skips. Actual entrypoints:untouched0,
+reference1 twice,unauthorized0,wrong0. Fixture regenerated for the new hidden set; anchor
+remeasured at1 in author CPU checks. ALE lint and domain lint pass. Upstream physical
+anchor0.8583 and reported agent raw0.3375 are kept as attributed separate evidence; not
+independently reproduced here or substituted for the synthetic denominator.
 
-GitHub push to friend origin denied403 for yuanboP; no remote branch changed.
-The previous progress record below is historical and its source/job references are superseded above.
+Final corrected Docker build62728274 completed2h15m26s/exit0;imageID:
+sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd.
+Its CPU smoke passes. Conversion62728280 completed24m41s; GPU checks62728568/62728569
+completed7m10s/7m34s,all exit0; detailed GPU result collection pending.
+These tests used runtime17b6d4f. The merge changes no Dockerfile or copied build input, so
+reuse the image and verify new staged runtime. Do not restart the image build.
 
----
+## UAV
 
-# Two-task submission preparation — admission pending
+Source8c0ae7a; both Docker images built/exported. Complete packaged reference training on
+H200 and fixed-checkpoint full hidden CPU Docker inference passed. Public AP50=.3639820;
+hidden AP50=.5451401442 on2475 frames across10 sequences. Normalized reward0 is expected
+with the still-null official anchor. No tuning or anchor update; author training is not
+an autonomous-agent trajectory. See fixed-reference-cpu-62728682/evidence.json.
 
-Both task packages remain in scope. Mandatory model training applies only to UAV.
-No upstream task PR is open. Original friend experiments under `/cwork/yr111/rax/`
-are preserved. The old-controller investigation is closed; do not extend it.
+## Remaining work
 
-## Current source packages
+Collect old-source final GPU evidence; test merged chute runtime in the completed image;
+complete official ALE GPU lifecycle, repeated anchors/full_at and new agent trajectories;
+qualify numerical portability and observation-lock fairness. Physical solvability on the
+merged task has new upstream evidence but no independent reproduction yet. Prepare the
+one-line upstream GPU-model registry addition before task CI. No upstream task PR is open.
+A compatible NVIDIA Docker host was already requested; no repeat question needed.
 
-| Task | Source commit | Source archive SHA256 |
-|---|---|---|
-| Chute | `489b139b0dba3d84016bccea07777b01153bea16` | `030d3a1fac6f4196b72006d381fad8c8011cc53b9ca08adebf776149c20e3db1` |
-| UAV | `8c0ae7a3794660e08f6bc283d055149e240b1f0b` | `a57f2b0b37f47cb6f77055126ef4ac9b1c710d17877fea55e0b860bb1e8cd8bb` |
-
-Both packages pass pinned ALE lint; each has nine unchanged canonical grader files.
-Chute domain lint passes. UAV domain lint still requires the measured anchor and `full_at`.
-Chute's new manifest restricts both stages to RTX 5000 Ada, the measured rendering model.
-Only `task.toml` differs from runtime/build source17b6d4f; no Docker rebuild is needed.
-Upstream model-name CI requires the separate one-line GPU registry patch in `validation/`.
-It applies cleanly; the engine recognizes the model. No registry pass is claimed before it lands.
-
-## Confirmed development results
-
-- Chute direct-answer reference scored1 twice in CPU Docker; untouched/wrong/unauthorized
-  artifacts scored0. These synthetic verdicts explicitly have `physical_rollout=0`.
-- Chute Kit/Warp build defects are fixed. Controlled host-NGX injection restored clean
-  rendering without physics changes. Clean archived-controller replay had0/20 placement
-  and no contacts/time violations; this is not frontier difficulty evidence.
-- UAV has all50 NPS clips:51,951 train,1,190 public,2,475 hidden frames. Coordinate/frame
-  conventions corrected; exact JPEG overlap0. Both Docker images are built/exported;
-  six real CPU isolation/contract cases passed.
-- UAV packaged reference completed24,000 training steps from generic ImageNet initialization
-  in1,207.57s onH200, selected12,000; all1,190 public frames AP50=.3639820186.
-  Model SHA256:972cb29f7a9e47bb9eb65067cc0838b06dd9702d9c6ca7ad063f601462270e7e.
-  It is author reference training, not an autonomous-agent run or official ALE GPU gate.
-
-## Live jobs (requery before acting)
-
-| Job | Last observed state | Purpose |
-|---|---|---|
-|62728274|RUNNING|Corrected chute Docker build, CPU smoke, export|
-|62728280|PENDING after62728274|Convert exact image to SIF|
-|62728568|PENDING after62728280|Exact-image GPU runtime/physical smoke with host NGX|
-|62728569|PENDING after62728568|Exact-image archived replay/grading-path smoke|
-|62728682|COMPLETED50m59s/exit0|Fixed UAV model; hidden AP50=.5451401442 on2475 frames|
-
-Chute build remains live; quiet layer commits do not imply a hang. Never boot its owned VM
-disk concurrently. UAV CPU verification completed with its exact image/checkpoint; all seven
-artifact hashes match training evidence. AP50=.5451401442, AP50:95=.1464820651.
-The recorded reward0 reflects the null official anchor. No training/tuning/anchor update.
-UAV VM shut down and ownership lock released. See fixed-reference-cpu-62728682/evidence.json.
-
-## Remaining submission gates
-
-Final chute image evidence; physical feasibility and observation-lock fairness; numeric
-portability; official ALE GPU lifecycle and repeated anchors/full_at; fresh frontier-agent
-trajectories; upstream GPU model addition; maintainer acceptance of the synthetic reference.
-The compatible NVIDIA Docker host request remains unanswered; do not repeat the question.
-Native/SIF/CPU Docker results do not replace official ALE GPU qualification.
-
-Evidence root: `/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f`.
-Start with `DELIVERY_INDEX.md`, `ADMISSION_GATES.json` and the two refreshed PR drafts.
-The live candidate bundlec67a7265 remains tied to runtime source17b6d4f. Preserve its identity;
-the submission package's GPU-only delta does not change ongoing build/runtime tests.
+Evidence root:`/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f`.
+`validation/MERGE_REPORT.md` records merge choices. `LIVE_PIPELINE.json` records job state.
+Both Docker VMs are stopped after completed jobs; always recheck ownership before booting.
+Old-controller diagnostics remain closed; merged-reference verification is a separate task.
