@@ -4,8 +4,8 @@
 
 Complete the friend's chute task and our UAV-to-UAV detector-training task through genuine ALE submission gates.
 Keep direct-answer reference results distinct from physical robot success. The UAV agent must actually train its
-model and leave reproducible source, checkpoint and training records. A question about whether mandatory training
-also applies to the friend's task is pending; no such requirement has been silently added to that task.
+model and leave reproducible source, checkpoint and training records. The user clarified that mandatory model training applies to UAV-to-UAV. The friend's task
+continues to allow controller development, with optional model training.
 
 ## Authoritative working trees
 

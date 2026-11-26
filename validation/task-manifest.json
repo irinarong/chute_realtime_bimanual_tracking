@@ -43,7 +43,7 @@
   "tests/review/make_ideal_answer.py": "db9b8ab0808e8aae6009784f1293f4fae82ff6f14121b8f9bfd43d868cea653f",
   "tests/review/select_shifts.py": "a19d1e92ee9eb9af695cd3ef531c963948e3731c8aeffe6312983c9c58dd1b7f",
   "tests/review/test_ideal_answer.py": "c7bb710f9e6fa54ab24633cabe8e8e4c40bd5338034b51e77524a733c62f2501",
-  "tests/review/test_plumbing.py": "a1f322acc6c4bf0a81d2c9e2ede19ff032c943d396a4288550d9af01e2040fd6",
+  "tests/review/test_plumbing.py": "fdaab230dd47827054812d8b32b452ce52429ce6cbc94483baa27cba4998fda1",
   "tests/robotics_grader/__init__.py": "3da7054ed158b7c082f5bde0291b8f0dbb098a7fdda7540b4b71ce13e2e8ff98",
   "tests/robotics_grader/account.py": "7951366893446c36a01e2dfc4549eaf3c6eb59dbb3e4c4f6c9cf93ff386f4d8c",
   "tests/robotics_grader/deadline.py": "144155712c967799eb9f5be53074498efc88ac99bb140327c9961735c56989cc",
@@ -56,5 +56,5 @@
   "tests/shift.py": "ccea8347d6e876ef3e8b738fa701859a208b07a8960bc20c0c7a532ac5380a04",
   "tests/sim_client.py": "ef5ea07bd895ed846bdb1ea5e6292e73d344152a86c80c5023473920d7ad769a",
   "tests/test.sh": "6d0be2577cf7fdcc9f1b5170633766d6c7ca355dac5205ead49343c5d4445a74",
-  "tests/verify.py": "ee81db450f8b891eed60f058b941133f507f0b3f4da696c01e6a026ec077442a"
+  "tests/verify.py": "6f83e2db2bd6f3411879035575fcf9d5965ae3fffcbd9903cd5876bcf93957e9"
 }

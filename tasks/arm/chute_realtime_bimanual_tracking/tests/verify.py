@@ -80,8 +80,9 @@ def run_shift(sim, solver, lock, config, seed, salt=0):
         probed = lock.due(); tic = time.monotonic()
         reply = lock.probe(solver, t, obs, perturbed(obs, lock)) if probed else solver.act(t, obs)
         wall = (time.monotonic() - tic) / (2.0 if probed else 1.0)                        # a probed step is asked twice
-        cpu1 = meter.seconds(); took = (cpu1 - cpu0) / (2.0 if probed else 1.0); cpu0 = cpu1; program += took
+        cpu1 = meter.seconds(); took = max(0.0, cpu1 - cpu0) / (2.0 if probed else 1.0); cpu0 = cpu1
         if wall > wall_cap: took = max(took, wall)                # sleeping or waiting on a GPU is not a way round the deadline
+        program += took
         # Every reply has its own deadline, so that no step can be thought over at leisure: a reply later than the
         # deadline is a late reply (the first reply of a shift has a grace), and one more than the allowed number ends
         # the shift. A threshold, never a scored time: within it the score is the same on any machine.

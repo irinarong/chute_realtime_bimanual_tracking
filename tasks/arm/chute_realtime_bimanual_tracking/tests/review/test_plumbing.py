@@ -47,3 +47,37 @@ def test_parse_reply():
     for bad in ([0] * 25, [float("inf")] * 26, {"action": [0] * 26}, "abc", None):
         try: V.parse_reply(bad); raise AssertionError(bad)
         except SolverAborted: pass
+
+
+def test_long_wait_counts_toward_total_budget(monkeypatch):
+    """A low-CPU reply above the documented wall cap must spend shift time too."""
+    from types import SimpleNamespace
+    import verify as V
+
+    class Sim:
+        steps = 0
+        def reset(self, *args, **kwargs):
+            return {"t": 0, "done": False}
+        def step(self, *args):
+            self.steps += 1
+            return {"t": 1, "done": True}
+        def summary(self):
+            return {"score": 0, "frames_charged": 0}
+
+    class Meter:
+        def __init__(self, pgid): pass
+        def seconds(self): return 0.0
+
+    times = iter([0.0, 11.0])
+    monkeypatch.setattr(V, "CpuMeter", Meter)
+    monkeypatch.setattr(V, "oracle_token", lambda: "")
+    monkeypatch.setattr(V.os, "getpgid", lambda pid: pid)
+    monkeypatch.setattr(V.time, "monotonic", lambda: next(times))
+    solver = SimpleNamespace(proc=SimpleNamespace(pid=1), reset=lambda: None,
+                             act=lambda *args: [0.0] * 26)
+    sim = Sim()
+    result = V.run_shift(sim, solver, SimpleNamespace(due=lambda: False), {}, 1)
+    assert result["program_time_s"] == 11.0
+    assert result["fell_behind"] is True
+    assert result["late_replies"] == 1
+    assert sim.steps == 0
