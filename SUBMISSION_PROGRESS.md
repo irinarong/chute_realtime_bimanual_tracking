@@ -13,7 +13,7 @@ Never interpret a synthetic oracle reward as physical robot success.
   it supersedes the `d0f34e0` package. The original image built as `82248cd7aeaa`;
   its final content-pinned rebuild and exact-image checks remain pending.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
-  branch `codex/uav-to-uav-tracking`. Current committed source is `3daa2d123c6f694f4d2b9e883dc52d5e7f0a97da`,
+  branch `codex/uav-to-uav-tracking`. Current committed source is `4a7077eb5cc00b0d9d30373c0493f9ecdf20d3ae`,
   including verified public box calibration and reference provenance.
 - ALE: `bfb75050aca2c54b45c5ab23bae6028a834a468a`, installed at
   `/tmp/chute-ale-pinned-20261126`. The canonical shared grader is unchanged.
@@ -103,7 +103,7 @@ indices were corrected; exact JPEG overlap is zero. AOT downloads are not used.
 
 Both Docker images were built with real Docker. Their original guest disk was later
 quarantined after filesystem/containerd corruption and cannot serve as the delivery
-artifact; a healthy rebuild/export is in progress (62725136). Current-contract CPU smoke
+artifact; a healthy rebuild/export is in progress (62725367). Current-contract CPU smoke
 62722844 passed six cases across all held-out frames, including actual UID/file/
 network isolation. It did not evaluate reference accuracy. The deprivileged worker
 checks tensor weights, nonempty config and increasing finite training records
@@ -131,12 +131,12 @@ Evidence root:
 `/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/`.
 `uav-reference-v2/` contains calibration/results/source audits; `uav-validation/`
 contains the current package builder, PR draft, status and GPU-host instructions.
-The committed source-only package is 77,560 bytes / 47 files, SHA256
-`98f8324ce191455a3af88952963b1a8b995daa423f1c35fec5a71f793ed29ed9`.
-It is also staged on DCC at `datasets/uav-submission-3daa2d1.tar.gz`. PACKAGE.json
+The current source-only package is 82,488 bytes / 50 files, SHA256
+`954e33f605c4ead0f216c78085aad58a3b28256a6911fa0a2b6a3a23790111aa`.
+It is also staged on DCC at `datasets/uav-submission-4a7077e.tar.gz`. PACKAGE.json
 records its commit/tree/file hashes, and both evaluated model source hashes match
-the package. All 11 recorded Docker build inputs remain byte-identical to the
-already-built images. Repackage only after committing task changes; older package
+the package. The original 11-input comparison covers 3daa2d1. The new verifier licence COPY
+changes its Dockerfile and adds a build input; the new build must confirm this image. Repackage only after committing task changes; older package
 hashes must not be described as current.
 
 ## Remaining acceptance evidence and execution constraint
@@ -222,3 +222,13 @@ preserving all 18 SDK files, verified on DCC, and installed atomically. The prev
 candidate 74739d9 is retained as datasets/candidate-74739d9.tar.gz and remains the
 identity of the collected original-image CPU smoke. The new candidate is cb604cff;
 task-only submission packages and Docker image inputs are unchanged.
+
+
+UAV licence fix 4a7077e retains the original benchmark Apache LICENSE/NOTICE in the
+standalone task and embeds the source BSD dataset notice in the separate verifier
+image. It changes no training, inference, metric or canonical grader code. The
+50-file package was rechecked and uploaded with its SHA256. Job 62725136 was
+cancelled during VM preparation and replaced by 62725367 on a new disk because of
+this concrete Dockerfile change. The new script additionally compares the embedded
+licence byte-for-byte against source. Do not reuse the cancelled job's VM or confuse
+its source 3daa2d1 with the corrected candidate. See current image-recovery.json.
