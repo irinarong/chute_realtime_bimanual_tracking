@@ -393,3 +393,27 @@ UUID and records the actual device; task.toml and declaredRTX4090 requirements
 are unchanged. This is development compatibility evidence only; no reference
 training/full_at or official ALE acceptance is inferred. Override recorded in
 uav-validation/image-gpu-plan.json.
+
+
+UAV final-image GPU check62727211 completed on H200 in1m22s with exit0. Two real
+CUDA optimizer steps passed, and immutable reference weights produced AP50
+0.32848809584577504 over all1190 public frames in62.88s. CPU baseline was
+0.32989755713734764; retain this small device difference, never overwrite the
+missing official anchor with it. final-gpu-62727211/evidence.json records scope
+and identities. SIF conversion62726871 also completed in9m59s.
+
+GPU preflight corrected a concrete bug: Slurm GRES index6 need not be NVIDIA
+minor3. The helper keeps exactly-one assignment/device restrictions, maps the
+cgroup-permitted device to NVML UUID and verifies it inside CUDA/Vulkan. An
+observed H200 run now passes; multiple devices and assignments still reject.
+The RTX2080 attempt62726873 also encountered an actual NVML unknown-device error
+and was not reused. Its mapping diagnostics are retained under gpu-map-62727122.
+
+Friend GPU62725056 failed Vulkan initialization before simulation. CPU driver
+probe62727192 identified an absolute ICD path pointing at absent/usr/lib64; the
+actual injected library is under/.singularity.d/libs. The resolved ICD loaded
+successfully in CPU probe62727294. Only author launch helpers changed, preserving
+host ICD and submitted Docker/task source. Corrected GPU probe62727328, physical
+smoke62727329 and dependent visual replay62727330 are now queued. Old probe
+62727090 failed with the original path; old pending visual62726049 was cancelled.
+Do not claim actual rendering or physical feasibility until the new jobs run.
