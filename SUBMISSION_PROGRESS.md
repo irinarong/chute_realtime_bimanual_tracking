@@ -41,11 +41,13 @@ It applies cleanly; the engine recognizes the model. No registry pass is claimed
 |62728280|PENDING after62728274|Convert exact image to SIF|
 |62728568|PENDING after62728280|Exact-image GPU runtime/physical smoke with host NGX|
 |62728569|PENDING after62728568|Exact-image archived replay/grading-path smoke|
-|62728682|RUNNING|Fixed trained UAV artifact, full hidden verifier in CPU Docker|
+|62728682|COMPLETED50m59s/exit0|Fixed UAV model; hidden AP50=.5451401442 on2475 frames|
 
-Both running jobs were confirmed through Slurm and live guest process activity. Quiet
-layer commits/inference logs do not imply a hang. Never boot either owned VM disk concurrently.
-The UAV verifier changes only inference device toCPU; it does not train/tune or fill the anchor.
+Chute build remains live; quiet layer commits do not imply a hang. Never boot its owned VM
+disk concurrently. UAV CPU verification completed with its exact image/checkpoint; all seven
+artifact hashes match training evidence. AP50=.5451401442, AP50:95=.1464820651.
+The recorded reward0 reflects the null official anchor. No training/tuning/anchor update.
+UAV VM shut down and ownership lock released. See fixed-reference-cpu-62728682/evidence.json.
 
 ## Remaining submission gates
 
