@@ -38,7 +38,8 @@ if __name__ == "__main__":
         frozen = {f: hashlib.sha256(open(os.path.join(task, f), "rb").read()).hexdigest() for f in
                   ("tests/verify.py", "tests/cell_env.py", "tests/shift.py", "tests/props.py", "tests/grader_config.json", "solution/privileged/oracle.py", "solution/privileged/reference_params.json")}
         os.makedirs(os.path.join(task, "tests", "hidden"), exist_ok=True)
-        json.dump({"seeds": kept}, open(os.path.join(task, "tests", "hidden", "shifts.json"), "w"))
+        hp = os.path.join(task, "tests", "hidden", "shifts.json"); hid = json.load(open(hp)) if os.path.exists(hp) else {}
+        hid["seeds"] = kept; json.dump(hid, open(hp, "w"))      # the salt already in the file is kept
         json.dump({"format": "chute_realtime_bimanual_tracking shift selection 1", "rule": __doc__.split("Rule")[1].split("python select")[0].strip(),
                    "candidates": {str(s): sc[s] for s in sorted(sc)}, "kept": kept, "second_run": {str(s): second[s] for s in kept}, "frozen": frozen},
                   open(os.path.join(task, "tests", "hidden", "shift_selection.json"), "w"), indent=1)

@@ -5,7 +5,7 @@ set -euo pipefail
 SUB="${ALE_HOME:-/home/user}/submission"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$SUB"
-cp "$HERE/privileged/oracle.py" "$HERE/privileged/kin.py" "$HERE/privileged/reference_main.py" "$HERE/privileged/reference_params.json" "$SUB/"
+for f in "$HERE"/privileged/*; do case "$(basename "$f")" in oracle_token|run.sh|__pycache__) ;; *) cp -r "$f" "$SUB/";; esac; done
 cp "$HERE/privileged/oracle_token" "$SUB/.oracle_token"
 cat > "$SUB/run.sh" <<'SH'
 #!/usr/bin/env bash

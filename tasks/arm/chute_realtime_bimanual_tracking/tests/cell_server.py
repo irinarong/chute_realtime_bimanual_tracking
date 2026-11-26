@@ -1,6 +1,6 @@
 """The cell as a process: JSON lines on stdin/stdout, run by the simulator interpreter.
 
-Requests: {"op": "reset", "station", "seed", "parts"} | {"op": "step", "action": [23], "cameras": [...]} |
+Requests: {"op": "reset", "station", "seed", "parts", "salt", "token"} | {"op": "step", "action": [23], "cameras": [...]} |
 {"op": "truth", "token"} | {"op": "summary"} | {"op": "close"}. Replies carry "ok". Images travel as base64 PNG (RGB) and
 base64 little-endian uint16 millimetres (depth). Nothing but the reply line is written to stdout.
 The same file serves the grader, the reference and the agent's lab; `truth` answers only the holder of the token."""
@@ -26,7 +26,8 @@ def pack(obs):
             c = obs[cam]; d = np.nan_to_num(np.asarray(c["depth"], np.float32), nan=0.0, posinf=0.0, neginf=0.0)
             mm = np.clip(d * 1000.0, 0, 65535).astype("<u2")
             out["cameras"][cam] = {"rgb_png": _png(c["rgb"]), "depth_mm_u16": base64.b64encode(mm.tobytes()).decode(), "shape": list(mm.shape),
-                                   "K": np.asarray(c["K"]).tolist(), "pos_base": np.asarray(c["pos_base"]).tolist(), "rot_base": np.asarray(c["rot_base"]).tolist()}
+                                   "K": np.asarray(c["K"]).tolist(), "pos_base": np.asarray(c["pos_base"]).tolist(), "rot_base": np.asarray(c["rot_base"]).tolist(),
+                                   "t_capture": int(c.get("t_capture", obs["t"]))}
     return out
 
 
@@ -39,7 +40,8 @@ def serve(make_cell):
             req = json.loads(line); op = req.get("op")
             if op == "reset":
                 if cell is not None: raise RuntimeError("one shift per process")
-                cell = make_cell(req["station"], int(req["seed"]), int(req.get("parts", 20)))
+                privileged = bool(TOKEN_SHA) and hashlib.sha256(str(req.get("token", "")).encode()).hexdigest() == TOKEN_SHA
+                cell = make_cell(req["station"], int(req["seed"]), int(req.get("parts", 20)), int(req.get("salt", 0)), privileged)   # assisted grasp: the reference only
                 rep = {"ok": True, "obs": pack(cell.observe(tuple(req.get("cameras", ()))))}
             elif op == "step":
                 a = req["action"]
@@ -59,9 +61,9 @@ def serve(make_cell):
 
 
 if __name__ == "__main__":
-    def make_cell(station, seed, parts):
+    def make_cell(station, seed, parts, salt=0, assisted=False):
         import cell_env
-        return cell_env.Cell(station, seed, n_parts=parts)
+        return cell_env.Cell(station, seed, n_parts=parts, salt=salt, assisted=assisted)
     serve(make_cell)
     try:
         import omnigibson as og; og.shutdown()

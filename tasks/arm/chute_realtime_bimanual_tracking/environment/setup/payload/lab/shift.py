@@ -43,15 +43,17 @@ class ShiftPlan:
     events: list = field(default_factory=list)
 
 
-def make_shift(task: str, seed: int, n_events: int, station: str | None = None) -> ShiftPlan:
-    """station: for task A, run the whole shift at one feed point ("track", "belt" or "drop"); None mixes all three."""
-    g = np.random.default_rng([{"A": 11, "B": 12}[task], seed])
+def make_shift(task: str, seed: int, n_events: int, station: str | None = None, salt: int = 0) -> ShiftPlan:
+    """station: for task A, run the whole shift at one feed point ("track", "belt" or "drop"); None mixes all three.
+    salt: the grader's secret (tests/hidden/shifts.json). With it, a seed gives a shift that nobody holding this file and
+    the seed can reproduce: a controller cannot recognise a graded shift from its first parts and read off the rest."""
+    g = np.random.default_rng([{"A": 11, "B": 12}[task], seed] + ([int(salt)] if salt else []))
     u = lambda lo, hi: float(g.uniform(lo, hi))
     if task == "A":
         c = {
-            "track_slope_deg": u(0.8, 1.5),              # rolling parts: speed set by the slope alone; kept slow
-            "track_grip": u(0.002, 0.005),               # friction = tan(slope) - grip: sliding parts come down slowly
-            "track_push": u(0.05, 0.10),                 # release speed along the track, m/s
+            "track_slope_deg": u(4.0, 7.0),              # a chute that looks like one: parts visibly pick up speed
+            "track_grip": u(0.025, 0.046),               # friction = tan(slope) - grip: sliding parts gain 0.25 to 0.45 m/s2
+            "track_push": u(0.05, 0.15),                 # release speed, m/s: gravity does the rest (0.5 to 0.65 m/s at the hand, up to 0.9 at the end)
             "belt_speed": u(0.10, 0.25),                 # the conveyor runs at one speed for the whole shift
             "belt_lane": u(-0.12, 0.12), "belt_lane_sd": 0.03,          # where across the belt the line sets parts down
             "belt_gap_s": u(1.0, 3.0),                   # set-down delay after the event starts

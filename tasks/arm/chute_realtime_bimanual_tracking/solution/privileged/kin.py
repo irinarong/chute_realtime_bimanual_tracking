@@ -5,7 +5,7 @@ import os
 import xml.etree.ElementTree as ET
 import numpy as np
 
-URDF = os.environ.get("R1PRO_URDF", "/opt/og_data/omnigibson-robot-assets/models/r1pro/urdf/r1pro.urdf")
+URDF = os.path.join(os.path.dirname(os.path.abspath(__file__)), "robot.urdf")
 
 
 def _rpy(r, p, y):
