@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=chute-driver-libs
 #SBATCH --account=cpslab
-#SBATCH --partition=common
+#SBATCH --partition=gpu-common
 #SBATCH --nodelist=dcc-core-gpu-ferc-s-aa32-9
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=8G

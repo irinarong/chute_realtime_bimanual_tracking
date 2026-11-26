@@ -32,8 +32,12 @@ def host():
     if len(allowed) != 1:
         raise RuntimeError(f'Expected exactly one accessible GPU device, got {nodes}')
     allocation = os.environ.get('SLURM_STEP_GPUS') or os.environ.get('SLURM_JOB_GPUS')
-    if allocation != allowed[0].removeprefix('/dev/nvidia'):
-        raise RuntimeError(f'Slurm allocation {allocation!r} does not match {allowed}')
+    # Slurm's global GRES index is not a Linux NVIDIA device minor. On DCC,
+    # job GPU 6 maps to the sole permitted /dev/nvidia3. Keep the single-GPU
+    # assignment requirement, then resolve the cgroup-authorized minor through
+    # NVML and require the same UUID inside CUDA/Vulkan below.
+    if not allocation or not allocation.isdecimal():
+        raise RuntimeError(f'Expected one Slurm GPU assignment, got {allocation!r}')
     xml = ET.fromstring(subprocess.check_output(['nvidia-smi', '-q', '-x']))
     rows = [gpu for gpu in xml.findall('gpu')
             if '/dev/nvidia' + gpu.findtext('minor_number', '') == allowed[0]]
@@ -44,6 +48,8 @@ def host():
     if not uuid.startswith('GPU-'):
         raise RuntimeError(f'Unsupported GPU UUID: {uuid}')
     return dict(device_nodes=nodes, allocated_device=allowed[0], uuid=uuid,
+                slurm_gpu_id=allocation,
+                identity_basis='single cgroup-permitted device, NVML minor-to-UUID mapping',
                 name=gpu.findtext('product_name'), pci_bus_id=gpu.findtext('pci/pci_bus_id'),
                 driver_version=xml.findtext('driver_version'),
                 slurm={k: v for k, v in os.environ.items()
