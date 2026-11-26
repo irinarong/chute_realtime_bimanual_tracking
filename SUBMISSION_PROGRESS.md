@@ -38,7 +38,7 @@ reject corrupted downloads and unsafe ZIP entries.
 | 62723900 | PENDING afterok 62721924 | Final pinned Docker rebuild, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
-| 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one privileged physical shift |
+| 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
@@ -55,13 +55,21 @@ was cancelled. The submitted replacement script is
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
 Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `d832fb8b02022801a4e575ad787a930050f3238f3ff1e7965023a651832f3686`.
+SHA256: `bd774a94c269a897cb3a19dab3c7e8e7b572d7bb100bcc804f2dcef90bf984b5`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
 when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
 and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
 run of the Linux CPU tests to the pending exact-image smoke. They do not belong to the submitted task/image.
 CPU smoke is not official ALE validation. SIF GPU smoke does not test ALE UID or
-match-lock behavior.
+match-lock behavior. The GPU smoke now defaults to ordinary physical grasping,
+while retaining authorized truth access for the controller. The reset receives no
+token; subsequent truth requests do. It asserts `assisted=False`. This separates
+physics feasibility diagnosis from privileged assisted-grasp performance.
+
+The refreshed source-only chute package (64 files, 140,564 bytes) is frozen at
+`195802c17881c1e30dec636e25329ce6728569ce`, SHA256
+`431075a2965f0459c23e6b8418a05722c6e6305b6cc5be69a08b490db668b941`.
+It supersedes the old 61-file package. Its 64 archive entries match the manifest.
 
 The process CPU meter was corrected in both private and practice grading. It now
 discovers every sample, includes kernel-retained waited-child/grandchild CPU, reads

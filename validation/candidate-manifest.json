@@ -1,6 +1,6 @@
 {
   "scope": "Author smoke bundle; SDK is not part of the submitted task",
-  "sha256": "d832fb8b02022801a4e575ad787a930050f3238f3ff1e7965023a651832f3686",
+  "sha256": "bd774a94c269a897cb3a19dab3c7e8e7b572d7bb100bcc804f2dcef90bf984b5",
   "files": {
     "docker_smoke.py": "dba1dd00d66e265ee134b6f60206e60ff0144b91d73b5c59e327e082732401a5",
     "docker_smoke.sh": "ecc41ef8b398bfe50a5d0632a1a034404a39b3b987f4e0b5c8c917b9525ada65",
@@ -22,7 +22,7 @@
     "engine/fastjsonschema/indent.py": "8ee6455bd2d2be60c96cf148526dc63ea74fa89a149eabccf27787379ae4bf35",
     "engine/fastjsonschema/ref_resolver.py": "3d69eefb6319cd61f9732983bdd72f5dfc7788e5bf32be9cfb15cc626f450fb4",
     "engine/fastjsonschema/version.py": "319d9c5b54d1d2767e849977d3b020aba35274fcf52450200d3133cc0dd3fbb7",
-    "gpu_smoke.py": "bd06699b93cf7367f04c89257bb581648e946121389d3545f85db05b080acfab",
+    "gpu_smoke.py": "98f31a014808d65f3a00ae9e9dca7e7a96e60e19e1fcae122a26c3d4b93aa000",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/Dockerfile": "b2b9a2dadab598c0e182c9a8aa576acf9ad20ebb95f5fa88d4f0835112a047c6",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/NOTICE.md": "b2a076cfde857fc9367e32a3a04e7270e7ae77aa8a4fd5c63cc4df04fc8c6ad8",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/build_items.py": "4fa79c2e54ce492bdc5efc8713d4afd822fb6e8c5f2abffaf189286bdf927766",

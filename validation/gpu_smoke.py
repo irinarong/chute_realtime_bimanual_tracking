@@ -2,6 +2,7 @@
 
 This tests image CUDA/Isaac/camera operation; it is NOT ALE lifecycle validation.
 """
+import argparse
 import base64
 import io
 import json
@@ -19,13 +20,20 @@ sys.path[:0] = [str(TASK / "tests"), str(TASK / "solution/privileged")]
 from sim_client import SimClient, SimError
 from oracle import Oracle
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--grasping", choices=("physical", "assisted"), default="physical")
+args = parser.parse_args()
+assisted = args.grasping == "assisted"
 hidden = json.loads((TASK / "tests/hidden/shifts.json").read_text())
 token = (TASK / "solution/privileged/oracle_token").read_text().strip()
 env = dict(os.environ, CELL_TOKEN_SHA256=(TASK / "tests/oracle_token.sha256").read_text().strip())
 started = time.monotonic()
 sim = SimClient(str(TASK / "tests/cell_server.py"), env=env, log_path=str(OUT / "isaac.log"))
 try:
-    obs = sim.reset("track", hidden["seeds"][0], 20, cameras=("head",), salt=hidden.get("salt", 0), token=token)
+    # Truth authorization is checked separately by sim.truth(). Omitting the reset
+    # token keeps ordinary friction-only grasping while allowing author diagnosis.
+    obs = sim.reset("track", hidden["seeds"][0], 20, cameras=("head",), salt=hidden.get("salt", 0), token=token if assisted else "")
+    assert sim.truth(token)["assisted"] is assisted
     head = obs["cameras"]["head"]
     rgb = np.asarray(Image.open(io.BytesIO(base64.b64decode(head["rgb_png"]))))
     depth = np.frombuffer(base64.b64decode(head["depth_mm_u16"]), dtype="<u2")
@@ -49,7 +57,8 @@ try:
             print(json.dumps({"step": step, "t": obs["t"], "elapsed_s": time.monotonic()-started}), flush=True)
     result = sim.summary()
     result.update(
-        scope="Built Docker image converted to Apptainer; one physical privileged-reference shift",
+        scope="Built Docker image converted to Apptainer; one truth-driven controller shift",
+        privileged_state=True, assisted_grasping=assisted,
         official_ale_validate=False, uid_isolation_tested=False, match_lock_tested=False,
         elapsed_s=time.monotonic()-started, rgb_std=float(rgb.std()),
         depth_nonzero_fraction=float(np.mean(depth > 0)),
