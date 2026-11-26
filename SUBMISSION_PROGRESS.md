@@ -8,8 +8,10 @@ Preserve the friend's original DCC experiments. No upstream task PR has been ope
 Never interpret a synthetic oracle reward as physical robot success.
 
 - Chute: this managed worktree, branch `codex/chute-submission-ready`. Task source
-  and the SDK-based CPU smoke were frozen at `dce541a`; current changes improve
-  the author build runner and this status, without changing the submitted task.
+  now includes corrected process accounting and its Linux regression tests. The
+  current source-only snapshot is identified by `chute-validation/PACKAGE.json`;
+  it supersedes the `d0f34e0` package. The original image built as `82248cd7aeaa`;
+  its final content-pinned rebuild and exact-image checks remain pending.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
   branch `codex/uav-to-uav-tracking`. Current committed source is `3daa2d123c6f694f4d2b9e883dc52d5e7f0a97da`,
   including verified public box calibration and reference provenance.
@@ -18,7 +20,8 @@ Never interpret a synthetic oracle reward as physical robot success.
 
 ## Chute: measured work and live jobs
 
-Nineteen host tests, pinned ALE lint and domain lint passed. Real host entrypoint
+Nineteen portable tests, three real Linux process-accounting tests, pinned ALE lint
+and domain lint passed. The Linux-only cases skip on macOS; they were run on DCC. Real host entrypoint
 checks measured untouched zero, synthetic oracle one twice, unauthorized/wrong
 answers zero. The direct-answer fixture independently validates 120 terminal
 snapshots against hidden layouts and the shared scoring. Its verdict explicitly
@@ -31,7 +34,7 @@ reject corrupted downloads and unsafe ZIP entries.
 
 | Job | State at latest check | Work |
 |---|---|---|
-| 62721924 | RUNNING, final import checks passed | Original Docker build and image export |
+| 62721924 | RUNNING, original image built; saving archive | Original Docker build and image export |
 | 62723900 | PENDING afterok 62721924 | Final pinned Docker rebuild, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
@@ -52,16 +55,28 @@ was cancelled. The submitted replacement script is
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
 Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `007efbc08ea6339a5d4ab8c8adbc7ebe92ed9cd4e3ec04fcaba3dc1851b6cbf9`.
+SHA256: `d832fb8b02022801a4e575ad787a930050f3238f3ff1e7965023a651832f3686`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
-when rebuilding that archive. They do not belong to the submitted task/image.
+when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
+and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
+run of the Linux CPU tests to the pending exact-image smoke. They do not belong to the submitted task/image.
 CPU smoke is not official ALE validation. SIF GPU smoke does not test ALE UID or
 match-lock behavior.
 
-Outstanding grader qualifications: the proprioception-only ProbeLock can reject
-visual absolute-target controllers; CpuMeter can omit short-lived/exited worker
-CPU. The known cumulative-wall-time bug was fixed and tested, but these broader
-issues remain. Do not delete the lock or claim fair difficulty without evidence.
+The process CPU meter was corrected in both private and practice grading. It now
+discovers every sample, includes kernel-retained waited-child/grandchild CPU, reads
+ancestors before descendants and never refunds consumed time. All three real Linux
+worker cases failed against the previous meter and passed against the new one,
+including no double charge when a live worker is reaped. Practice also uses a
+monotonic wall clock. Full ALE process-isolation/timing qualification still remains.
+
+The proprioception-only ProbeLock can reject visual absolute-target controllers.
+A fresh reproduction using the archived four-hour controller found zero carry-phase
+action changes under 100 joint perturbations, while head-depth ablation removed the
+tracked object and changed the action by 0.184334. Evidence is in
+`chute-agent-audit/mechanism_check_v2.py` and `mechanism_result_v2.json`; the older
+pose-perturbation result was not valid evidence for that visual claim. This is a
+constructed-phase diagnostic, not physical replay or a replacement probe. Do not delete the lock or claim fair difficulty without evidence.
 Synthetic-fixture acceptance for a closed-loop task also needs maintainer review.
 
 ## UAV: measured reference and current verification

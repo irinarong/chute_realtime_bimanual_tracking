@@ -12,8 +12,13 @@ not controller-reported outcomes. A placed part earns 1, a part held for one sec
 The DCC snapshot imported on 2026-11-26 uses a fixed independent feeding schedule (7–11 s release intervals),
 4–7 degree chute slopes, camera latency of 3–6 control steps, physical grasping for ordinary controllers, and
 secret-salted shifts. Each requested camera frame costs three additional 30 Hz steps. Timing thresholds are in
-`grader_config.json`; its CPU meter and wall-time cap were inherited from that snapshot. The match lock perturbs
-61 proprioceptive values. These timing and lock mechanisms still need qualification against visual controllers.
+`grader_config.json`. Private and practice grading share the same CPU meter. It discovers
+workers on every sample and includes kernel-retained CPU time from waited children,
+so a worker born and reaped between replies still consumes the budget. Ancestors are
+read first to avoid counting a worker both live and reaped; totals never refund CPU.
+Linux integration tests cover live, reaped and nested workers. This accounting is not
+a substitute for process isolation. The match lock still perturbs 61 proprioceptive
+values and needs qualification against visual controllers.
 Simulator logs and generated assets go into a root-only private directory.
 
 The raw rollout metric and lock remain unchanged by the direct-answer implementation. Normalization changes:
@@ -62,12 +67,15 @@ the current snapshot before claiming the task is ready for acceptance.
 Host CPU tests (NumPy, Pillow and pytest; no Isaac required):
 
 ```sh
-python -m pytest -q tests/review/test_ideal_answer.py tests/review/test_plumbing.py tests/review/test_build_assets.py
+python -m pytest -q tests/review/test_ideal_answer.py tests/review/test_plumbing.py tests/review/test_build_assets.py tests/review/test_cpu_meter.py
 ```
 
 `test_ideal_answer.py` exercises actual `solve.sh` and `verify.py`: untouched submission zero, synthetic reference
 one. It also checks unauthorized and malformed fixtures, partial/wrong answers, scalar boundary conditions, and
-regression equivalence of the factored scene RNG and scoring. The common `tests/robotics_grader/` is unmodified.
+regression equivalence of the factored scene RNG and scoring. The common `tests/robotics_grader/` is unmodified. The three real subprocess CPU tests
+require Linux and skip on other systems. Against the prior meter all three failed;
+with the corrected meter they passed on DCC (about 0.26--0.29 CPU seconds retained
+for 0.25-second worker workloads, with no extra charge when a live worker was reaped).
 `review/select_shifts.py` is historical physical-anchor tooling; do not run it to overwrite the current fixture anchor.
 
 For production validation use the pinned ALE engine and the unmodified Dockerfile on a GPU-capable Docker host.

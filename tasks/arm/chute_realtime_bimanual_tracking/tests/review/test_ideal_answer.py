@@ -137,5 +137,5 @@ def test_agent_payload_has_no_reference_material():
         if path.is_file() and "__pycache__" not in path.parts:
             assert secret not in path.read_bytes()
             assert path.name not in {ARTIFACT, ".oracle_token", "anchor.json", "ideal_answer.py"}
-    for name in ("cell_env.py", "outcomes.py", "cell_server.py", "sim_client.py", "props.py", "shift.py"):
+    for name in ("cell_env.py", "outcomes.py", "cell_server.py", "sim_client.py", "props.py", "shift.py", "cpu_meter.py"):
         assert (payload / "lab" / name).read_bytes() == (HERE / name).read_bytes()

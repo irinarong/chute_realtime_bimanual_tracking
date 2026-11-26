@@ -38,6 +38,16 @@ for value in items.values():
 assert Path(os.environ["CELL_ROOM"]).is_file()
 assert Path("/opt/og_data/omnigibson-robot-assets/models/r1pro").is_dir()
 
+# Exercise reply-budget accounting under the actual agent UID on Linux.
+cpu_checks = Path("/tmp/chute-cpu-meter-tests")
+cpu_checks.mkdir(mode=0o755)
+for source in (TASK / "tests/cpu_meter.py", TASK / "tests/review/test_cpu_meter.py"):
+    destination = cpu_checks / source.name
+    shutil.copyfile(source, destination)
+    destination.chmod(0o644)
+subprocess.run(["runuser", "-u", "user", "--", sys.executable,
+                str(cpu_checks / "test_cpu_meter.py")], env=env, check=True)
+
 
 def verify(name, expected):
     path = OUT / (name + ".json")
@@ -94,6 +104,7 @@ finally:
     "cpu_smoke_passed": True, "root_to_user_solver": True, "asset_count": len(items),
     "synthetic_oracle_reward": 1, "physical_rollout_tested": False,
     "pinned_ale_result_sdk": True, "oracle_entrypoint_runs_as_user": True,
+    "agent_uid_cpu_accounting_tests_passed": 3,
     "official_ale_validate": False,
 }, indent=2) + "\n")
 print("DOCKER_CPU_SMOKE_PASSED", flush=True)

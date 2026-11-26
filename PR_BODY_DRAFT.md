@@ -26,11 +26,11 @@ The previous privileged physical controller remains available as `solution/solve
 
 ## Validation and difficulty
 
-Nineteen host tests pass, covering protected artifact handling, scoring predicates, scene RNG equivalence, actual reference/verify entry points, simulator protocol and cumulative timing. A timing regression now ensures that a reply exceeding the documented wall cap also consumes the full shift budget.
+Nineteen portable tests and three Linux subprocess integration tests pass, covering protected artifact handling, scoring predicates, scene RNG equivalence, actual reference/verify entry points, simulator protocol and cumulative timing. A timing regression ensures that a reply exceeding the documented wall cap also consumes the full shift budget. Private and practice grading now use identical CPU accounting that retains waited child/grandchild time and discovers new live workers every sample. The old meter failed all three real Linux subprocess cases; the corrected meter passed without double charging a reaped worker.
 
-Exact Docker construction with the original `chown` and `runuser` checks is in progress on an isolated DCC KVM guest. Subsequent exact-image CPU and GPU smoke checks are queued. Native GPU or Apptainer results will be identified as development evidence; they do not establish ALE's Docker privilege boundary.
+The original Dockerfile built successfully on an isolated DCC KVM guest, including its `chown`, asset and agent-UID import checks. Its archive is being saved; the final content-pinned Dockerfile rebuild remains pending. Subsequent exact-image CPU and GPU smoke checks are queued. Native GPU or Apptainer results will be identified as development evidence; they do not establish ALE's Docker privilege boundary.
 
-No frontier result is claimed for this candidate. The earlier four-hour controller used an older environment and its saved verdicts failed the proprioception-only match lock. That lock and process CPU accounting still need qualification before low rewards can be interpreted as task difficulty.
+No frontier result is claimed for this candidate. The earlier four-hour controller used an older environment and its saved verdicts failed the proprioception-only match lock. That observation lock and full ALE process-isolation/timing behavior still need qualification before low rewards can be interpreted as task difficulty.
 
 ## Notes for the maintainers
 
