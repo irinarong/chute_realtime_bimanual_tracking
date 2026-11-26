@@ -6,7 +6,7 @@
   1 s 0.5, anything else 0, -0.5 per bystander moved more than 5 cm), mean over the shift's 20 parts and over the
   shifts. Nothing the controller prints is a scoring input. The reward is the ratio to `anchor.json`.
 - Time: each camera frame asked for advances the cell three more 30 Hz steps (a fixed price). The controller's own
-  time must stay within the simulated time elapsed plus 60 s, or the shift ends with what it had earned: a pass/fail
+  time must stay within the simulated time elapsed plus 10 s, or the shift ends with what it had earned: a pass/fail
   real-time threshold in the manner of `dual_arm_parcel_sorting_on_conveyor`, never a scored time.
 - A part that stands still on the chute for 1 s unheld is lost (jam), so a controller cannot stop a part and pick it
   up at rest: it has to be taken while it moves.
@@ -44,6 +44,6 @@
   rest, the credit summary) that `cell_env.py` uses; same draws and same numbers as before they were factored out.
 - `review/test_build_assets.py` checks the image's asset lists (`environment/nvidia-assets.json`, the robot model
   fetcher) without a network. `NOTICE.md` and `licenses/` carry the licence texts of the task and of the kit.
-- Image: built from `environment/Dockerfile` on 2026-11-26 (rootless build, then run through Apptainer on an RTX 5000
-  Ada): the simulator starts as the agent's user, the CPU checks of the wire pass, a shift runs on the GPU. That was an
+- Image: built from `environment/Dockerfile` on 2026-11-26 (Docker inside a DCC KVM guest, then exported and run
+  through Apptainer on an RTX 5000 Ada): the simulator starts as the agent's user, the CPU checks of the wire pass, a shift runs on the GPU. That was an
   author's check on a cluster without Docker, not `ale validate`.
