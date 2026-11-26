@@ -26,5 +26,7 @@ Upstream reported controller scores are attributed evidence, not independently r
 
 The initial push was denied403 for account yuanboP. After the user granted access,
 `codex/chute-submission-ready` was pushed successfully to origin at7d9d241 on2026-11-26.
-Remote main remainsbc8ba0c. The merged-source CPU Docker checks passed in62738654;
+Irina subsequently merged PR1 atb83042c and restored physical-reference mode/H200 on
+mainc657bc8. The synthetic variant remains on this branch pending the user's source choice.
+The merged-source CPU Docker checks passed in62738654;
 reviewable result JSON is in `validation/results/merged-cpu-62738654/`.

@@ -1,3 +1,9 @@
+> Remote update (2026-11-26): Irina merged PR1 at b83042c, then changed main to
+> physical-reference mode and H200 (current c657bc8). This branch still preserves the
+> explicitly requested synthetic variant. The results below are source-bound to960d2c3,
+> not full validation of current main. Source selection is awaiting the user's choice.
+> See `validation/REMOTE_MAIN_STATUS.json`. No upstream changes were overwritten.
+
 # Two-task status after upstream merge
 
 Chute merged source:`960d2c32f247443b5a4fb057e6bb15c2dbfe39e4` (parents502f9a5 and upstreambc8ba0c).
@@ -5,7 +11,8 @@ Archive SHA256:`1e5f3c80d6a70cd9ec3d34a40257f8a7147d9c13af220f555d66ebce0469d378
 `package-integrity.json` are refreshed; earlier packages are archived as pre-merge snapshots.
 Branch:`codex/chute-submission-ready` was successfully pushed to the friend's origin
 on2026-11-26 after write access was granted. Remote branch initially verified at7d9d241.
-`main` remainsbc8ba0c; no remote main merge or benchmark task PR has occurred.
+Irina merged PR1 atb83042c; main is nowc657bc8 with the physical default restored.
+No benchmark task PR has occurred.
 
 ## Chute
 
@@ -42,8 +49,10 @@ It uses ground truth and assisted grasping; it is not a visual-agent result or s
 anchor measurement. Source/dependency/candidate/image identities were checked.
 Evidence: `validation/results/merged-physical-62738655/`.
 
-Integration draft PR: https://github.com/irinarong/chute_realtime_bimanual_tracking/pull/1.
-Code and reviewable CPU/GPU results are pushed to the friend's repository; main is unchanged.
+Merged integration PR: https://github.com/irinarong/chute_realtime_bimanual_tracking/pull/1.
+Code and reviewable CPU/GPU results are pushed to the friend's repository. Main includes
+CPU evidence from the merged PR; the GPU evidence commitf411a0e was pushed after that merge
+and is on the codex branch. Current main has a different default reference and GPU contract.
 
 ## UAV
 
