@@ -12,13 +12,14 @@
   image bug: missing omnigibson_6_1_0.kit referenced by the compatibility patch.
   Sourcec3521f9 includes the exact original DCC file and an agent-UID launch-file
   check. CPU regression62728007 fails on old image and passes with the file.
-- Corrected Docker build/CPU smoke/export62728039 is RUNNING; conversion62728071,
-  exact-image GPU62728074 and visual62728076 follow. The old a35d570a image is
-  historical evidence and cannot qualify the current source. Old images retained.
-- Overlay diagnostic62727985 tests the single missing-file fix on the old SIF
-  while the real Docker rebuild runs; it will never count as exact-image evidence.
-- Older visual62727631 was canceled while DependencyNeverSatisfied after the
-  replacement was registered. No original /cwork/yr111/rax experiments changed.
+- Kit-only imagea318a2a9 built and passed CPU smoke in62728039; export is running.
+  GPU overlay62727985 then exposed mixed standaloneWarp1.19 and IsaacWarp1.16
+  imports. Current sourcec3521f9 still needs its final dependency correction.
+- Corrected Warp1.16 wheel preparation62728189 passed; GPU diagnostic62728194
+  is queued. Its overlay is author evidence, never exact-image qualification.
+- Known-broken downstream jobs62728071/74/76 were canceled while pending.
+  Recreate conversion/GPU/visual jobs only for the corrected final runtime.
+  No original /cwork/yr111/rax experiments were changed.
 - Official ALE GPU lifecycle, repeated anchors and fresh frontier trajectories
   remain missing; the compatible NVIDIA Docker host request remains unanswered.
 
