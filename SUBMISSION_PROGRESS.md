@@ -1,5 +1,27 @@
 # Two-task submission work — active, admission pending
 
+## Latest verified checkpoint — 2026-11-26 11:14 UTC
+
+This section supersedes older in-progress job descriptions below. Requery Slurm.
+
+- Source-only task packages: friend 3acb84b (archive 3f8192df…); UAV 8c0ae7a
+  (archive a57f2b0b…). Both exact packages pass ALE lint after moving licence
+  files into permitted stages. Runtime code and image build inputs are unchanged.
+- UAV job 62725367 built both fresh Linux/amd64 images: agent 603fa53eb7d4
+  (23,142,587,187 bytes), verifier 7fab623064e3 (5,915,258,566 bytes). Its six
+  current-source CPU cases passed across 2,475 hidden frames / 10 sequences;
+  embedded BSD licence matches source. Exports are running. Evidence:
+  uav-validation/final-images-62725367/cpu-smoke-evidence.json.
+- Friend final Docker build/export and exact-image CPU checks remain verified.
+  Conversion62726037 failed with a confirmed mksquashfs OOM (exit137), after
+  successful local-disk extraction. Unlike the earlier file-cache observation,
+  this compressor used ~31GiB anonymous RAM against a32GiB cgroup limit.
+  Replacement62726378 uses explicit8GiB compression buffers and8CPU.
+  GPU62725056 now depends on62726378; visual replay62726049 still follows it.
+- No new official ALE GPU gate or frontier-agent trajectory is claimed. The
+  outstanding suitable NVIDIA Docker host request remains unanswered.
+
+
 ## Scope and source of truth
 
 Complete both the friend's chute controller task and our UAV-to-UAV detector-training
