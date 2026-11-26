@@ -1,6 +1,6 @@
 {
   "scope": "Author smoke bundle; SDK is not part of the submitted task",
-  "sha256": "9bcd72a2905e850184387e1ceab401a2e28e05fbde06d1bb22ebaf81faa7edfa",
+  "sha256": "225ec5ccfeac9598eefcb7dc447a2626c33a2712552d6388610cb28b3c5d4cb7",
   "files": {
     "docker_smoke.py": "dba1dd00d66e265ee134b6f60206e60ff0144b91d73b5c59e327e082732401a5",
     "docker_smoke.sh": "ecc41ef8b398bfe50a5d0632a1a034404a39b3b987f4e0b5c8c917b9525ada65",
@@ -44,7 +44,7 @@
     "tasks/arm/chute_realtime_bimanual_tracking/environment/setup/payload/lab/shift.py": "ccea8347d6e876ef3e8b738fa701859a208b07a8960bc20c0c7a532ac5380a04",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/setup/payload/lab/sim_client.py": "ef5ea07bd895ed846bdb1ea5e6292e73d344152a86c80c5023473920d7ad769a",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/setup/setup.sh": "ba247df9c0961f4b0178f9c43db77e4027885398a6fbc2baa79475f0526c4654",
-    "tasks/arm/chute_realtime_bimanual_tracking/instruction.md": "b85c6104ebd2d8cfcbfae1a595b7c7c9a858f0925c4fb48bf9c81c0c6e3de8e5",
+    "tasks/arm/chute_realtime_bimanual_tracking/instruction.md": "611e29214948412a9c82ff9fef6fc52d21fe0017fbc338bcbba5fa6d147f57b5",
     "tasks/arm/chute_realtime_bimanual_tracking/solution/privileged/ideal_answer.json": "4d997a0227135ca72e4815d77963ae8b3688f0834701d7479c9ab1ee03cd4b56",
     "tasks/arm/chute_realtime_bimanual_tracking/solution/privileged/kin.py": "d641ecc578ef26c4fd07a6ea38502517bd610e69dec5208c7e979b660ad2f434",
     "tasks/arm/chute_realtime_bimanual_tracking/solution/privileged/oracle.py": "a54f5a7c2643ca509bc641834332093b92d9fd0102ca792d4b150b5bc33d0cff",

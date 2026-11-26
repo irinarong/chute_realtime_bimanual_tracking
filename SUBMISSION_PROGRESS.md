@@ -57,7 +57,7 @@ was cancelled. The submitted replacement script is
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
 Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `9bcd72a2905e850184387e1ceab401a2e28e05fbde06d1bb22ebaf81faa7edfa`.
+SHA256: `225ec5ccfeac9598eefcb7dc447a2626c33a2712552d6388610cb28b3c5d4cb7`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
 when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
 and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
@@ -153,3 +153,16 @@ development evidence, not official ALE GPU gates. An alternative NVIDIA Docker
 SSH host has already been requested; do not repeatedly ask the same question.
 Keep the goal active while concrete work continues; no blocked audit threshold
 has been reached in this continuation.
+
+## Latest contract review
+
+The current 20-item shift has two bystanders: the catalogue is exhausted, so the
+scene's spare-item branch contributes none and its two sampled duplicates remain.
+The instruction had incorrectly promised three; it now agrees with the scene,
+fixture and asset notice. Camera flags now explicitly request delayed frames, and
+the prompt explains that all cameras requested by one reply are captured together
+after the total camera cost. No scene, reward or latency behavior was changed.
+
+Pinned build 62723900 is live and reused simulator/OmniGibson layers. Its immutable
+robot ZIP passed revision, size/hash and safe-extraction checks; the asset layer is
+still being finalized. No final-image success is inferred from that partial step.
