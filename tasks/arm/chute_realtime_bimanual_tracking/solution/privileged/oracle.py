@@ -164,7 +164,10 @@ class Oracle:
                 # still close let the part slip out (seen 2026-11-25). A gap at its minimum means nothing was caught.
                 gap = float(tr.get("finger_gap_right", 0.0)); stalled = self.grip < 0 and abs(gap - getattr(self, "_gap", 9.0)) < 0.0015
                 self.stall = getattr(self, "stall", 0) + 1 if stalled else 0; self._gap = gap
-                att = tr.get("attached_right")
+                # In ordinary physical mode there is no attachment to wait for.
+                # Use the existing pressure/gap fallback; it still has to hold
+                # the part through real friction during the subsequent motion.
+                att = tr.get("attached_right") if tr.get("assisted", True) else None
                 # Lift only once the simulator has attached the part to the hand (both fingers on it for 0.3 s): parts lifted
                 # on finger pressure alone were lost or thrown on the way to the tote (anchor run of 2026-11-25).
                 if self.grip < 0 and att: self.log[-1]["grip_gap"] = round(gap, 3); self.log[-1]["attached"] = True; self._go("lift")

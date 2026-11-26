@@ -35,7 +35,7 @@ reject corrupted downloads and unsafe ZIP entries.
 | Job | State at latest check | Work |
 |---|---|---|
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
-| 62723900 | RUNNING | Final pinned Docker rebuild, same VM |
+| 62723900 | RUNNING, simulator/OmniGibson cache reused | Final pinned Docker rebuild, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
 | 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift |
@@ -57,7 +57,7 @@ was cancelled. The submitted replacement script is
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
 Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `bd774a94c269a897cb3a19dab3c7e8e7b572d7bb100bcc804f2dcef90bf984b5`.
+SHA256: `9bcd72a2905e850184387e1ceab401a2e28e05fbde06d1bb22ebaf81faa7edfa`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
 when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
 and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
@@ -66,12 +66,17 @@ CPU smoke is not official ALE validation. SIF GPU smoke does not test ALE UID or
 match-lock behavior. The GPU smoke now defaults to ordinary physical grasping,
 while retaining authorized truth access for the controller. The reset receives no
 token; subsequent truth requests do. It asserts `assisted=False`. This separates
-physics feasibility diagnosis from privileged assisted-grasp performance.
+physics feasibility diagnosis from privileged assisted-grasp performance. The
+optional physical controller now selects its existing finger-pressure/gap fallback
+when truth declares `assisted=False`, rather than waiting for an unavailable
+attachment. This branch still needs the queued physics run; no score is claimed.
 
-The refreshed source-only chute package (64 files, 140,564 bytes) is frozen at
-`195802c17881c1e30dec636e25329ce6728569ce`, SHA256
-`431075a2965f0459c23e6b8418a05722c6e6305b6cc5be69a08b490db668b941`.
-It supersedes the old 61-file package. Its 64 archive entries match the manifest.
+The refreshed source-only chute package is identified by
+`chute-validation/PACKAGE.json`. It supersedes the old 61-file package and the
+intermediate `195802c` archive; the next package includes the physical-grasp
+fallback selection. Verify all archive entries against the manifest when freezing.
+Docker build contexts are unchanged by the CPU accounting and optional controller
+edits; downstream smokes read the updated candidate at their own start.
 
 The process CPU meter was corrected in both private and practice grading. It now
 discovers every sample, includes kernel-retained waited-child/grandchild CPU, reads

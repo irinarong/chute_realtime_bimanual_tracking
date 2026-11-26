@@ -59,8 +59,11 @@ fixture measurement. The generator supports this task's current 20-part configur
 `ideal_answer.json` artifact. The reference token provides privileged state and assisted grasping; motions still run
 in the simulator. Its historical anchor is retained in `review/historical_physical_anchor.json` as history, not
 calibration for the hardened snapshot. `privileged/reference_main.py` contains a small proprioceptive correction to
-satisfy the existing match lock; this must not be presented as visual dependence. Remeasure physical feasibility on
-the current snapshot before claiming the task is ready for acceptance.
+satisfy the existing match lock; this must not be presented as visual dependence. For author diagnosis with physical grasping, the controller uses its existing
+stalled-finger-gap fallback instead of waiting for an attachment that cannot occur.
+The pending GPU smoke selects that mode while retaining truth access, and scores
+actual simulator outcomes. Remeasure physical feasibility on the current snapshot
+before claiming the task is ready for acceptance.
 
 ## Reproduction
 
