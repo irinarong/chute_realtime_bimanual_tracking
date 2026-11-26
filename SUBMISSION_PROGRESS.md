@@ -54,7 +54,7 @@ capabilities; that GPU lifecycle is still untested here.
 |62728301|COMPLETED7m46s/exit0|Noisy-RGB overlay visual:0/20,0/28 probes, no timing violation|
 |62728432|COMPLETED8m02s/exit0|Controlled NGX/no-NGX static rendering|
 |62728570|COMPLETED7m37s/exit0|Clean-RGB replay:0 placed/held/touched,0/50 probes; no timing failure|
-|62728884|PENDING|Record observation/action boundary to diagnose zero contact|
+|62728884|COMPLETED7m42s/exit0|Boundary diagnosis collected; investigation closed|
 
 Pending62728290 and62728300 were replaced/canceled before execution to add NGX.
 No active job was interrupted. Rendering evidence is in
@@ -75,7 +75,7 @@ physical_rollout=0. It is not physical success. Maintainer acceptance is unresol
 Current ProbeLock can reject an image-driven absolute-target policy: archived
 controller had0/100 action changes for constructed carry-phase joint perturbations,
 while depth ablation changed detection/action. Do not remove or trivialize the lock.
-Replay measures raw progress, timing and lock separately; the completed zero-score replay had noisy rendering; clean replay also scored0 with no contacts; trace62728884 is queued. No fresh frontier trajectory exists for either final task.
+Replay measures raw progress, timing and lock separately; the completed zero-score replay had noisy rendering; clean replay also scored0 with no contacts; trace62728884 confirmed commands execute; diagnostic branch is now closed. No fresh frontier trajectory exists for either final task.
 
 Still required: exact final friend image/camera checks and physical feasibility;
 fair lock/timing; real ALE GPU lifecycle, repeated anchors/full_at, and fresh agent
@@ -92,3 +92,5 @@ UAV fixed-reference verifier job62728682 queued: source8c0ae7a, model972cb29f, e
 First CPU-verifier launcher62728667 failed before VM boot because its serial-log directory lacked a Podman mount. Fixed the mount; lock released and replacement62728682 submitted. No image, checkpoint or grading code changed.
 
 Clean visual evidence:chute-validation/ngx-visual-62728570/evidence.json. All20 events ended at end_stop; no contacts/holds, no late replies, slowest.08s. Trace62728884 leaves policy/task unchanged and samples camera packets plus all real action/proprio rows outside solver timing.
+
+User clarified the work should be understandable and focused on requested deliverables. Stop the old-controller diagnostic/optimization branch; preserve evidence and unresolved qualifications. Continue final Docker/image checks, UAV fixed-reference grading and submission materials. Do not interpret synthetic reference1 as physical success or claim official ALE acceptance without its GPU lifecycle.
