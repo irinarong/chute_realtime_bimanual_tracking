@@ -14,12 +14,12 @@ continues to allow controller development, with optional model training.
   the temporary visualization worktree; new changes belong here. The original visualization checkout is a historical
   copy, not the current head.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
-  current task base `0f6147d`. The other chat is idle; no message was sent to it.
+  current task source `7fae778` (training artifact validation). The other chat is idle; no message was sent to it.
 
 ## Verified progress
 
 Chute: isolated DCC snapshot imported, direct-answer fixture implemented with protected authorization and independent
-geometric/scoring checks, prior physical controller preserved, 15 host tests passed. Empty submission gives zero;
+geometric/scoring checks, prior physical controller preserved, 16 host tests passed. Empty submission gives zero;
 two actual host solve/verify runs give full synthetic reference reward. Pinned ALE lint, domain lint, and canonical
 shared-grader byte identity passed. No claim of physical task success is inferred from the synthetic reference.
 
@@ -36,8 +36,9 @@ were inspected again; no obvious annotation displacement was found in the sample
 | 62721924 | Build original chute Dockerfile, retain chown/runuser checks, export image | `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/` |
 | 62722412 | Exact-image Docker CPU smoke | after successful 62721924 |
 | 62722552 | Convert the saved image to Apptainer for DCC GPU execution | after successful 62721924 |
-| 62722564 | Test cameras and one physical privileged-controller shift in that image | after successful 62722552; not formal ALE UID/lifecycle validation |
-| 62722505 | UAV stronger reference experiment, 24,000 steps and public validation at 6k/12k/24k | `/work/yr111/uav-to-uav-benchmark-20261125/runs/reference-v2-62722505/` |
+| 62723043 | Test cameras and one physical privileged-controller shift in that image | after successful 62722552; not formal ALE UID/lifecycle validation |
+| 62722844 | COMPLETED: UAV current-contract Docker CPU smoke, six cases, all 2,475 hidden frames | `/work/yr111/uav-to-uav-benchmark-20261125/datasets/vm-verify-62722844/` |
+| 62722505 | COMPLETED: UAV 24k training; public AP50 7.08% / 12.03% / 11.91% at 6k/12k/24k | `/work/yr111/uav-to-uav-benchmark-20261125/runs/reference-v2-62722505/` |
 
 UAV experiment sources:
 `/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/uav-reference-v2/`.
@@ -45,9 +46,22 @@ They are author experiments and have not replaced the task reference. Changes: f
 lower backbone learning rate, sequence-balanced sampling, multiscale crops, photometric augmentation. Only training
 frames are used for fitting; public validation selects candidates. Do not inspect hidden evaluation results to tune it.
 
+UAV now validates a nonempty tensor state dictionary, a nonempty config object and finite, increasing step/loss
+records in the deprivileged worker, before importing submitted Python. Public practice uses identical checks.
+All 18 host tests and pinned ALE lint passed. Domain lint still correctly fails on the unmeasured anchor/full_at.
+Format checks are not proof of training; archived agent trajectories and reproduction remain required.
+The experiment export helper keeps the original 24k schedule when selecting a 6k/12k snapshot, and exports an
+exact log prefix plus original full log and artifact hashes.
+
 Re-poll live jobs before any restart. The chute dependency installation completed with exit zero; Docker was still
 compressing/committing the large layer, with containerd actively using CPU. That is not a hung or failed build.
 Buildx installation in this guest was started separately to support the pinned engine's future image preparation.
+
+The first H200 rendering smoke job 62722564 was cancelled while queued and replaced with 62723043 on
+RTX 5000 Ada; Isaac camera testing needs an RTX-capable GPU. Only this task's queued validation was changed.
+UAV tiled-inference experiment 62723029 evaluates 512/768-pixel crops of each current RGB frame on public val.
+The GPU diagnostic job 62723003 was replaced by a short CPU diagnostic inside our existing 62721924 allocation.
+Native reference results remain author development results, not autonomous agent training or ALE validation.
 
 ## Remaining acceptance evidence
 

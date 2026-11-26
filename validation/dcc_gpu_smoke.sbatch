@@ -1,8 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=chute-image-gpu
-#SBATCH --account=cpslab_h200_s
-#SBATCH --partition=scavenger-h200
-#SBATCH --gres=gpu:h200:1
+#SBATCH --account=cpslab
+#SBATCH --partition=gpu-common
+#SBATCH --gres=gpu:5000_ada:1
+#SBATCH --nodelist=dcc-core-gpu-ferc-s-aa32-9
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=01:00:00
