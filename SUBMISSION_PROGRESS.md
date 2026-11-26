@@ -34,15 +34,17 @@ reject corrupted downloads and unsafe ZIP entries.
 
 | Job | State at latest check | Work |
 |---|---|---|
-| 62721924 | RUNNING, original image built; saving archive | Original Docker build and image export |
-| 62723900 | PENDING afterok 62721924 | Final pinned Docker rebuild, same VM |
+| 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
+| 62723900 | RUNNING | Final pinned Docker rebuild, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
 | 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
-Never boot it concurrently. The original build's large layer commits can be quiet
+Never boot it concurrently. The original image archive was saved successfully, SHA256
+`17bb1312780c222e36a05685e8b44f17a53500b3e1185fb11257545e731b6ad3`.
+This is the original image, not the final pinned rebuild. Large layer commits can be quiet
 for minutes while actively compressing; silence is not a hang.
 
 Job 62723330 was replaced while pending by 62723900. Buildx 0.30.1 had been installed
