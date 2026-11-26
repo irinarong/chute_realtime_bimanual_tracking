@@ -100,8 +100,13 @@ class Oracle:
             self.event = tr["event"]; self._go("wait"); self.grip = 1.0; self.catch_err = None; self.stall = 0; self._gap = 9.0; self.reopen_until = 0
         if self.state in ("init",): self._go("wait")
         want = None
-        if self.state == "wait" and tr["phase"] not in ("staged", "live"):
-            want = low + along_axis * self.s_catch + left * getattr(self, "last_lane", 0.0) + n * (self.clear + 0.03)
+        # "rest": this part has been dealt with (set down in the tote, or closed on nothing at the end). Its event runs on for
+        # a moment (the part has to come to rest in the tote), and a hand that went back to "wait" took the part in the tote
+        # for one coming down the track, chased it, and was still away when the next part arrived (found by the conveyor
+        # session, 2026-11-25). So it waits above the lane, open, until the next event starts.
+        if (self.state == "wait" and tr["phase"] not in ("staged", "live")) or self.state == "rest":
+            if self.state == "rest": self.grip = 1.0
+            want = low + along_axis * self.s_catch + left * getattr(self, "last_lane", 0.0) + n * (self.clear + 0.03 + (0.10 if self.state == "rest" else 0.0))
         if self.state in ("wait", "follow") and tr["phase"] in ("staged", "live"):
             # Tracking grasp: wait at s_max; once the part passes, travel down the lane with it (target = the part's own
             # position, led by the servo lag) so that the fingers close on a part that is at rest relative to them.
@@ -168,7 +173,7 @@ class Oracle:
                     # Closed on nothing: open again and keep travelling with the part for another try (parts are slow).
                     self.log[-1]["retries"] = self.log[-1].get("retries", 0) + 1
                     if s_ref > self.s_min + 0.03 and self.log[-1]["retries"] <= 3: self.grip = 1.0; self.reopen_until = self.t_state + 7; self.stall = 0; self._gap = 9.0
-                    else: self.log[-1]["grip_gap"] = round(gap, 3); self._go("lift")
+                    else: self.log[-1]["grip_gap"] = round(gap, 3); self._go("lift" if gap > 0.0295 else "rest")
                 if s_ref <= self.s_min + 1e-6 and self.grip > 0 and not self.log_has_event(): self.log.append({"event": self.event, "item": tr["item"], "close_s": round(s, 3), "v": round(v, 3), "width": round(width, 3), "last_chance": True})
                 if s_ref <= self.s_min + 1e-6 and self.grip > 0 and mode != "skip": self.grip = -1.0; self.t_close = self.t_state
         elif self.state == "lift":
@@ -181,14 +186,14 @@ class Oracle:
             if (near and self.t_state > 8) or self.t_state > 70: self.grip = 1.0; self._go("drop")
         elif self.state == "drop":
             tote = np.array(tr["tote"]); want = tote + np.array([0, 0, 0.36]); Rg = self._yaw_R(tr)
-            if self.t_state > 12: self._go("wait")
+            if self.t_state > 12: self._go("rest")
         if want is not None:
             slow = self.state in ("lift", "carry")                       # B. gentle with a part in the fingers
             tp, _ = self._measured(tr); far = float(np.linalg.norm(np.asarray(want) - tp))
             # The local servo is the proven controller. When the hand is far away (it got stuck after some events),
             # first return in joint space to the posture in which the waiting pose was last reached, then servo.
             q_ready = getattr(self, "q_ready", None)
-            if far > 0.25 and q_ready is not None and self.state == "wait":
+            if far > 0.25 and q_ready is not None and self.state in ("wait", "rest"):
                 self.target_q = q_now + np.clip(q_ready - q_now, -MAX_STEP, MAX_STEP); err = far
             else:
                 self.target_q, err = self._servo(tr, q_now, want, Rg, gain=0.35 if slow else 0.6)

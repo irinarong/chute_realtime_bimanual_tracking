@@ -8,7 +8,7 @@
 - Time: each camera frame asked for advances the cell three more 30 Hz steps (a fixed price). The controller's own
   time must stay within the simulated time elapsed plus 60 s, or the shift ends with what it had earned: a pass/fail
   real-time threshold in the manner of `dual_arm_parcel_sorting_on_conveyor`, never a scored time.
-- A part that stands still on the track for 1 s unheld is lost (jam), so a controller cannot stop a part and pick it
+- A part that stands still on the chute for 1 s unheld is lost (jam), so a controller cannot stop a part and pick it
   up at rest: it has to be taken while it moves.
 - Action: 26 numbers (23 robot command values, 3 camera flags). The match lock perturbs the 61 proprioceptive values.
 - The reference (`solution/`) is privileged: `verify.py` attaches ground truth to the observation only when the
@@ -16,3 +16,8 @@
 - `review/test_plumbing.py`: CPU tests of the wire, the packing of frames, the truth gate and the reply parser.
 - Physics is PhysX on the CPU (`gm.USE_GPU_DYNAMICS = False`); the GPU renders the cameras. `anchor.json` records the
   measured spread of the reference.
+- Camera frames: only the steps that lead to a requested frame are rendered (the action's own step and the three steps
+  each frame costs); physics is stepped without rendering otherwise. Depth frames match those of OmniGibson's
+  `Environment.step()` path (which renders every step); colour frames are slightly darker, by 3 to 6 of 255 on average.
+- Hidden set: `hidden/shift_selection.json` (rule, the 12 candidates' scores, the 6 kept, the second run).
+  `review/select_shifts.py` states the rule and reproduces `hidden/shifts.json` and `anchor.json` from two grading runs.

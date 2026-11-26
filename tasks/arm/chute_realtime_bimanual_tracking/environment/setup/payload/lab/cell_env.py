@@ -255,14 +255,14 @@ class Cell:
         if self.event_t - ev.release_step >= ev.limit_steps: return self._end_event("lost", "time_limit")
 
     # ---------------------------------------------------------------------- step
-    def _advance(self, row):
+    def _advance(self, row, render=False):
         """One 30 Hz control step. Fast path (default): apply the action and step physics without rendering or reading any
-        sensor: Environment.step() renders and reads back every camera on every step, which nobody asked for. Frames are
-        rendered in observe(), only when a camera is requested. CELL_FAST=0 restores Environment.step()."""
+        sensor: Environment.step() renders and reads back every camera on every step, which nobody asked for. Only the
+        steps that lead to a requested frame are rendered (see step()). CELL_FAST=0 restores Environment.step()."""
         a = self.th.as_tensor(row, dtype=self.th.float32)
         if FAST:
             self.robot.apply_action(a)
-            with self.og.sim.render_on_step(False): self.og.sim.step()
+            with self.og.sim.render_on_step(bool(render)): self.og.sim.step()
         else:
             self.env.step(a.reshape(1, -1))
         self.step_id += 1; self._tick()
@@ -271,13 +271,16 @@ class Cell:
         """One action row, then the fixed price of the frames asked for. Returns the observation."""
         if not self.done:
             row = self.hold if row is None else np.asarray(row, float)
-            self.last_row = row.copy(); self._advance(row)
             frames = [c for c in cameras if c in self.sensors]
+            # Steps that lead to a requested frame are rendered, every one of them (the action's own step and the three
+            # steps each frame costs), as Environment.step() renders every step: a frame read after unrendered steps and
+            # a bare render() showed the scene of the PREVIOUS request (found 2026-11-25 by comparing with the slow path).
+            self.last_row = row.copy(); self._advance(row, render=bool(frames))
             if frames:
                 hold = row.copy(); hold[self.R.ACTION_SLICES["base"]] = 0.0
                 for _ in range(FRAME_COST_STEPS * len(frames)):
                     if self.done: break
-                    self._advance(hold)
+                    self._advance(hold, render=True)
                 self.frames_charged += len(frames)
         return self.observe(cameras)
 
@@ -290,8 +293,8 @@ class Cell:
             return out
         if FAST:
             p = self.robot.get_proprioception()[0]
-            if cameras:                      # the frames asked for: render now (twice: a pose change needs two passes to show)
-                self.og.sim.render(); self.og.sim.render()
+            if cameras and self.step_id == 0:          # the first observation, before any step: nothing has been rendered yet
+                for _ in range(4): self.og.sim.render()
         else:
             obs, _ = self.env.get_obs(); obs = obs[0] if isinstance(obs, (list, tuple)) else obs
             p = flatten_obs_dict(obs)[f"{self.robot.name}::proprio"]

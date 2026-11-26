@@ -1,13 +1,13 @@
-# Take moving parts off an inclined track with a mobile dual-arm robot that sees only through its cameras
+# Take moving parts off an inclined chute with a mobile dual-arm robot that sees only through its cameras
 
-You are the line worker at the unloading station of a small packing cell, and you do the job through a robot. Parts come down a gently inclined transfer track one at a
+You are the line worker at the unloading station of a small packing cell, and you do the job through a robot. Parts come down a gently inclined transfer chute one at a
 time: each is released near the top and rolls or slides toward the low end. Your program must make the robot take each
-part off the track **while it moves** and set it down in the tote beside the track.
+part off the chute **while it moves** and set it down in the tote beside the chute.
 
 **This is a highly dynamic task.** Nothing waits for the robot: every part is in motion from the moment it is released, it is gone within seconds, and it must be taken while it moves. A part that is stopped and picked up at rest counts as lost. Seeing where a part is, predicting where it will be and having the hand there in time is the whole job.
 
 A Galaxea R1Pro mobile dual-arm robot works the cell: a holonomic base, a four-joint torso, two seven-joint arms with
-parallel grippers (opening 0.127 m), a head camera and one camera in each wrist. The track's low end and the tote are
+parallel grippers (opening 0.127 m), a head camera and one camera in each wrist. The chute's low end and the tote are
 within reach of the right arm from where the robot starts.
 
 ## What you produce (in `/home/user/submission/`)
@@ -47,16 +47,16 @@ others, sizes and masses in `/opt/cell_items/items.json`), each with its real sh
 no two sit in a gripper alike. Some are wider than the gripper opens in the pose they come down in. Three more items
 lie on a side table and are not parts: leave them where they are.
 
-Each shift has its own constants, fixed for the whole shift and hidden: the track's slope, its surface friction, the
+Each shift has its own constants, fixed for the whole shift and hidden: the chute's slope, its surface friction, the
 speed parts are released at and how heavy this shift's parts are. A program that works them out from the first parts
 can do better on the later ones.
 
 A part's event ends when one of these happens:
 
 - it rests in the tote with no finger on it;
-- it reaches the low end of the track, where the end stop is;
+- it reaches the low end of the chute, where the end stop is;
 - it touches the floor;
-- **it stands still on the track for 1 s without being held** (a jam: blocking a part and picking it up at leisure is
+- **it stands still on the chute for 1 s without being held** (a jam: blocking a part and picking it up at leisure is
   not a way to take it);
 - 25 s have passed since its release.
 
@@ -69,7 +69,7 @@ Judged on the cell's own physical state, per part:
 | outcome | credit |
 |---|---|
 | resting in the tote, no finger on it | 1.0 |
-| held for 1 s (both fingers of one gripper on it, clear of the track and the tote, not slipping), but not in the tote at the end | 0.5 |
+| held for 1 s (both fingers of one gripper on it, clear of the chute and the tote, not slipping), but not in the tote at the end | 0.5 |
 | anything else | 0 |
 | a bystander item moved more than 5 cm | -0.5 each, once |
 
@@ -79,7 +79,7 @@ first six and last six parts.
 
 ## What you are given
 
-- `~/lab/`: the cell itself, as source (`cell_env.py` and the files it uses), with the same robot, track, tote, items,
+- `~/lab/`: the cell itself, as source (`cell_env.py` and the files it uses), with the same robot, chute, tote, items,
   cameras, physics and prices as the graded shifts. `python3 ~/lab/practice.py --seed N` runs your controller on a
   practice shift exactly as the grader will and prints each part's outcome. Practice seeds are yours to choose; the
   graded shifts use seeds that are not in the image, with their own constants. `kin.py` is the robot's forward and
