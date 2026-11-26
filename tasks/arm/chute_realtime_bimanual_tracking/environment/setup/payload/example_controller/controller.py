@@ -25,7 +25,7 @@ def act(t, obs):
     p = obs["proprio"]
     if HOLD is None:      # base 3, torso 4, left arm 7, left gripper 1, right arm 7, right gripper 1
         HOLD = [0.0, 0.0, 0.0] + p[53:57] + p[3:10] + [1.0] + p[28:35] + [1.0]
-    return {"action": HOLD + [0.0, 0.0, 0.0]}      # last three: 1.0 to get the head, left-wrist, right-wrist frame next step (0.1 s each)
+    return {"action": HOLD + [0.0, 0.0, 0.0]}      # last three: 1.0 asks for the head, left-wrist, right-wrist frame (0.1 s each; it arrives a few steps later)
 
 
 def main():

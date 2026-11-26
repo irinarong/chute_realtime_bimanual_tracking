@@ -21,3 +21,18 @@
   `Environment.step()` path (which renders every step); colour frames are slightly darker, by 3 to 6 of 255 on average.
 - Hidden set: `hidden/shift_selection.json` (rule, the 12 candidates' scores, the 6 kept, the second run).
   `review/select_shifts.py` states the rule and reproduces `hidden/shifts.json` and `anchor.json` from two grading runs.
+- Each reply has a deadline of 0.1 s (`reply_deadline_s`); three late replies are forgiven in a shift, the fourth ends it
+  with what it had earned (the first reply has a 5 s grace). Together with the total budget this is a pass/fail real-time
+  threshold in the manner of the race-car tasks' per-tick budget; the verdict reports `late_replies` and `slowest_reply_s`.
+- Camera latency: a frame is delivered 3 to 6 steps after it was taken (a hidden constant of the shift), stamped with
+  `t_capture`, as in `fault_adaptive_spacecraft_docking` and `dual_arm_parcel_sorting_on_conveyor`.
+- Graded shifts are drawn with a secret salt (`hidden/shifts.json`), so a seed does not reproduce one in the lab.
+- Isolation at grading: the simulator's temporary files, log and application data live in a 0700 folder of the grader's
+  account (`verify.py`); the controller runs deprivileged through the kit. Tripwire: a shift with parts taken and no
+  frame requested (and no reference token) is void (`blind`, score 0). The instruction lists what a controller may use
+  and declares the rest disqualifying. Not checked on the author's cluster, which has no account separation.
+- The line feeds on a schedule of its own (`cell_env.py`: `release_at`, `staged_at`, a hidden random stream): a part every
+  7 to 11 s, whatever the controller does. An event is over at the latest when the next part goes on the chute.
+- Grasping is physical for a controller (finger friction only). The reference's token gives it, besides ground truth and
+  what is coming, OmniGibson's assisted grasping (the simulator attaches a part held by both fingers for 0.3 s). The
+  anchor is therefore the score of a controller with these three privileges; say so when comparing.

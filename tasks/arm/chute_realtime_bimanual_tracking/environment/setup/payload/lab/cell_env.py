@@ -17,6 +17,8 @@ import shift as SH
 
 HZ = 30
 FRAME_COST_STEPS = 3
+FEED_INTERVAL_S = (7.0, 11.0)   # seconds between two releases: the line feeds at random intervals of its own
+LATENCY_STEPS = (3, 6)          # 0.10 to 0.20 s between a frame being taken and the controller receiving it
 FAST = os.environ.get("CELL_FAST", "1") != "0"
 ITEMS_JSON = Path(os.environ.get("CELL_ITEMS", "/opt/cell_items/items.json"))
 ROOM_USD = os.environ.get("CELL_ROOM", "/opt/isaac_assets/Isaac/Environments/Simple_Room/simple_room.usd")
@@ -45,7 +47,7 @@ def rot(q):
 
 
 class Cell:
-    def __init__(self, station: str, seed: int, n_parts: int = 20, cam_res: int = 320, overrides: dict | None = None, room: bool = True):
+    def __init__(self, station: str, seed: int, n_parts: int = 20, cam_res: int = 320, overrides: dict | None = None, room: bool = True, salt: int = 0, assisted: bool = False):
         import sys
         import omnigibson as og, torch as th
         from omegaconf import OmegaConf
@@ -64,10 +66,23 @@ class Cell:
             import fcntl
             self._start_lock = open(os.environ["CELL_START_LOCK"], "a"); fcntl.flock(self._start_lock, fcntl.LOCK_EX)
         og.launch()                                   # Kit first: the prop files below are written with Kit's own pxr
-        self.plan = SH.make_shift("A", seed, n_parts, station=station)
+        self.plan = SH.make_shift("A", seed, n_parts, station=station, salt=salt)
         c = self.plan.constants
         c.update(overrides or {})
-        g = np.random.default_rng([21, seed])
+        g = np.random.default_rng([21, seed] + ([int(salt)] if salt else []))
+        # Camera latency: a frame reaches the controller this many 30 Hz steps after it was taken. Fixed for the shift, hidden,
+        # drawn from a stream of its own (the shift's parts and layout are what they were before this constant existed).
+        self.latency = int(np.random.default_rng([31, seed] + ([int(salt)] if salt else [])).integers(LATENCY_STEPS[0], LATENCY_STEPS[1] + 1))
+        self.latency = int((overrides or {}).get("camera_latency_steps", self.latency)); self.pending = []
+        # The line's schedule, fixed before the shift starts and independent of anything the robot does: part k is let go
+        # at release_at[k], at random intervals; it is put on the chute staged_at[k], 1 to 3 s earlier. Its event is over at
+        # the latest when the next part is put on. Drawn from a stream of its own, hidden.
+        gs = np.random.default_rng([41, seed] + ([int(salt)] if salt else [])); self.release_at, self.staged_at = [], []
+        t_rel = int(gs.uniform(4.0, 6.0) * HZ)
+        for k in range(n_parts):
+            self.release_at.append(t_rel); self.staged_at.append(t_rel - int(gs.uniform(1.0, 3.0) * HZ))
+            t_rel += int(gs.uniform(FEED_INTERVAL_S[0], FEED_INTERVAL_S[1]) * HZ)
+        self.shift_end = self.release_at[-1] + int(FEED_INTERVAL_S[1] * HZ)
         # Installed layout: nominal plus this shift's hidden offsets.
         self.low_end = LOW_END + np.array([g.uniform(-0.05, 0.05), g.uniform(-0.08, 0.08), g.uniform(-0.03, 0.03)])
         self.yaw = float(g.uniform(-0.15, 0.15))
@@ -83,6 +98,9 @@ class Cell:
         robot_cfg = _to_plain_dict(OmegaConf.load(DEFAULT_ROBOT_CONFIG_PATH)); robot_cfg.pop("eval", None)
         robot_cfg["model"] = robot_cfg["model"].lower()
         robot_cfg.update(position=[0.0, 0.0, 0.0], orientation=[0.0, 0.0, 0.0, 1.0], obs_modalities=["proprio", "rgb", "depth_linear"])
+        # Grasping is physical: a part stays in the hand by finger friction alone. OmniGibson's "assisted" mode (the simulator
+        # attaches the part to the hand once both fingers have touched it for 0.3 s) is a privilege of the reference only.
+        robot_cfg["grasping_mode"] = "assisted" if assisted else "physical"; self.assisted = bool(assisted)
         robot_cfg["sensor_config"] = {"VisionSensor": {"sensor_kwargs": {"image_height": cam_res, "image_width": cam_res}}}
         objs = []
         fwd = np.array([math.cos(self.yaw), math.sin(self.yaw), 0.0]); left = np.array([-math.sin(self.yaw), math.cos(self.yaw), 0.0])
@@ -197,6 +215,11 @@ class Cell:
         self._set(part, self.spawn, self.spawn_q); part.keep_still()
         self.rec = {"index": self.event_i, "item": self.item_names[self.event_i], "kind": ev.kind, "start_step": self.step_id}
 
+    def _deadline(self):
+        """The step at which the current part's event is over whatever its state: one step before the next part goes on."""
+        k = self.event_i
+        return (self.staged_at[k + 1] - 1) if k + 1 < len(self.staged_at) else self.shift_end
+
     def _end_event(self, outcome, reason):
         part = self.parts[self.event_i]; ev = self.plan.events[self.event_i]
         credit = CREDIT["placed"] if outcome == "placed" else (CREDIT["held"] if self.was_held else 0.0)
@@ -221,13 +244,15 @@ class Cell:
         if self.phase == "done": return
         if self.phase == "gap":
             self.gap += 1
-            opening = [float(self.last_row[self.R.ACTION_SLICES[f"gripper_{s}"]][0]) for s in ("left", "right")]
-            if (self.gap >= 2 * HZ and min(opening) > 0.5) or self.gap >= 10 * HZ: self._next_event()
+            # The line sets its own pace: part k goes on the chute at staged_at[k], whatever the robot is doing and however
+            # the last part ended. Nothing a controller does moves that moment.
+            if self.event_i + 1 >= len(self.plan.events): self.done, self.phase = True, "done"
+            elif self.step_id >= self.staged_at[self.event_i + 1]: self._next_event()
             return
         ev = self.plan.events[self.event_i]; part = self.parts[self.event_i]
         self.event_t += 1
         if self.phase == "staged":
-            if self.event_t <= ev.release_step:
+            if self.step_id < self.release_at[self.event_i]:
                 self._set(part, self.spawn, self.spawn_q); part.keep_still(); return
             part.set_linear_velocity(th.tensor(self.spawn_vel, dtype=th.float32)); self.phase = "live"
         pos = self._pos(part)
@@ -252,7 +277,7 @@ class Cell:
         if self.still_run >= HZ: return self._end_event("lost", "jam")
         if self.station == "track" and not any(any(f) for f in fing.values()) and float((pos - self.low_end) @ self.up_chute) < 0.5 * max(self.catalog[self.item_names[self.event_i]]["size_m"]) + 0.05 and speed < 0.15 and abs(float((pos - self.low_end) @ self.left)) < 0.3 and on_prop:
             return self._end_event("lost", "end_stop")
-        if self.event_t - ev.release_step >= ev.limit_steps: return self._end_event("lost", "time_limit")
+        if self.step_id >= self._deadline(): return self._end_event("lost", "time_limit")      # the next part is due
 
     # ---------------------------------------------------------------------- step
     def _advance(self, row, render=False):
@@ -282,7 +307,27 @@ class Cell:
                     if self.done: break
                     self._advance(hold, render=True)
                 self.frames_charged += len(frames)
-        return self.observe(cameras)
+                taken = self._capture(frames)                      # taken now, delivered self.latency steps from now
+                self.pending.append((self.step_id + self.latency, taken))
+        return self.observe(())
+
+    def _capture(self, cameras, bp=None, Rb=None):
+        """The frames of the named cameras as they are now, each stamped with the step it was taken at."""
+        if bp is None:
+            bp, bq = self.robot.get_position_orientation(); bp, Rb = bp.cpu().numpy().astype(float), rot(bq.cpu().numpy().astype(float))
+        out = {}
+        for cam in cameras:
+            s = self.sensors.get(cam)
+            if s is None: continue
+            o = s.get_obs()[0]; f = lambda x: x.detach().cpu().numpy() if hasattr(x, "detach") else np.asarray(x)
+            cp, cq = s.get_position_orientation(); cp = cp.cpu().numpy().astype(float); Rc = rot(cq.cpu().numpy().astype(float))
+            # From the camera's own USD attributes (as RAX does): VisionSensor.intrinsic_matrix needs a finished render
+            # and asserted "degenerate" under load.
+            w, hgt = int(s.image_width), int(s.image_height); fpx = float(s.focal_length) * w / float(s.horizontal_aperture)
+            K = np.array([[fpx, 0.0, w / 2.0], [0.0, fpx, hgt / 2.0], [0.0, 0.0, 1.0]])
+            out[cam] = {"rgb": np.ascontiguousarray(f(o["rgb"])[..., :3]).astype(np.uint8), "depth": f(o["depth_linear"]).astype(np.float32),
+                        "K": np.asarray(K, float), "pos_base": Rb.T @ (cp - bp), "rot_base": Rb.T @ Rc, "t_capture": int(self.step_id)}
+        return out
 
     def observe(self, cameras=()):
         def flatten_obs_dict(obs, parent=""):
@@ -301,17 +346,9 @@ class Cell:
         out = {"t": self.step_id, "done": self.done, "proprio": np.asarray(p.detach().cpu().numpy() if hasattr(p, "detach") else p, float).reshape(-1)}
         bp, bq = self.robot.get_position_orientation(); bp, Rb = bp.cpu().numpy().astype(float), rot(bq.cpu().numpy().astype(float))
         out["odometry"] = [float(bp[0]), float(bp[1]), float(math.atan2(Rb[1, 0], Rb[0, 0]))]
-        for cam in cameras:
-            s = self.sensors.get(cam)
-            if s is None: continue
-            o = s.get_obs()[0]; f = lambda x: x.detach().cpu().numpy() if hasattr(x, "detach") else np.asarray(x)
-            cp, cq = s.get_position_orientation(); cp = cp.cpu().numpy().astype(float); Rc = rot(cq.cpu().numpy().astype(float))
-            # From the camera's own USD attributes (as RAX does): VisionSensor.intrinsic_matrix needs a finished render
-            # and asserted "degenerate" under load.
-            w, hgt = int(s.image_width), int(s.image_height); fpx = float(s.focal_length) * w / float(s.horizontal_aperture)
-            K = np.array([[fpx, 0.0, w / 2.0], [0.0, fpx, hgt / 2.0], [0.0, 0.0, 1.0]])
-            out[cam] = {"rgb": np.ascontiguousarray(f(o["rgb"])[..., :3]).astype(np.uint8), "depth": f(o["depth_linear"]).astype(np.float32),
-                        "K": np.asarray(K, float), "pos_base": Rb.T @ (cp - bp), "rot_base": Rb.T @ Rc}
+        if cameras: out.update(self._capture(cameras, bp, Rb))          # asked for directly (the first observation): no latency
+        due = [f for f in self.pending if f[0] <= self.step_id]; self.pending = [f for f in self.pending if f[0] > self.step_id]
+        for _, taken in due: out.update(taken)                         # a later frame of the same camera replaces an earlier one
         return out
 
     # --------------------------------------------------------------------- truth
@@ -326,6 +363,7 @@ class Cell:
             try: t[f"finger_low_{s}"] = float(min(float(l.aabb[0][2]) for l in self.fingers[s]))
             except Exception: t[f"finger_low_{s}"] = None
             t[f"finger_gap_{s}"] = float(np.linalg.norm(self._pos(self.fingers[s][0]) - self._pos(self.fingers[s][1])))
+        t["assisted"] = self.assisted
         t["proprio"] = [float(v) for v in np.asarray(self.observe(())["proprio"], float)]      # the true readings (a grader may hand the controller shifted ones)
         try:   # assisted grasp: the simulator attaches a part to the hand once both fingers have held it for 0.3 s
             held = self.robot._ag_obj_in_hand.get("right"); t["attached_right"] = bool(held is not None and self.phase == "live" and held is self.parts[self.event_i])
@@ -333,14 +371,28 @@ class Cell:
         t["finger_contact_right"] = [bool(self._touch([l], [self.parts[self.event_i]])) for l in self.fingers["right"]] if self.phase == "live" else [False, False]
         try: t["is_grasping_right"] = str(self.robot.is_grasping(arm="right", candidate_obj=self.parts[self.event_i] if self.phase == "live" else None))
         except Exception as exc: t["is_grasping_right"] = "err:" + type(exc).__name__
-        for s in ("left", "right"):
-            pass
+        # What is coming, seconds ahead: the reference is told the future a camera cannot show. None of this ever reaches
+        # an ordinary controller.
+        try:
+            hl = self.robot._ag_obj_in_hand.get("left"); t["attached_left"] = bool(hl is not None and self.phase == "live" and hl is self.parts[self.event_i])
+        except Exception: t["attached_left"] = None
+        t["finger_contact_left"] = [bool(self._touch([l], [self.parts[self.event_i]])) for l in self.fingers["left"]] if self.phase == "live" else [False, False]
+        t["accel_slide"] = float(9.81 * (math.sin(self.slope) - self.friction * math.cos(self.slope)))      # along the chute, a part that slides
+        t["accel_roll"] = float(9.81 * math.sin(self.slope) * 2.0 / 3.0)                                    # a can rolling without slipping
+        t["chute"] = dict(PR.CHUTE); t["lane"] = float(np.clip(self.plan.constants.get("belt_lane", 0.0), -0.15, 0.15)); t["hz"] = HZ
+        nxt = self.event_i + (0 if self.phase in ("staged", "live") else 1)
+        t["upcoming"] = [{"event": k, "item": self.item_names[k], "size": self.catalog[self.item_names[k]]["size_m"], "mass": float(self.catalog[self.item_names[k]]["mass_kg"]),
+                          "staged_in": int(self.staged_at[k] - self.step_id), "release_in": int(self.release_at[k] - self.step_id), "release_speed": float(self.plan.events[k].target.get("speed", 0.2)),
+                          "rolls": self.item_names[k] in ("005_tomato_soup_can", "007_tuna_fish_can")} for k in range(max(nxt, 0), min(nxt + 4, len(self.plan.events)))]
+        if self.phase == "gap" and self.event_i + 1 < len(self.staged_at): t["staged_in"] = int(max(0, self.staged_at[self.event_i + 1] - self.step_id))
         t["friction"] = self.friction; t["fwd"] = self.fwd.tolist(); t["left"] = self.left.tolist(); t["up_chute"] = self.up_chute.tolist()
         if self.phase in ("staged", "live"):
             part = self.parts[self.event_i]; ev = self.plan.events[self.event_i]
             t.update(item=self.item_names[self.event_i], pos=self._pos(part).tolist(), quat=self._quat(part).tolist(),
                      vel=part.get_linear_velocity().cpu().numpy().astype(float).tolist(), size=self.catalog[self.item_names[self.event_i]]["size_m"], aabb=[[float(x) for x in part.aabb[0]], [float(x) for x in part.aabb[1]]],
-                     release_in=int(ev.release_step - self.event_t), event_t=self.event_t, was_held=self.was_held)
+                     release_in=int(self.release_at[self.event_i] - self.step_id), event_t=self.event_t, was_held=self.was_held,
+                     ang_vel=part.get_angular_velocity().cpu().numpy().astype(float).tolist(), spawn=np.asarray(self.spawn, float).tolist(),
+                     spawn_vel=np.asarray(self.spawn_vel, float).tolist(), limit_in=int(self._deadline() - self.step_id))
         return t
 
     def summary(self):
@@ -352,5 +404,5 @@ class Cell:
                 "frames_charged": self.frames_charged, "score": max(0.0, (sum(credit) - pen) / n), "placed": sum(c >= 1.0 for c in credit),
                 "held_only": sum(c == 0.5 for c in credit), "bystanders_moved": int(sum(self.bystander_hit)),
                 "score_first_third": sum(credit[:third]) / third, "score_last_third": sum(credit[-third:]) / third,
-                "mass_errors": self.mass_errors, "records": self.records,
+                "mass_errors": self.mass_errors, "records": self.records, "camera_latency_steps": self.latency,
                 "constants": {k: v for k, v in self.plan.constants.items() if not isinstance(v, (list, dict))}}

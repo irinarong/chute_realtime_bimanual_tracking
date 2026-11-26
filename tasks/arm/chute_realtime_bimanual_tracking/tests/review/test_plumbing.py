@@ -17,7 +17,7 @@ FAKE = textwrap.dedent('''
         def step(s, a, cams=()): s.t += 1 + 3 * len(cams); s.frames += len(cams); return s.observe(cams)
         def truth(s): return {"phase": "live"}
         def summary(s): return {"score": 0.25, "steps": s.t, "frames_charged": s.frames}
-    S.serve(lambda st, seed, parts: Fake(st, seed, parts))
+    S.serve(lambda st, seed, parts, salt=0, assisted=False: Fake(st, seed, parts))
 ''') % HERE
 
 

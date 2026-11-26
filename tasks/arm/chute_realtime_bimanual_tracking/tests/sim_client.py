@@ -30,8 +30,8 @@ class SimClient(object):
         if not rep.get("ok"): raise SimError(rep.get("error", "request failed"))
         return rep
 
-    def reset(self, station, seed, parts=20, cameras=()):
-        return self.call(timeout=self.ready_timeout, op="reset", station=station, seed=seed, parts=parts, cameras=list(cameras))["obs"]
+    def reset(self, station, seed, parts=20, cameras=(), salt=0, token=""):
+        return self.call(timeout=self.ready_timeout, op="reset", station=station, seed=seed, parts=parts, cameras=list(cameras), salt=int(salt), token=str(token))["obs"]
 
     def step(self, action, cameras=()): return self.call(op="step", action=[float(v) for v in action], cameras=list(cameras))["obs"]
     def truth(self, token): return self.call(op="truth", token=token)["truth"]
