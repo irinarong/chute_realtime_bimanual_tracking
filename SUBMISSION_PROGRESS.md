@@ -57,7 +57,7 @@ was cancelled. The submitted replacement script is
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
 Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `225ec5ccfeac9598eefcb7dc447a2626c33a2712552d6388610cb28b3c5d4cb7`.
+SHA256: `74739d9a339e6142e017e2eeed1296d345ffb5ad5e2e32d3efbcad7e50828824`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
 when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
 and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
@@ -166,3 +166,10 @@ after the total camera cost. No scene, reward or latency behavior was changed.
 Pinned build 62723900 is live and reused simulator/OmniGibson layers. Its immutable
 robot ZIP passed revision, size/hash and safe-extraction checks; the asset layer is
 still being finalized. No final-image success is inferred from that partial step.
+
+The standalone task source package now retains the original MIT licence and
+copyright notice, which previously existed only at repository root and would
+have been omitted by task-folder packaging. The canonical robotics_grader remains
+byte-identical; its Apache-2.0 licence and upstream NOTICE are included separately
+under task/third_party, with attribution in task/NOTICE.md. No image inputs or
+runtime behavior changed.
