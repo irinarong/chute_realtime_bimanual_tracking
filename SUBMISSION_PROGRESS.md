@@ -358,3 +358,21 @@ Friend conversion62726378 is still compressing. Its actual mksquashfs command
 contains -mem8G/-processors8; a later observation found3.5GBRSS and1.4GB output
 with noOOM. This is confirmed progress past the earlier failure behavior, not yet
 a completed SIF or GPU feasibility result.
+
+
+Final UAV image CUDA compatibility is now being checked separately: conversion
+62726871 runs from the completed hash-pinned Docker archive, with local scratch,
+8GiB compression buffers and uncompressed data blocks for author runtime use.
+Dependent GPU62726873 checks allocated CUDA UUID, two forward/backward/optimizer
+steps on public training data, then full1190-frame inference using the immutable
+previously trained reference. It preserves per-worker stderr and records public
+GPU/CPU deltas. This is same-UID Apptainer development evidence, not official ALE,
+new full training or an autonomous agent. Source-only task packages are unchanged.
+See uav-validation/image-gpu-plan.json for identities and scripts.
+
+Friend62726378 is still compressing under its bounded8GiB/8CPU configuration;
+latest measured output exceeded6.2GB with4.6GBRSS and noOOM. Keep its live handle.
+If GPU62725056 later reports startup/camera/truth checks passed while the physical
+shift continues, visual62726049 may be released concurrently by changing its
+dependency to the completed converter62726378, avoiding an unnecessary full-shift
+wait while retaining verified image startup. Do not release it before that evidence.
