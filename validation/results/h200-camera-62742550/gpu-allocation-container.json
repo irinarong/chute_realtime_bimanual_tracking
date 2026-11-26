@@ -1,0 +1,55 @@
+{
+  "device_nodes": [
+    {
+      "path": "/dev/nvidia0",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia1",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia2",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia3",
+      "allowed": true
+    },
+    {
+      "path": "/dev/nvidia4",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia5",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia6",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia7",
+      "allowed": false,
+      "errno": 1
+    }
+  ],
+  "vulkan": [
+    {
+      "index": 0,
+      "uuid": "1c8e9586be0a98cdb0cf18de6803d4c0",
+      "name": "NVIDIA H200",
+      "vendor_id": 4318
+    }
+  ],
+  "cuda_uuid": "1c8e9586be0a98cdb0cf18de6803d4c0",
+  "active_gpu": 0,
+  "single_allocated_gpu_verified": true,
+  "cgroup": "0::/system.slice/slurmstepd.scope/job_62742550/step_batch/user/task_0\n"
+}

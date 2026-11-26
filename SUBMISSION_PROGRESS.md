@@ -1,61 +1,62 @@
-# Two-task status after upstream merge
+# Current submission status
 
-Chute merged source:`960d2c32f247443b5a4fb057e6bb15c2dbfe39e4` (parents502f9a5 and upstreambc8ba0c).
-Archive SHA256:`1e5f3c80d6a70cd9ec3d34a40257f8a7147d9c13af220f555d66ebce0469d378`;80 source files. `PACKAGE.json` and
-`package-integrity.json` are refreshed; earlier packages are archived as pre-merge snapshots.
-Branch:`codex/chute-submission-ready` was successfully pushed to the friend's origin
-on2026-11-26 after write access was granted. Remote branch initially verified at7d9d241.
-`main` remainsbc8ba0c; no remote main merge or benchmark task PR has occurred.
+The user selected the friend's latest main and its physical reference on2026-11-26.
+Base: c657bc8. Current task source:398d93ca93bbd02e2d718f35f8902ee3a014ec5d,
+tree e78e1786bb33c75fe75c8abf9f241f1d36a9f62b (73 files). Only the review notes differ
+from upstream task sources: the actual time allowance is10s, and the image was built
+with Docker inside a DCC KVM guest. Controller, scoring and resources are unchanged.
 
-## Chute
+## Friend's physical task
 
-Adopted the stronger physical reference and its geometry/URDF/modules, updated hidden seeds,
-9–13s feed timing, tote/end-stop correction,0.30m pile allowance and bounded actions.
-Retained pinned Docker/Kit/Warp fixes, canonical shared grader, corrected CPU accounting,
-and the requested direct-answer default. Physical reference is `solve_physical.sh`; its
-staging now excludes a stale synthetic answer and retains unrelated user outputs.
+Default `solution/solve.sh` runs the ground-truth controller with assisted grasping.
+The synthetic-answer path is removed. Anchor0.8583/full_at0.95 is the upstream author's
+six-shift calibration; we have not independently reproduced it through official ALE.
+Both stages request H200,8CPUs,32GiB. The GPU registry accepts this name without a patch.
+The earlier synthetic variant is preserved in commit7e94d71 and local archive branch
+`codex/chute-direct-answer-archive-20261126`; it is no longer the submission candidate.
 
-Merged-version portable tests:21 passed,3 Linux-only skips. Actual entrypoints:untouched0,
-reference1 twice,unauthorized0,wrong0. Fixture regenerated for the new hidden set; anchor
-remeasured at1 in author CPU checks. ALE lint and domain lint pass. Upstream physical
-anchor0.8583 and reported agent raw0.3375 are kept as attributed separate evidence; not
-independently reproduced here or substituted for the synthetic denominator.
+The existing image f2155903 is reused: Dockerfile and every copied build input match
+build source17b6d4f. Author checks never rebuild this unchanged image.
 
-Final corrected Docker build62728274 completed2h15m26s/exit0;imageID:
-sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd.
-Its CPU smoke passes. Conversion62728280 completed24m41s; GPU checks62728568/62728569
-completed7m10s/7m34s,all exit0; detailed results collected. The old-source privileged
-ordinary-grasp shift placed3/20 (raw0.15); archived visual replay placed0/20 and passed3/45
-lock probes. These are historical diagnostics, not results for the new controller.
-These tests used runtime17b6d4f. The merge changes no Dockerfile or copied build input, so
-reuse the image and verify new staged runtime. Do not restart the image build.
+- Current local tests:7 passed,3 Linux-only skips; ALE/domain/GPU-model lint all pass.
+- Current Docker CPU check62742402: completed1m00s/exit0. Untouched and malformed wire
+  score0; normal and reference startup under the real agent UID pass;3 Linux process
+  CPU-accounting cases pass. This does not measure physical reward.
+- Earlier first-shift physical check62738655:16/20 placed,raw0.80,60/60 probes,
+  no late replies. Same physical controller and scoring functions, but RTX5000Ada,
+  the prior source wrapper and a single-UID SIF adapter. It is not current H200/ALE proof.
+- Current H200 physical check62742430 completed9m39s/exit0:16/20 placed,raw0.80,
+  65/65 probes,no late replies. All20 event records and6697 steps match the prior RTX
+  shift; this is one-shift agreement, not complete numerical portability qualification.
+- H200 camera check62742550 completed6m11s/exit0: all3 cameras returned320x320 RGB and
+  depth. Public seed17,empty token,no actions or extra rendering. Head image is coherent;
+  wrist images show close-up robot surfaces, largely occluded at the initial pose.
+  This does not establish dynamic camera coverage or an ordinary agent's performance.
 
-Merged-source author candidate SHA256:
-`e29745750a5a04a4ee56f04e0bc53f7602df82e3332884eebb5491e0b448a305`.
-All80 task files match960d2c3. New exact-image Docker CPU job62738654 completed
-in1m06s/exit0; collected evidence confirms all CPU checks passed. It adds the actual merged physical
-entrypoint startup under the agent UID. GPU job62738655 uses the new physical reference
-through unchanged run_shift, first hidden shift only. It is an explicitly labelled
-same-UID Apptainer author check, not official ALE. It is still running at this update.
+Reviewable evidence: `validation/results/physical-main-cpu-62742402/`,
+`validation/results/physical-main-h200-62742430/`, and `validation/results/h200-camera-62742550/`.
+Author bundle c2955435 contains explicit task provenance and verifies all73 source hashes.
+Source package SHA256:2ff077150eae4b2c8f8151145b0fdd9668849db71797713b345ab763cdfd8b26.
+
+PR1 was merged by irinarong, incorporating the image/accounting fixes. Main then restored
+the physical reference. This branch now follows that choice and carries validation updates in
+https://github.com/irinarong/chute_realtime_bimanual_tracking/pull/2 (draft, not a benchmark PR).
+No benchmark task PR is open. The old synthetic verdicts do not validate the current task.
 
 ## UAV
 
-Source8c0ae7a; both Docker images built/exported. Complete packaged reference training on
-H200 and fixed-checkpoint full hidden CPU Docker inference passed. Public AP50=.3639820;
-hidden AP50=.5451401442 on2475 frames across10 sequences. Normalized reward0 is expected
-with the still-null official anchor. No tuning or anchor update; author training is not
-an autonomous-agent trajectory. See fixed-reference-cpu-62728682/evidence.json.
+Source8c0ae7a. Both images built/exported; all50 clips available. Packaged reference
+trained24000 steps from generic ImageNet initialization onH200 (62727576), selecting12000.
+Public AP50=.3639820. Fixed-model full hidden CPU Docker check62728682 passed with
+AP50=.5451401442 on2475 frames/10sequences. Anchor is still null, so normalized reward0
+is expected. No autonomous-agent training trajectory or official RTX4090/ALE gate exists.
+Do not repeat training or hidden inference without a new cause.
 
-## Remaining work
+## Remaining admission gates
 
-Collect merged checks62738654/62738655 and confirm their outcomes;
-complete official ALE GPU lifecycle, repeated anchors/full_at and new agent trajectories;
-qualify numerical portability and observation-lock fairness. Physical solvability on the
-merged task has new upstream evidence but no independent reproduction yet. Prepare the
-one-line upstream GPU-model registry addition before task CI. No upstream task PR is open.
-A compatible NVIDIA Docker host was already requested; no repeat question needed.
-
-Evidence root:`/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f`.
-`validation/MERGE_REPORT.md` records merge choices. `LIVE_PIPELINE.json` records job state.
-Always recheck VM ownership before booting; new source-only smoke uses an exclusive lock.
-Old-controller diagnostics remain closed; merged-reference verification is a separate task.
+Official GPU Docker/ALE lifecycle; repeated anchors/full_at under declared resources;
+fresh independent agent trajectories (UAV agent must train); numerical portability;
+and the joint-only observation-lock fairness review. Local/SIF/CPU checks do not replace
+these. A compatible GPU Docker host was requested previously and is still unavailable.
+No active goal completion is claimed. Do not restart completed image builds or obsolete
+controller diagnostics. Original /cwork/yr111/rax experiments remain untouched.

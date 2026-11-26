@@ -1,0 +1,57 @@
+{
+  "device_nodes": [
+    {
+      "path": "/dev/nvidia0",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia1",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia2",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia3",
+      "allowed": true
+    },
+    {
+      "path": "/dev/nvidia4",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia5",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia6",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia7",
+      "allowed": false,
+      "errno": 1
+    }
+  ],
+  "allocated_device": "/dev/nvidia3",
+  "uuid": "GPU-1c8e9586-be0a-98cd-b0cf-18de6803d4c0",
+  "slurm_gpu_id": "6",
+  "identity_basis": "single cgroup-permitted device, NVML minor-to-UUID mapping",
+  "name": "NVIDIA H200",
+  "pci_bus_id": "00000000:BA:00.0",
+  "driver_version": "615.71.09",
+  "slurm": {
+    "SLURM_JOB_GPUS": "6",
+    "SLURM_GPUS_ON_NODE": "1",
+    "SLURM_JOB_ID": "62742430"
+  },
+  "cuda_visible_devices": "0",
+  "cgroup": "0::/system.slice/slurmstepd.scope/job_62742430/step_batch/user/task_0\n"
+}

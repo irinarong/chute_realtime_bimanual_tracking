@@ -1,0 +1,52 @@
+{
+  "scope": "Ordinary initial RGB-D observation; public seed17, no controller",
+  "task_source": "398d93ca93bbd02e2d718f35f8902ee3a014ec5d",
+  "task_tree": "e78e1786bb33c75fe75c8abf9f241f1d36a9f62b",
+  "privileged_state": false,
+  "assisted_grasping": false,
+  "hidden_evaluation": false,
+  "official_ale_validate": false,
+  "extra_render_calls": 0,
+  "actions_sent": 0,
+  "task_step": 0,
+  "cameras": {
+    "head": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 46.316347716670954,
+      "rgb_mean": 138.631806640625,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "d3fbce778ca0f025d85e89cc1e797dae620d38944fa408b3ed954e35657762b5"
+    },
+    "left_wrist": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 49.552020367987296,
+      "rgb_mean": 45.80599283854167,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "a5fbdb0072c77a9fbaea51c5b0d7d41bc0aa1ca406ff5635905a92fa86848c38"
+    },
+    "right_wrist": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 50.5421500934556,
+      "rgb_mean": 43.550673828125,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "9afb02434f5db609c5423cc92c62a06f3ee9b3ac52bcfdb9451b2ceb73c1bff8"
+    }
+  },
+  "completed": true,
+  "elapsed_s": 325.4829929070547
+}

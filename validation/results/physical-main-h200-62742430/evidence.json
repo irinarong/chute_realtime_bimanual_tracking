@@ -1,0 +1,50 @@
+{
+  "job": 62742430,
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "scope": "Current solve.sh; first hidden shift through unchanged run_shift",
+  "task_source": "398d93ca93bbd02e2d718f35f8902ee3a014ec5d",
+  "task_tree": "e78e1786bb33c75fe75c8abf9f241f1d36a9f62b",
+  "image_id": "sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd",
+  "sif_sha256": "680741dffceac7953eb5b6d6ab175f8a00a9998f1306ceff519e7c33e4dbf87b",
+  "candidate_sha256": "c2955435a7f61f6d55f142ea1261cb0ebf8a86d49717dd1101b23e2e8dec63ae",
+  "hardware": "NVIDIA H200",
+  "official_ale_validate": false,
+  "uid_isolation_tested": false,
+  "collected_at_utc": "2026-11-26T21:08:18.750440+00:00",
+  "files": {
+    "physical-reference-smoke.json": "3e300de020d7e3f10f8ce66ff4d13e19a7a876117d9bb6739a3986820b802009",
+    "physical_reference_smoke.py": "9991afc1b24c40dcb5f93361f90986112d50fc61bb0cb56309423bba56512596",
+    "controller-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "physical-isaac.log": "86137ef3f3d79a20c2c9da9cb29409680ba18f6924de9ac7aa68068903c2dadf",
+    "hardware.csv": "7d04d7286fe37ff38932e6874767f3f07dded4faaff804c1a921e4902b33386b",
+    "gpu-allocation-host.json": "354cd22be307ea60b8a8cd27a2f69a7a0b7a2b822ad4ef01710cd1f78c4c0e3c",
+    "gpu-allocation-container.json": "73f3a2d37ec289e450a1104df32781a0423e59dcaf7bdd6e6845158dea0df3da",
+    "candidate.sha256": "340d4eec358bcbca1cba72417a7c6f477d5b399874a009054bcec398e7fcca58",
+    "sif-check.txt": "6b2e353d64f6053e11b44c540429863d7b5f700cc418ea50975c5eb2bcec03f9",
+    "slurm.log": "1b7eb9d8a4b5576da95cece97a8b6d782346ddfb7d34fc7eabf989dfc984f1e7"
+  },
+  "elapsed": "00:09:39",
+  "completed_shift": true,
+  "raw_score": 0.8,
+  "placed": 16,
+  "parts": 20,
+  "lock": {
+    "probes_total": 65.0,
+    "probes_passed": 65.0,
+    "match_lock_ok": 1.0
+  },
+  "fell_behind": false,
+  "late_replies": 0,
+  "privileged_state": true,
+  "assisted_grasping": true,
+  "autonomous_agent_run": false,
+  "anchor_remeasured": false,
+  "rtx_comparison": {
+    "same_seed": true,
+    "same_raw_score": true,
+    "same_steps": true,
+    "same_event_records": true,
+    "scope": "One matching hidden shift only; not full numerical portability qualification"
+  }
+}

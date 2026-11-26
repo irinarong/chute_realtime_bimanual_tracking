@@ -1,0 +1,26 @@
+{
+  "job": 62742402,
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "elapsed": "00:01:00",
+  "scope": "Current physical-reference task, exact Docker image; CPU startup and isolation only",
+  "task_source": "398d93ca93bbd02e2d718f35f8902ee3a014ec5d",
+  "task_tree": "e78e1786bb33c75fe75c8abf9f241f1d36a9f62b",
+  "image_id": "sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd",
+  "candidate_sha256": "c2955435a7f61f6d55f142ea1261cb0ebf8a86d49717dd1101b23e2e8dec63ae",
+  "results_sha256": "ef457a77f704f78462e307fe9b31407ea7a14435f32e5f04b6e21dd8819cf896",
+  "summary": {
+    "cpu_smoke_passed": true,
+    "root_to_user_solver": true,
+    "asset_count": 21,
+    "physical_reference_reward_tested": false,
+    "physical_rollout_tested": false,
+    "pinned_ale_result_sdk": true,
+    "oracle_entrypoint_runs_as_user": true,
+    "agent_uid_cpu_accounting_tests_passed": 3,
+    "physical_entrypoint_root_to_user_startup": true,
+    "physical_entrypoint_preserves_other_outputs": true,
+    "official_ale_validate": false
+  },
+  "official_ale_validate": false
+}
