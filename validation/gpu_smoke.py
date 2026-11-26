@@ -68,6 +68,7 @@ try:
     result = sim.summary()
     result.update(
         scope="Built Docker image converted to Apptainer; one truth-driven controller shift",
+        image_overlay=os.environ.get("CHUTE_IMAGE_OVERLAY", ""),
         privileged_state=True, assisted_grasping=assisted,
         official_ale_validate=False, uid_isolation_tested=False, match_lock_tested=False,
         elapsed_s=time.monotonic()-started, rgb_std=float(rgb.std()),

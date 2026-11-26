@@ -1,6 +1,6 @@
 {
   "scope": "Author smoke bundle; SDK is not part of the submitted task",
-  "sha256": "cb604cff5b9bd683039f2d538a798977a2e6a27e1a4307b2827cd38cb1e33eca",
+  "sha256": "3f5843be7799202dd9eeb93592fb933947bd4a05d2f28cc91630d786751947fa",
   "files": {
     "docker_smoke.py": "dba1dd00d66e265ee134b6f60206e60ff0144b91d73b5c59e327e082732401a5",
     "docker_smoke.sh": "ecc41ef8b398bfe50a5d0632a1a034404a39b3b987f4e0b5c8c917b9525ada65",
@@ -22,16 +22,16 @@
     "engine/fastjsonschema/indent.py": "8ee6455bd2d2be60c96cf148526dc63ea74fa89a149eabccf27787379ae4bf35",
     "engine/fastjsonschema/ref_resolver.py": "3d69eefb6319cd61f9732983bdd72f5dfc7788e5bf32be9cfb15cc626f450fb4",
     "engine/fastjsonschema/version.py": "319d9c5b54d1d2767e849977d3b020aba35274fcf52450200d3133cc0dd3fbb7",
-    "gpu_smoke.py": "82efc0206ad3d4342fa665b0c7774612e3cb9cdb2ebb078934dfbe3a6d6801b7",
-    "tasks/arm/chute_realtime_bimanual_tracking/LICENSE": "cdf88167d148be94da4377b5b77be86b6a050d668d5f79d91110f62f91f47cc0",
-    "tasks/arm/chute_realtime_bimanual_tracking/NOTICE.md": "7c5e26e980f645e7c9436a022912a165bcf0709d8414d4fbbca2183679e4f463",
-    "tasks/arm/chute_realtime_bimanual_tracking/environment/Dockerfile": "b2b9a2dadab598c0e182c9a8aa576acf9ad20ebb95f5fa88d4f0835112a047c6",
-    "tasks/arm/chute_realtime_bimanual_tracking/environment/NOTICE.md": "b2a076cfde857fc9367e32a3a04e7270e7ae77aa8a4fd5c63cc4df04fc8c6ad8",
+    "gpu_smoke.py": "5f045c67310df17a0ae9e355618874a14d5912d21cb04d9e8c87ef1bc2f7d948",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/Dockerfile": "9c49df18bbd4563331a15d3b43a7fc54ca9fc1e74dccf67610ce7f66762b63a4",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/NOTICE.md": "695fefe73a7f5edb6b95cc04353fc8c24feefd0959f8f7fccbd3c72c0aaedf09",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/build_items.py": "4fa79c2e54ce492bdc5efc8713d4afd822fb6e8c5f2abffaf189286bdf927766",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/check_sim_assets.py": "ad599b4c345e1d4e603bf9ff714e02457d5675bd1d4c17b746af95d6a18f0ce2",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/fetch_robot_assets.py": "865e8c1fd4316fbb8e97647190860e904641b202cf7d5646723d5bb59516f552",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/mirror_assets.py": "b5219cc61b27e53c69b6a9544ab29f7977e173b11f68f8663e6d91e2f83b243d",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/nvidia-assets.json": "591a2cc037312329da1f441961d54a88de6d384977f8044a4a71b55c5dab0a22",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/omnigibson-isaac61.patch": "982cff6144eabfcb6f379d491162c0ef57008199832cc160813e8eeaddcfce34",
+    "tasks/arm/chute_realtime_bimanual_tracking/environment/omnigibson_6_1_0.kit": "36d0df3b6fdee2c8a83a63a2ee0f6818f8ef4c1c272a0de32cdc5d3be74f0c79",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/requirements-sim.txt": "bf05ea63fb968a624883c473530afe0eacde817ac97d33c52dc8a5e803607d2c",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/requirements.txt": "b62f3172494130cd7d3577b3becb13bdbbdcbeb74d661024a065c1f44af7889e",
     "tasks/arm/chute_realtime_bimanual_tracking/environment/setup/payload/example_controller/controller.py": "3e2afabe5560b9599cc7782da5bc3219ad7d300f90f6f64677cd5da716cd75f8",
@@ -57,6 +57,7 @@
     "tasks/arm/chute_realtime_bimanual_tracking/solution/solve.sh": "61911e60b6e34b62dbf47b9eac37262888b1c38279d7651b0743871ba0b76d68",
     "tasks/arm/chute_realtime_bimanual_tracking/solution/solve_physical.sh": "6f8d312efb298b53751885104e89dca0ab9a5fddc9906138f65a8a860b409ff5",
     "tasks/arm/chute_realtime_bimanual_tracking/task.toml": "0403e2127dbe4550e18500389392e68179445fdad26bdbe0285c6fb648eaac35",
+    "tasks/arm/chute_realtime_bimanual_tracking/tests/NOTICE.md": "b18a858afadbb0fc13710f3bd7c9f42c8f72e3c9983d3383b5f7e04778d6627f",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/README.md": "a5ee405d2e258792cfcdddde73a1e40c6a3d43c4661c09ab56b48acc761e8a56",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/anchor.json": "be90b725a9d3efdce33914d299cb0170fe389f2a8aff189f93969c751d3238a0",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/cell_env.py": "04e8218315b25456f43cad997c46ab0fcbe4a53d994764d65d15226babb32d50",
@@ -66,6 +67,9 @@
     "tasks/arm/chute_realtime_bimanual_tracking/tests/hidden/shift_selection.json": "691e75605790c9f11f92be65d3c348a7fe257098f8e34d1035800a9ea7d9ff17",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/hidden/shifts.json": "c544b41f0d95aba91be191256d008df3f323722dde9956b379f8b21b1f298efe",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/ideal_answer.py": "d17f50e88030eafa12484b664eb1b3d8b25d08ea2cac70f05e161a57f0052591",
+    "tasks/arm/chute_realtime_bimanual_tracking/tests/licenses/robotics_grader-APACHE-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "tasks/arm/chute_realtime_bimanual_tracking/tests/licenses/robotics_grader-NOTICE.txt": "1b9b60d599f2df16b282ce13f01e0650df92a528c2b88e51cb6ea66b7191f753",
+    "tasks/arm/chute_realtime_bimanual_tracking/tests/licenses/task-MIT.txt": "cdf88167d148be94da4377b5b77be86b6a050d668d5f79d91110f62f91f47cc0",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/oracle_token.sha256": "23359f581d1a671ee4e9174cfad5fd4a2b3cef6a808141e00189f2519759c78a",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/outcomes.py": "f49db7e6e72f0a2ce5ec00f95d62220fc694798e49a123aab2a793ec03c0203c",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/props.py": "4819bf3754b95815f74d04104b6450892ad1f52db2d62b3b993904558dbb1c6e",
@@ -88,8 +92,6 @@
     "tasks/arm/chute_realtime_bimanual_tracking/tests/shift.py": "ccea8347d6e876ef3e8b738fa701859a208b07a8960bc20c0c7a532ac5380a04",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/sim_client.py": "ef5ea07bd895ed846bdb1ea5e6292e73d344152a86c80c5023473920d7ad769a",
     "tasks/arm/chute_realtime_bimanual_tracking/tests/test.sh": "6d0be2577cf7fdcc9f1b5170633766d6c7ca355dac5205ead49343c5d4445a74",
-    "tasks/arm/chute_realtime_bimanual_tracking/tests/verify.py": "fe6500aec43a342bf526f36c9dd41b2db3365a3191633bc60a7767fa0c3d8772",
-    "tasks/arm/chute_realtime_bimanual_tracking/third_party/robotics_grader-APACHE-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-    "tasks/arm/chute_realtime_bimanual_tracking/third_party/robotics_grader-NOTICE.txt": "1b9b60d599f2df16b282ce13f01e0650df92a528c2b88e51cb6ea66b7191f753"
+    "tasks/arm/chute_realtime_bimanual_tracking/tests/verify.py": "fe6500aec43a342bf526f36c9dd41b2db3365a3191633bc60a7767fa0c3d8772"
   }
 }

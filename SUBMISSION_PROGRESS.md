@@ -2,24 +2,25 @@
 
 ## Latest verified checkpoint — 2026-11-26 (supersedes older job descriptions)
 
-- Frozen task sources remain friend3acb84b and UAV8c0ae7a. Both source packages
-  pass pinned ALE lint; all nine canonical grader files match. No upstream PR.
-- UAV healthy Docker builds/exports and six current-source CPU cases passed.
-  Final-image CUDA smoke62727211 passed on H200: two optimizer updates plus
-  all1,190 public inference frames, AP50=0.3284880958. Evidence is collected.
-- UAV full in-image training62727576 is RUNNING. It invokes exact solve.sh from
-  scratch, all24k steps, then public validation; no previous UAV checkpoint is
-  mounted. This closes a development reproduction gap, not an ALE/agent gate.
-- Friend SIF conversion62726378 and CUDA/Vulkan GPU identity62727328 passed.
-  Physical smoke62727329 failed before camera startup with a truncated Torch
-  Inductor C++ compiler error. CPU-only probe62727574 reproduced a PCH write
-  failure: No space left on device. g++11.4 and headers are present. Retry62727620
-  passed the import in1m17s with node-local/tmp; corrected GPU62727626 is queued.
-  No Docker rebuild.
-- Visual62727631 follows corrected62727626 with node-local/tmp; old62727330
-  was canceled while DependencyNeverSatisfied after its replacement registered.
+- Current task sources: friendc3521f9, UAV8c0ae7a. Both exact source packages
+  pass ALE lint and preserve the nine canonical grader files. No upstream PR.
+- UAV full image training62727576 completed all24k training steps and exported
+  step12k as972cb29f…; all1190 public frames give AP50=.3639820 in53.99s.
+  Job completed21m10s/exit0; full logs/source/helper verified and collected under
+  uav-validation/full-image-training-62727576. H200 author evidence only.
+- Friend62727626 passed CUDA/Vulkan and OmniGibson import but exposed a real
+  image bug: missing omnigibson_6_1_0.kit referenced by the compatibility patch.
+  Sourcec3521f9 includes the exact original DCC file and an agent-UID launch-file
+  check. CPU regression62728007 fails on old image and passes with the file.
+- Corrected Docker build/CPU smoke/export62728039 is RUNNING; conversion62728071,
+  exact-image GPU62728074 and visual62728076 follow. The old a35d570a image is
+  historical evidence and cannot qualify the current source. Old images retained.
+- Overlay diagnostic62727985 tests the single missing-file fix on the old SIF
+  while the real Docker rebuild runs; it will never count as exact-image evidence.
+- Older visual62727631 was canceled while DependencyNeverSatisfied after the
+  replacement was registered. No original /cwork/yr111/rax experiments changed.
 - Official ALE GPU lifecycle, repeated anchors and fresh frontier trajectories
-  remain missing. The compatible NVIDIA Docker host request is unanswered.
+  remain missing; the compatible NVIDIA Docker host request remains unanswered.
 
 
 ## Scope and source of truth

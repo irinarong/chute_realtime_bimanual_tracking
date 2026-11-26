@@ -17,13 +17,15 @@ BASE=/work/yr111/chute-direct-answer-20261126
 R="$BASE/datasets/visual-replay-$SLURM_JOB_ID"
 mkdir -p "$R/home" "$R/cache" "$R/candidate"
 df -B1 "$SCRATCH" > "$R/scratch-filesystem.txt"
-tar -xzf "$BASE/datasets/candidate.tar.gz" -C "$R/candidate"
+CANDIDATE="${2:-$BASE/datasets/candidate.tar.gz}"
+tar -xzf "$CANDIDATE" -C "$R/candidate"
+sha256sum "$CANDIDATE" > "$R/candidate.sha256"
 mkdir "$R/audit"
 tar -xzf "$BASE/datasets/visual-replay.tar.gz" -C "$R/audit"
 cp "$BASE/datasets/scripts/gpu_preflight.py" "$R/gpu_preflight.py"
 python3 "$R/gpu_preflight.py" --output "$R/gpu-allocation-host.json"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$R/hardware.csv"
-SIF="$BASE/datasets/chute-task.sif"
+SIF="${1:-$BASE/datasets/chute-task.sif}"
 apptainer exec --cleanenv --no-home --bind "$R:/results" "$SIF" \
     cp -r /opt/sim/lib/python3.12/site-packages/isaacsim/apps /results/apps
 export APPTAINERENV_OMNI_KIT_ACCEPT_EULA=YES APPTAINERENV_ACCEPT_EULA=Y
