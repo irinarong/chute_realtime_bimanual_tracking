@@ -3,5 +3,8 @@
   "differences": [],
   "extra_files": [],
   "engine_commit": "bfb75050aca2c54b45c5ab23bae6028a834a468a",
-  "dockerfile_sha256": "3b3f63bc07b4813e1f4d599c8d0755e48cbbd04842abe485ca7940c9b0abb13b"
+  "dockerfile_sha256": "b2b9a2dadab598c0e182c9a8aa576acf9ad20ebb95f5fa88d4f0835112a047c6",
+  "host_tests_passed": 19,
+  "final_image_build_pending": true,
+  "pinned_build_job": 62723330
 }

@@ -47,12 +47,13 @@ ENV OMNIGIBSON_DATA_PATH=/opt/og_data
 ENV OMNIGIBSON_APPDATA_PATH=/tmp/og-appdata
 ENV OMNI_KIT_ACCEPT_EULA=YES
 ENV ACCEPT_EULA=Y
+COPY fetch_robot_assets.py /tmp/fetch_robot_assets.py
 RUN mkdir -p /opt/og_data \
-    && /opt/sim/bin/python -c "from omnigibson.utils.asset_utils import download_omnigibson_robot_assets as d; d()" \
+    && /usr/bin/python3 -I /tmp/fetch_robot_assets.py /opt/og_data/omnigibson-robot-assets \
     && chmod -R a+rX /opt/og_data
 
 # Stock Isaac assets from NVIDIA's public bucket, fetched at build time so every stage runs without network.
-COPY mirror_assets.py /tmp/mirror_assets.py
+COPY mirror_assets.py nvidia-assets.json /tmp/
 RUN python3 -I /tmp/mirror_assets.py /opt/isaac_assets Isaac/Props/YCB/Axis_Aligned/ Isaac/Environments/Simple_Room/ \
     && mkdir -p /opt/isaac_assets/NVIDIA && chmod -R a+rX /opt/isaac_assets
 

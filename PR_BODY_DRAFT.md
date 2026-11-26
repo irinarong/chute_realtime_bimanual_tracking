@@ -26,7 +26,7 @@ The previous privileged physical controller remains available as `solution/solve
 
 ## Validation and difficulty
 
-Sixteen host tests pass, covering protected artifact handling, scoring predicates, scene RNG equivalence, actual reference/verify entry points, simulator protocol and cumulative timing. A timing regression now ensures that a reply exceeding the documented wall cap also consumes the full shift budget.
+Nineteen host tests pass, covering protected artifact handling, scoring predicates, scene RNG equivalence, actual reference/verify entry points, simulator protocol and cumulative timing. A timing regression now ensures that a reply exceeding the documented wall cap also consumes the full shift budget.
 
 Exact Docker construction with the original `chown` and `runuser` checks is in progress on an isolated DCC KVM guest. Subsequent exact-image CPU and GPU smoke checks are queued. Native GPU or Apptainer results will be identified as development evidence; they do not establish ALE's Docker privilege boundary.
 
@@ -34,6 +34,6 @@ No frontier result is claimed for this candidate. The earlier four-hour controll
 
 ## Notes for the maintainers
 
-The image uses Isaac Sim 6.1, patched OmniGibson at a fixed source commit, the R1Pro model and NVIDIA public YCB/Simple_Room assets. Source and asset licence details are in `environment/NOTICE.md`. Downloads and the `usd-core` package range still need content/version pinning. The fixture reference is immediate; ordinary verification needs a rendering-capable NVIDIA GPU and can take up to three hours.
+The image uses Isaac Sim 6.1, patched OmniGibson at a fixed source commit, the R1Pro model and NVIDIA public YCB/Simple_Room assets. Source and asset licence details are in `environment/NOTICE.md`. Robot assets use an immutable Hugging Face revision and SHA256. All 277 NVIDIA files have measured size/hash pins, and `usd-core` is fixed at the observed 26.11. The final pinned image rebuild is pending. The fixture reference is immediate; ordinary verification needs a rendering-capable NVIDIA GPU and can take up to three hours.
 
-Remaining gates: exact build and image checks; physical feasibility; fair lock/timing validation; dependency/asset pinning; official ALE lifecycle validation; current frontier difficulty and archived trajectories. No fabricated `ok` line is provided.
+Remaining gates: exact build and image checks; physical feasibility; fair lock/timing validation; verification of the final pinned image; official ALE lifecycle validation; current frontier difficulty and archived trajectories. No fabricated `ok` line is provided.

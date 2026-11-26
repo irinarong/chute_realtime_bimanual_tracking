@@ -62,7 +62,7 @@ the current snapshot before claiming the task is ready for acceptance.
 Host CPU tests (NumPy, Pillow and pytest; no Isaac required):
 
 ```sh
-python -m pytest -q tests/review/test_ideal_answer.py tests/review/test_plumbing.py
+python -m pytest -q tests/review/test_ideal_answer.py tests/review/test_plumbing.py tests/review/test_build_assets.py
 ```
 
 `test_ideal_answer.py` exercises actual `solve.sh` and `verify.py`: untouched submission zero, synthetic reference

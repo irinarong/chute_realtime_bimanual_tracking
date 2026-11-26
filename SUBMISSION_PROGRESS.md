@@ -19,7 +19,7 @@ continues to allow controller development, with optional model training.
 ## Verified progress
 
 Chute: isolated DCC snapshot imported, direct-answer fixture implemented with protected authorization and independent
-geometric/scoring checks, prior physical controller preserved, 16 host tests passed. Empty submission gives zero;
+geometric/scoring checks, prior physical controller preserved, 19 host tests passed. Empty submission gives zero;
 two actual host solve/verify runs give full synthetic reference reward. Pinned ALE lint, domain lint, and canonical
 shared-grader byte identity passed. No claim of physical task success is inferred from the synthetic reference.
 
@@ -34,8 +34,9 @@ were inspected again; no obvious annotation displacement was found in the sample
 | Job | Work | Dependency / location |
 |---|---|---|
 | 62721924 | Build original chute Dockerfile, retain chown/runuser checks, export image | `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/` |
-| 62722412 | Exact-image Docker CPU smoke | after successful 62721924 |
-| 62722552 | Convert the saved image to Apptainer for DCC GPU execution | after successful 62721924 |
+| 62723330 | Rebuild the final content/version-pinned Dockerfile in the original VM | after successful 62721924 |
+| 62722412 | Exact-image Docker CPU smoke | after successful 62723330 |
+| 62722552 | Convert the saved image to Apptainer for DCC GPU execution | after successful 62723330 |
 | 62723043 | Test cameras and one physical privileged-controller shift in that image | after successful 62722552; not formal ALE UID/lifecycle validation |
 | 62722844 | COMPLETED: UAV current-contract Docker CPU smoke, six cases, all 2,475 hidden frames | `/work/yr111/uav-to-uav-benchmark-20261125/datasets/vm-verify-62722844/` |
 | 62722505 | COMPLETED: UAV 24k training; public AP50 7.08% / 12.03% / 11.91% at 6k/12k/24k | `/work/yr111/uav-to-uav-benchmark-20261125/runs/reference-v2-62722505/` |
@@ -60,8 +61,9 @@ Buildx installation in this guest was started separately to support the pinned e
 The first H200 rendering smoke job 62722564 was cancelled while queued and replaced with 62723043 on
 RTX 5000 Ada; Isaac camera testing needs an RTX-capable GPU. Only this task's queued validation was changed.
 UAV tiled-inference experiment 62723029 evaluates 512/768-pixel crops of each current RGB frame on public val.
-The 512-pixel result is AP50 10.88%; 768-pixel evaluation is still running. Job 62723142 follows it and compares
-a small fixed grid of global box expansion/NMS on public validation, retaining all public predictions for diagnosis.
+Tiled evaluation completed: AP50 10.88% at 512 pixels and 12.72% at 768 pixels. Job 62723201 compares
+a small fixed grid of global box expansion/NMS on public validation, retaining all public predictions for diagnosis. Its first attempt 62723142 failed before inference because the
+author helper passed a relative worker path; the corrected helper uses absolute paths. This was not a model failure.
 The GPU diagnostic job 62723003 was replaced by a short CPU diagnostic inside our existing 62721924 allocation.
 CPU diagnosis completed on 24 selected public frames. See `uav-reference-v2/public-predictions.json`,
 `val-predictions-a.jpg`, and `val-predictions-b.jpg` in the visualization directory above. It shows detected targets,
@@ -87,3 +89,13 @@ The verified DCC KVM Docker guest has no GPU passthrough. DCC's unprivileged hos
 ranges required for full Docker root/user isolation. Native CUDA and Apptainer runs are useful development evidence,
 but must not be reported as official ALE GPU validation. The user has been asked for an alternate NVIDIA Docker SSH
 host while independent work continues. Do not narrow the completion standard because that environment is missing.
+
+## Asset pinning update
+
+Final Docker source adds `fetch_robot_assets.py`, immutable robot zip revision/SHA256, `nvidia-assets.json` with
+277 measured NVIDIA file hashes, and `usd-core==26.11`. Three new build-integrity tests passed (19 total host tests).
+The exact original build 62721924 supplies cached layers; new job 62723330 rebuilds with pins and atomically replaces
+the exported archive. CPU smoke and SIF conversion must wait for 62723330, never boot the same qcow2 concurrently.
+The original and final build logs/image identities remain distinguishable. Do not report the final Dockerfile as
+built until the pinned rebuild succeeds. The metadata/source bundle was refreshed after the NOTICE/README edits; both downstream dependencies were confirmed
+by `scontrol show job` as afterok:62723330.

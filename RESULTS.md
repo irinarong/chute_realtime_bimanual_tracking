@@ -22,7 +22,7 @@ It is a review candidate, not a claim of upstream acceptance or completed GPU va
 
 | Check | Status |
 |---|---|
-| Host tests of artifacts, authorization, scoring and simulator protocol | 16 passed |
+| Host tests of artifacts, authorization, scoring and simulator protocol | 19 passed |
 | Bootstrap with null anchor | raw synthetic metric 1.0 over 120 snapshots; bootstrap reward 0 |
 | Actual host solve + verify entry points | untouched 0; synthetic reference 1 |
 | Domain lint | passed |
@@ -51,5 +51,6 @@ Those measurements also predate the imported physical-grasping, latency and inde
 cannot certify this candidate's difficulty.
 
 The image uses Isaac Sim 6.1, patched OmniGibson at a fixed source commit, the R1Pro robot model, and NVIDIA public
-YCB/Simple_Room assets. Asset downloads and one package range are not fully content-pinned yet. The earlier rootless
+YCB/Simple_Room assets. Robot assets are now fixed to an immutable Hugging Face revision and verified by SHA256; all 277 NVIDIA files have
+measured size/hash pins; `usd-core` is fixed at the observed 26.11. Final-image rebuild and smoke checks are pending. The earlier rootless
 Podman build modified UID checks; it is not evidence that the original Dockerfile or official validation passed.
