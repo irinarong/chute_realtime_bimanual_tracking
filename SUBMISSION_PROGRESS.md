@@ -11,7 +11,7 @@ Never interpret a synthetic oracle reward as physical robot success.
   now includes corrected process accounting and its Linux regression tests. The
   current source-only snapshot is identified by `chute-validation/PACKAGE.json`;
   it supersedes the `d0f34e0` package. The original image built as `82248cd7aeaa`;
-  its final content-pinned rebuild and exact-image checks remain pending.
+  its final content-pinned image a35d570a7a6f has now built; export and exact-image checks remain pending.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
   branch `codex/uav-to-uav-tracking`. Current committed source is `4a7077eb5cc00b0d9d30373c0493f9ecdf20d3ae`,
   including verified public box calibration and reference provenance.
@@ -35,7 +35,7 @@ reject corrupted downloads and unsafe ZIP entries.
 | Job | State at latest check | Work |
 |---|---|---|
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
-| 62723900 | RUNNING, simulator/OmniGibson cache reused | Final pinned Docker rebuild, same VM |
+| 62723900 | RUNNING, image a35d570a7a6f built | Final pinned Docker image export, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
 | 62725056 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
@@ -232,3 +232,13 @@ cancelled during VM preparation and replaced by 62725367 on a new disk because o
 this concrete Dockerfile change. The new script additionally compares the embedded
 licence byte-for-byte against source. Do not reuse the cancelled job's VM or confuse
 its source 3daa2d1 with the corrected candidate. See current image-recovery.json.
+
+
+Final chute Docker build completed in live job 62723900 as
+`sha256:a35d570a7a6f8b5effd0f32fae0488db7ad3a3585b25bd16569fd981460ff1b0`
+(21,689,855,559 bytes, linux/amd64). All asset and agent-UID Isaac imports passed.
+The job is streaming its archive to chute-task-image.next.tar.gz; export/hash and
+subsequent checks remain pending. The inspect output is preserved as
+chute-validation/pinned-docker-image.json. Watcher exec session 9721 now follows
+62723900, 62722412, 62722552, 62725056 and corrected UAV build 62725367;
+old watcher 38785 exited after the intentional cancellation of 62725136.
