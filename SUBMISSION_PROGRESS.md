@@ -60,7 +60,15 @@ Buildx installation in this guest was started separately to support the pinned e
 The first H200 rendering smoke job 62722564 was cancelled while queued and replaced with 62723043 on
 RTX 5000 Ada; Isaac camera testing needs an RTX-capable GPU. Only this task's queued validation was changed.
 UAV tiled-inference experiment 62723029 evaluates 512/768-pixel crops of each current RGB frame on public val.
+The 512-pixel result is AP50 10.88%; 768-pixel evaluation is still running. Job 62723142 follows it and compares
+a small fixed grid of global box expansion/NMS on public validation, retaining all public predictions for diagnosis.
 The GPU diagnostic job 62723003 was replaced by a short CPU diagnostic inside our existing 62721924 allocation.
+CPU diagnosis completed on 24 selected public frames. See `uav-reference-v2/public-predictions.json`,
+`val-predictions-a.jpg`, and `val-predictions-b.jpg` in the visualization directory above. It shows detected targets,
+some tight predicted boxes and high-confidence false positives; it does not establish a dataset error or a full
+validation result. The 12k checkpoint was exported to DCC `runs/reference-v2-62722505/export-12000/`, preserving
+its 24k training schedule, exact tensor-file bytes and the corresponding 12k log prefix. It is not promoted yet.
+`uav-validation/artifact-contract-validation.json` and `cpu-smoke.json` hold current Docker/host evidence.
 Native reference results remain author development results, not autonomous agent training or ALE validation.
 
 ## Remaining acceptance evidence
