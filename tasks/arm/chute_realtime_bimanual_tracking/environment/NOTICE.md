@@ -6,7 +6,7 @@ Nothing below is stored in this folder; the Dockerfile fetches each item at buil
 |---|---|---|
 | OmniGibson (simulation framework) | github.com/StanfordVL/BEHAVIOR-1K, commit bd049de, with `environment/omnigibson-isaac61.patch` | MIT |
 | Galaxea R1Pro robot model | `omnigibson-robot-assets` package downloaded by OmniGibson | MIT |
-| YCB objects (20 parts, 3 bystanders) and Simple_Room backdrop | NVIDIA's public Isaac asset bucket (`Isaac/Props/YCB/Axis_Aligned`, `Isaac/Environments/Simple_Room`), the source the merged task `object_finding_and_organizing_on_messy_desk` uses | NVIDIA Omniverse asset licence |
+| YCB objects (20 task parts, 2 bystanders in a full shift) and Simple_Room backdrop | NVIDIA's public Isaac asset bucket (`Isaac/Props/YCB/Axis_Aligned`, `Isaac/Environments/Simple_Room`), the source the merged task `object_finding_and_organizing_on_messy_desk` uses | NVIDIA Omniverse asset licence |
 | Isaac Sim 6.1 | pypi.nvidia.com | NVIDIA Isaac Sim licence (EULA accepted in the image) |
 
 No BEHAVIOR-1K scene or object data is used: its licence forbids redistribution. The track, the tote, the side table

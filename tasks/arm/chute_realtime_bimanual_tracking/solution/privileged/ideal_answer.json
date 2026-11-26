@@ -1,0 +1,2339 @@
+{
+  "format": "chute.ideal-terminal-snapshots.v1",
+  "shifts": [
+    {
+      "seed": 2524,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.11353624664651528,
+            -0.7218142235928394,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    },
+    {
+      "seed": 3390,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.08819966695733261,
+            -0.6526355504238277,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    },
+    {
+      "seed": 4191,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.13211522841949574,
+            -0.6763842040170831,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    },
+    {
+      "seed": 4836,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.1458276970162939,
+            -0.7188985718134007,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    },
+    {
+      "seed": 7168,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.13613135458596176,
+            -0.7336408743253674,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    },
+    {
+      "seed": 8803,
+      "events": [
+        {
+          "index": 0,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 1,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 2,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 3,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 4,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 5,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 6,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 7,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 8,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 9,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 10,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 11,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 12,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 13,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 14,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 15,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 16,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 17,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 18,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "index": 19,
+          "position_world_m": [
+            0.14477956413523102,
+            -0.696583658644233,
+            0.6000000000000001
+          ],
+          "velocity_m_s": [
+            0,
+            0,
+            0
+          ],
+          "finger_contacts": [
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "bystander_max_displacements_m": [
+        0,
+        0
+      ]
+    }
+  ]
+}

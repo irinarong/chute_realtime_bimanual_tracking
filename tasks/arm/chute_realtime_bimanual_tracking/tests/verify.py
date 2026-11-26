@@ -1,8 +1,9 @@
 """The grader. Runs as root in the verify stage, in a sandbox the agent never touched.
 
-It owns the simulator (cell_server.py under the simulator's interpreter) and drives the agent's controller over the
+For ordinary submissions it owns the simulator (cell_server.py under the simulator's interpreter) and drives the agent's controller over the
 kit's stdio wire, one hidden shift per simulator process. The metric, part_pickup_score, comes from the simulator's own
 state; nothing the controller prints is a scoring input.
+The separately labelled privileged ideal-answer fixture path checks terminal snapshots without physics.
 
 Wire, per step t: obs = {"t", "proprio"[61], "odometry"[3], "cameras": {name: {rgb_png, depth_mm_u16, shape, K, pos_base,
 rot_base}}}; reply = {"action": [26 numbers]}: the robot's 23, then one flag per camera for the next observation. Every frame asked for costs
@@ -103,7 +104,13 @@ def run_shift(sim, solver, lock, config, seed, salt=0):
 
 
 def main():
-    config = stage_config(); rng = seed_rng(); anchor, meta = read_anchor()
+    config = stage_config(); anchor, meta = read_anchor()
+    # Explicit privileged fixture mode; it does not certify physical execution.
+    from ideal_answer import maybe_verdict
+    fixture = maybe_verdict(os.path.join(agent_home(), "submission"), HERE, config, anchor, meta)
+    if fixture is not None:
+        write_verdict(fixture); return
+    rng = seed_rng()
     hidden = json.load(open(os.path.join(HERE, "hidden", "shifts.json"))); shifts = hidden["seeds"][: int(config.get("shifts", 6))]
     salt = int(hidden.get("salt", 0))      # with it a seed gives a shift the agent's copy of the generator cannot reproduce
     lock = ProbeLock(rng, rate=config.get("probe_rate", 0.01), pass_fraction=config.get("probe_pass_fraction", 0.1), dims=61)
@@ -136,7 +143,7 @@ def main():
     measured = sum(scores) / len(scores) if scores else 0.0
     flat = {"shift{}_{}".format(k, key): float(d[key]) for k, d in enumerate(details) for key in ("score", "placed", "score_first_third", "score_last_third", "program_time_s", "simulated_time_s", "fell_behind", "late_replies", "slowest_reply_s", "blind") if key in d}   # metrics are numbers only
     verdict = ratio_rewards(measured, anchor, cap=config.get("scoring_cap", 1.5), higher_is_better=True, metric_name=meta.get("metric", "part_pickup_score"),
-                            locks_ok=lock.ok, extra=dict(lock.rewards(), shifts_aborted=aborted, **flat), full_at=meta.get("full_at", 1.0))
+                            locks_ok=lock.ok, extra=dict(lock.rewards(), synthetic_reference=0, physical_rollout=1, shifts_aborted=aborted, **flat), full_at=meta.get("full_at", 1.0))
     verdict["diagnostic"] = json.dumps({"shifts": details})[:4000]
     write_verdict(verdict)
 
