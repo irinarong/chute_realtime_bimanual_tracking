@@ -1,96 +1,61 @@
-# Two-task submission work — admission pending
+# Two-task submission preparation — admission pending
 
-The goal covers both tasks. Mandatory model training applies only to UAV. No upstream
-PR has been opened. The original friend experiments under /cwork/yr111/rax are preserved.
-This checkpoint supersedes the old chronological notes, retained in
-chute-validation/snapshots/before-render-ngx/SUBMISSION_PROGRESS.md under the evidence root.
+Both task packages remain in scope. Mandatory model training applies only to UAV.
+No upstream task PR is open. Original friend experiments under `/cwork/yr111/rax/`
+are preserved. The old-controller investigation is closed; do not extend it.
 
-## Current sources and packages
+## Current source packages
 
-- Friend:17b6d4fd56b1754406ddde51b9ccf3d61b60a305;70 files; archive SHA256
-  a3a410115254f6698debf2fcb579c07e61472b22ac949054fe35feb05dcb08ee.
-- UAV:8c0ae7a3794660e08f6bc283d055149e240b1f0b;50 files; archive SHA256
-  a57f2b0b37f47cb6f77055126ef4ac9b1c710d17877fea55e0b860bb1e8cd8bb.
-- Pinned ALE:bfb75050aca2c54b45c5ab23bae6028a834a468a.
-- Exact manifests/source and nine canonical robotics_grader files verified. Both ALE lint pass.
-- No training, output clearing or data sync in setup/start. Canonical grader unchanged.
-
-## UAV development evidence complete
-
-All50 NPS clips present:51,951 training,1,190 public-validation,2,475 hidden frames.
-Public revisionc1fca946a5936294a2cf23874040493ac148239b. YX and1-based frame indices
-corrected; exact JPEG overlap0. AOT unused.
-
-Docker build/export62725367 completed; both images and archive hashes verified.
-Six real CPU contract/UID/file/network-isolation cases passed. Agent image603fa53e;
-verifier7fab6230. Final-image SIF full reference62727576 completed21m10s/exit0:
-24,000 from-scratch steps in1207.57s, selected12,000, all1,190 public frames in53.99s,
-AP50=.36398201864109875; model972cb29f7a9e47bb9eb65067cc0838b06dd9702d9c6ca7ad063f601462270e7e.
-Source/helper/logs verified. This is H200 author evidence, not autonomous-agent,
-RTX4090 reproduction, hidden tuning or official ALE. Do not repeat without cause.
-See uav-validation/full-image-training-62727576/evidence.json.
-
-## Friend runtime and live pipeline
-
-Actual GPU launch found two image defects missed by import-only tests: absent
-omnigibson_6_1_0.kit and standaloneWarp1.19 mixed with IsaacWarp1.16. Source17b6d4f
-includes the original pinned Kit and Warp1.16; build-time checks detect both defects.
-Old SIF plus these author overlays completed job62728194 on RTX5000Ada:
-20/20 events completed,1 placement, score.05, assisted=False, zero bystander/mass errors.
-No successful grasp or robust physical feasibility is established. The observed RGB speckle was isolated by controlled62728432: Apptainer omitted host
-libnvidia-ngx.so.1; making it loadable restores clean RGB at4 renders (AA mode1→3).
-All measured physics time/joint/part-pose deltas stay zero. Extra warmup without NGX
-never fixes it. Author helpers now stage the exact host library read-only with hashes.
-No task/render-setting/scoring change. Official ALE Docker already requests all driver
-capabilities; that GPU lifecycle is still untested here.
-
-| Job | Latest state | Purpose |
+| Task | Source commit | Source archive SHA256 |
 |---|---|---|
-|62728039|COMPLETED27m20s/exit0|Intermediate Kit-only export, known Warp mismatch|
-|62728274|RUNNING|Exact source17b6d4f Docker rebuild, CPU smoke/export|
-|62728280|PENDING after62728274|Convert final image to SIF|
-|62728568|PENDING after62728280|Final-image physical GPU with NGX|
-|62728569|PENDING after62728568|Final-image archived visual replay with NGX|
-|62728301|COMPLETED7m46s/exit0|Noisy-RGB overlay visual:0/20,0/28 probes, no timing violation|
-|62728432|COMPLETED8m02s/exit0|Controlled NGX/no-NGX static rendering|
-|62728570|COMPLETED7m37s/exit0|Clean-RGB replay:0 placed/held/touched,0/50 probes; no timing failure|
-|62728884|COMPLETED7m42s/exit0|Boundary diagnosis collected; investigation closed|
+| Chute | `489b139b0dba3d84016bccea07777b01153bea16` | `030d3a1fac6f4196b72006d381fad8c8011cc53b9ca08adebf776149c20e3db1` |
+| UAV | `8c0ae7a3794660e08f6bc283d055149e240b1f0b` | `a57f2b0b37f47cb6f77055126ef4ac9b1c710d17877fea55e0b860bb1e8cd8bb` |
 
-Pending62728290 and62728300 were replaced/canceled before execution to add NGX.
-No active job was interrupted. Rendering evidence is in
-chute-validation/render-ngx-62728432/evidence.json and comparison.png.
+Both packages pass pinned ALE lint; each has nine unchanged canonical grader files.
+Chute domain lint passes. UAV domain lint still requires the measured anchor and `full_at`.
+Chute's new manifest restricts both stages to RTX 5000 Ada, the measured rendering model.
+Only `task.toml` differs from runtime/build source17b6d4f; no Docker rebuild is needed.
+Upstream model-name CI requires the separate one-line GPU registry patch in `validation/`.
+It applies cleanly; the engine recognizes the model. No registry pass is claimed before it lands.
 
-Requery jobs; do not restart quiet builds. The180GiB VM disk at
-/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img
-has an exclusive ownership lock. Never boot concurrently. Candidatec67a7265 includes
-18 pinned SDK files for author tests; it is separate from the submitted source archive.
-Original SIF6e2ebf77 and Dockera35d570a are historical; overlays do not qualify the final image.
+## Confirmed development results
 
-## Reference semantics and unresolved admission
+- Chute direct-answer reference scored1 twice in CPU Docker; untouched/wrong/unauthorized
+  artifacts scored0. These synthetic verdicts explicitly have `physical_rollout=0`.
+- Chute Kit/Warp build defects are fixed. Controlled host-NGX injection restored clean
+  rendering without physics changes. Clean archived-controller replay had0/20 placement
+  and no contacts/time violations; this is not frontier difficulty evidence.
+- UAV has all50 NPS clips:51,951 train,1,190 public,2,475 hidden frames. Coordinate/frame
+  conventions corrected; exact JPEG overlap0. Both Docker images are built/exported;
+  six real CPU isolation/contract cases passed.
+- UAV packaged reference completed24,000 training steps from generic ImageNet initialization
+  in1,207.57s onH200, selected12,000; all1,190 public frames AP50=.3639820186.
+  Model SHA256:972cb29f7a9e47bb9eb65067cc0838b06dd9702d9c6ca7ad063f601462270e7e.
+  It is author reference training, not an autonomous-agent run or official ALE GPU gate.
 
-The requested protected direct-answer fixture scores1 in author CPU Docker checks;
-untouched/wrong/unauthorized answers score0. It reports synthetic_reference=1 and
-physical_rollout=0. It is not physical success. Maintainer acceptance is unresolved.
+## Live jobs (requery before acting)
 
-Current ProbeLock can reject an image-driven absolute-target policy: archived
-controller had0/100 action changes for constructed carry-phase joint perturbations,
-while depth ablation changed detection/action. Do not remove or trivialize the lock.
-Replay measures raw progress, timing and lock separately; the completed zero-score replay had noisy rendering; clean replay also scored0 with no contacts; trace62728884 confirmed commands execute; diagnostic branch is now closed. No fresh frontier trajectory exists for either final task.
+| Job | Last observed state | Purpose |
+|---|---|---|
+|62728274|RUNNING|Corrected chute Docker build, CPU smoke, export|
+|62728280|PENDING after62728274|Convert exact image to SIF|
+|62728568|PENDING after62728280|Exact-image GPU runtime/physical smoke with host NGX|
+|62728569|PENDING after62728568|Exact-image archived replay/grading-path smoke|
+|62728682|RUNNING|Fixed trained UAV artifact, full hidden verifier in CPU Docker|
 
-Still required: exact final friend image/camera checks and physical feasibility;
-fair lock/timing; real ALE GPU lifecycle, repeated anchors/full_at, and fresh agent
-trajectories. DCC's Docker VM has no GPU passthrough; native/SIF development results
-cannot replace Docker isolation. A compatible NVIDIA Docker host was already requested,
-with no answer; do not repeat that question. Keep missing evidence explicitly missing.
+Both running jobs were confirmed through Slurm and live guest process activity. Quiet
+layer commits/inference logs do not imply a hang. Never boot either owned VM disk concurrently.
+The UAV verifier changes only inference device toCPU; it does not train/tune or fill the anchor.
 
-Evidence root:
-/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/
-Use LIVE_PIPELINE.json, ADMISSION_GATES.json, each PACKAGE.json and PR_BODY_DRAFT.md.
+## Remaining submission gates
 
-UAV fixed-reference verifier job62728682 queued: source8c0ae7a, model972cb29f, exact verifier7fab6230, real Docker UID/seccomp on all2475 heldout frames. Author wrapper changes only infer device toCPU; no training/tuning/anchor edits. Uses healthy VM62725367 with its exclusive lock, not the quarantined VM. See uav-validation/fixed-reference-cpu-plan.json.
+Final chute image evidence; physical feasibility and observation-lock fairness; numeric
+portability; official ALE GPU lifecycle and repeated anchors/full_at; fresh frontier-agent
+trajectories; upstream GPU model addition; maintainer acceptance of the synthetic reference.
+The compatible NVIDIA Docker host request remains unanswered; do not repeat the question.
+Native/SIF/CPU Docker results do not replace official ALE GPU qualification.
 
-First CPU-verifier launcher62728667 failed before VM boot because its serial-log directory lacked a Podman mount. Fixed the mount; lock released and replacement62728682 submitted. No image, checkpoint or grading code changed.
-
-Clean visual evidence:chute-validation/ngx-visual-62728570/evidence.json. All20 events ended at end_stop; no contacts/holds, no late replies, slowest.08s. Trace62728884 leaves policy/task unchanged and samples camera packets plus all real action/proprio rows outside solver timing.
-
-User clarified the work should be understandable and focused on requested deliverables. Stop the old-controller diagnostic/optimization branch; preserve evidence and unresolved qualifications. Continue final Docker/image checks, UAV fixed-reference grading and submission materials. Do not interpret synthetic reference1 as physical success or claim official ALE acceptance without its GPU lifecycle.
+Evidence root: `/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f`.
+Start with `DELIVERY_INDEX.md`, `ADMISSION_GATES.json` and the two refreshed PR drafts.
+The live candidate bundlec67a7265 remains tied to runtime source17b6d4f. Preserve its identity;
+the submission package's GPU-only delta does not change ongoing build/runtime tests.
