@@ -1,92 +1,49 @@
-# Grader and reference notes
+# Grader notes (for reviewers)
 
-This candidate has two explicitly different evaluation paths.
-
-## Ordinary controller
-
-`verify.py` owns Isaac Sim and runs `/home/user/submission/run.sh` as the agent's UID through the canonical
-`robotics_grader` stdio protocol. Six hidden shifts contain 20 parts each. Scoring state comes from the simulator,
-not controller-reported outcomes. A placed part earns 1, a part held for one second earns 0.5, and a lost part earns
-0. Each bystander moved more than 5 cm subtracts 0.5 before division by 20. The six shift scores are averaged.
-
-The DCC snapshot imported on 2026-11-26 uses a fixed independent feeding schedule (9–13 s release intervals),
-4–7 degree chute slopes, camera latency of 3–6 control steps, physical grasping for ordinary controllers, and
-secret-salted shifts. Each requested camera frame costs three additional 30 Hz steps. Timing thresholds are in
-`grader_config.json`. Private and practice grading share the same CPU meter. It discovers
-workers on every sample and includes kernel-retained CPU time from waited children,
-so a worker born and reaped between replies still consumes the budget. Ancestors are
-read first to avoid counting a worker both live and reaped; totals never refund CPU.
-Linux integration tests cover live, reaped and nested workers. This accounting is not
-a substitute for process isolation. The match lock still perturbs 61 proprioceptive
-values and needs qualification against visual controllers.
-Simulator logs and generated assets go into a root-only private directory.
-
-The raw rollout metric and lock remain unchanged by the direct-answer implementation. Normalization changes:
-`anchor.json` now contains a synthetic ceiling of 1.0 with `full_at=1.0`, replacing the historical physical anchor
-0.5542/full_at 0.95. Thus, subject to the existing lock, ordinary reward equals raw part_pickup_score. Historical
-scores must not be compared as if their normalization and physics were the same.
-
-## Default reference: direct answer, no physical execution
-
-`solution/solve.sh` copies `solution/privileged/ideal_answer.json` to the canonical artifact name
-`/home/user/submission/ideal_answer.json`, along with `.oracle_token`. `tests/ideal_answer.py` accepts this format
-only when the token hashes to the protected `oracle_token.sha256`. Neither the answer nor token is in the image or
-agent setup payload. An unauthorized attempt scores zero. The presence of a token alone does not earn points.
-
-The file contains six lists of 20 independent terminal snapshots: world positions, velocities, four finger-contact
-flags, and maximum bystander displacements. The grader regenerates each hidden tote position and applies the same
-placement predicates and credit aggregation as `cell_env.py` (factored into `outcomes.py`). Incorrect positions,
-non-resting parts, finger contact, moved bystanders, missing events, nonfinite values, or malformed files cannot
-receive the perfect raw score. Symlinks, FIFOs and oversized files are rejected.
-
-**These snapshots are synthetic.** They do not describe a collision-free simultaneous packing or a feasible robot
-trajectory. Their supplied velocities, contacts and displacement histories are trusted fixture data, not sensor
-measurements. This path does not start Isaac Sim, test grasping, test cameras, enforce real-time control, or run the
-match lock. Every verdict labels `synthetic_reference=1`, `physical_rollout=0` and states those limitations. A result
-of 1 confirms the terminal scoring and artifact plumbing only. It does not establish physical task solvability.
-This differs materially from an answer-file calibration task: maintainers must decide whether this oracle is an
-acceptable validation fixture for a closed-loop task. Passing lint/validate alone cannot settle that question.
-
-The anchor was bootstrapped with `value=null`, the actual verifier measured raw score 1 over all 120 synthetic
-snapshots, and that measured value was recorded. No grader assignment of `reward=1` is used; the normal shared
-ratio function calculates the reward. The raw score must be 1 for full credit. The protected answer can be regenerated
-with `python tests/review/make_ideal_answer.py`; any change to hidden seeds, salt, geometry, or scoring needs a fresh
-fixture measurement. The generator supports this task's current 20-part configuration.
-
-## Optional physical reference
-
-`bash solution/solve_physical.sh` prepares the stronger controller merged from upstream commit
-`bc8ba0c`, including its geometry, URDF, motion and grasp modules. It removes only a stale
-`ideal_answer.json`, then stages the physical controller without copying the synthetic fixture.
-The token provides ground truth, future schedule and assisted grasping; ordinary submissions
-retain friction-only grasping. The reference's proprioceptive correction is not visual dependence.
-
-Upstream reports a physical anchor of 0.8583/full_at0.95 and a fresh camera-controller raw mean
-of 0.3375. Its reported reward0.41 uses that physical anchor; our default synthetic normalization
-remains1.0, so the two normalized rewards must not be equated. The original physical calibration
-is retained in `review/upstream_physical_anchor.json`, with its source claims unmodified. It is
-not a measured result for the merged image or official ALE lifecycle.
-
-The merge also adopts the corrected tote/end-stop predicate, the 0.30m pile-height allowance,
-bounded action commands and the new six-shift hidden set. The same outcome predicates apply
-to physical rollouts and synthetic snapshots. Regenerate the fixture after any hidden-set change.
-
-## Reproduction
-
-Host CPU tests (NumPy, Pillow and pytest; no Isaac required):
-
-```sh
-python -m pytest -q tests/review/test_ideal_answer.py tests/review/test_plumbing.py tests/review/test_build_assets.py tests/review/test_cpu_meter.py
-```
-
-`test_ideal_answer.py` exercises actual `solve.sh` and `verify.py`: untouched submission zero, synthetic reference
-one. It also checks unauthorized and malformed fixtures, partial/wrong answers, scalar boundary conditions, and
-regression equivalence of the factored scene RNG and scoring. The common `tests/robotics_grader/` is unmodified. The three real subprocess CPU tests
-require Linux and skip on other systems. Against the prior meter all three failed;
-with the corrected meter they passed on DCC (about 0.26--0.29 CPU seconds retained
-for 0.25-second worker workloads, with no extra charge when a live worker was reaped).
-`review/select_shifts.py` writes physical calibration only to `review/upstream_physical_anchor.json`; it cannot overwrite the fixture anchor. It still changes the hidden set, so regenerate and remeasure the synthetic fixture afterward.
-
-For production validation use the pinned ALE engine and the unmodified Dockerfile on a GPU-capable Docker host.
-A CPU Docker VM can verify image construction, user imports, asset paths, and the synthetic oracle plumbing, but
-cannot validate camera rendering or real controller execution.
+- `verify.py` owns the simulator (`cell_server.py`, run by `/opt/sim/bin/python`) and drives the submission's `run.sh`
+  over the kit's stdio wire (`robotics_grader`), one simulator process per hidden shift (`hidden/shifts.json`).
+- Metric: `part_pickup_score`, computed by `cell_env.py` from the simulator's own state (part in the tote 1.0, held for
+  1 s 0.5, anything else 0, -0.5 per bystander moved more than 5 cm), mean over the shift's 20 parts and over the
+  shifts. Nothing the controller prints is a scoring input. The reward is the ratio to `anchor.json`.
+- Time: each camera frame asked for advances the cell three more 30 Hz steps (a fixed price). The controller's own
+  time must stay within the simulated time elapsed plus 60 s, or the shift ends with what it had earned: a pass/fail
+  real-time threshold in the manner of `dual_arm_parcel_sorting_on_conveyor`, never a scored time.
+- A part that stands still on the chute for 1 s unheld is lost (jam), so a controller cannot stop a part and pick it
+  up at rest: it has to be taken while it moves.
+- Action: 26 numbers (23 robot command values, 3 camera flags). The match lock perturbs the 61 proprioceptive values.
+- The reference (`solution/`) is privileged: `verify.py` attaches ground truth to the observation only when the
+  submission holds `.oracle_token`, whose SHA-256 is `oracle_token.sha256`. The token is not in the agent's image.
+- `review/test_plumbing.py`: CPU tests of the wire, the packing of frames, the truth gate and the reply parser.
+- Physics is PhysX on the CPU (`gm.USE_GPU_DYNAMICS = False`); the GPU renders the cameras. `anchor.json` records the
+  measured spread of the reference.
+- Camera frames: only the steps that lead to a requested frame are rendered (the action's own step and the three steps
+  each frame costs); physics is stepped without rendering otherwise. Depth frames match those of OmniGibson's
+  `Environment.step()` path (which renders every step); colour frames are slightly darker, by 3 to 6 of 255 on average.
+- Hidden set: `hidden/shift_selection.json` (rule, the 12 candidates' scores, the 6 kept, the second run).
+  `review/select_shifts.py` states the rule and reproduces `hidden/shifts.json` and `anchor.json` from two grading runs.
+- Each reply has a deadline of 0.1 s (`reply_deadline_s`); three late replies are forgiven in a shift, the fourth ends it
+  with what it had earned (the first reply has a 5 s grace). Together with the total budget this is a pass/fail real-time
+  threshold in the manner of the race-car tasks' per-tick budget; the verdict reports `late_replies` and `slowest_reply_s`.
+- Camera latency: a frame is delivered 3 to 6 steps after it was taken (a hidden constant of the shift), stamped with
+  `t_capture`, as in `fault_adaptive_spacecraft_docking` and `dual_arm_parcel_sorting_on_conveyor`.
+- Graded shifts are drawn with a secret salt (`hidden/shifts.json`), so a seed does not reproduce one in the lab.
+- Isolation at grading: the simulator's temporary files, log and application data live in a 0700 folder of the grader's
+  account (`verify.py`); the controller runs deprivileged through the kit. Tripwire: a shift with parts taken and no
+  frame requested (and no reference token) is void (`blind`, score 0). The instruction lists what a controller may use
+  and declares the rest disqualifying. Not checked on the author's cluster, which has no account separation.
+- The line feeds on a schedule of its own (`cell_env.py`: `release_at`, `staged_at`, a hidden random stream): a part every
+  9 to 13 s, whatever the controller does. An event is over at the latest when the next part goes on the chute.
+- Grasping is physical for a controller (finger friction only). The reference's token gives it, besides ground truth and
+  what is coming, OmniGibson's assisted grasping (the simulator attaches a part held by both fingers for 0.3 s). The
+  anchor is therefore the score of a controller with these three privileges; say so when comparing.
+- `cpu_meter.py` is the one CPU meter of the grader and of the practice runner (`lab/practice.py`): it reads the
+  controller's process group on every sample and also counts the CPU time of workers already waited for, so a helper
+  that is started and reaped between two replies still spends the budget. `review/test_cpu_meter.py` runs live, reaped
+  and nested workers against it (Linux only).
+- `outcomes.py` holds the scene's random layout draws and the scoring predicates (inside the tote, released and at
+  rest, the credit summary) that `cell_env.py` uses; same draws and same numbers as before they were factored out.
+- `review/test_build_assets.py` checks the image's asset lists (`environment/nvidia-assets.json`, the robot model
+  fetcher) without a network. `NOTICE.md` and `licenses/` carry the licence texts of the task and of the kit.
+- Image: built from `environment/Dockerfile` on 2026-11-26 (rootless build, then run through Apptainer on an RTX 5000
+  Ada): the simulator starts as the agent's user, the CPU checks of the wire pass, a shift runs on the GPU. That was an
+  author's check on a cluster without Docker, not `ale validate`.

@@ -1,15 +1,3 @@
-# Upstream result snapshot — not merged-version validation
-
-Imported from `irinarong/chute_realtime_bimanual_tracking` at `bc8ba0cbe9450f962364a9b8354ef100e557d05a`.
-The report below describes the upstream physical-reference configuration. Our merged branch
-retains a separate direct-answer default, corrected CPU accounting and Docker build fixes.
-Use `PR_BODY_DRAFT.md` and `SUBMISSION_PROGRESS.md` for current validation status.
-The upstream checklist's "above 0.5" statement contradicts its table's reward0.41; the table
-and raw measurements are retained here as attributed evidence, not independently verified results.
-
----
-
-
 ## What this pull request adds
 
 One task folder at `tasks/arm/chute_realtime_bimanual_tracking/`.
@@ -31,7 +19,7 @@ speed, lane, part mass, camera latency, the schedule). The agent leaves a contro
 - [x] `ale lint <folder>` passes on the engine commit pinned at `vendor/ale` (bfb7505).
 - [ ] `ale validate <folder>` passes. **Not run**: the author's cluster has no Docker. The grading path was run outside
       the engine (see the notes); the validator is asked to run it.
-- [x] Difficulty measured with one frontier model (below). It scored well above the 0.5 target: see the note.
+- [x] Difficulty measured with one frontier model (below). Reward 0.41, under the 0.5 target.
 - [x] `tests/anchor.json`: `value` 0.8583 is my own measured number (the reference on the 6 hidden shifts over the real
       grading path); `source` says so; `full_at` 0.95 from two independent runs, which agreed shift by shift.
 - [x] `tests/robotics_grader/` is the canonical copy from `shared/robotics_grader/`, unmodified.
@@ -89,9 +77,13 @@ robot) was far too easy: the same model scored 0.93 there.
   be exercised on the author's cluster.
 - **What was verified where.** The grading path (`solve.sh` + `verify.py` + the kit's wire) was run against the real
   simulator on the author's cluster (H200, rootless, so the kit's `runuser` step was bypassed in a temporary copy).
-  The image was built once from this Dockerfile with rootless podman (28 steps, 43.4 GB); on that cluster a single user
-  id is mapped, so apt's `_apt` account, `chown user:user` and the final `runuser -u user` check were changed in a copy.
-  Running the simulator on a GPU inside the container, and `ale validate`, have not been done.
+  The image was built from this Dockerfile on the same cluster (no Docker there: a rootless build, converted and run
+  with Apptainer on an RTX 5000 Ada). In it, the simulator starts as the agent's user, the CPU checks of the wire and
+  of the CPU meter pass, and the reference took hidden shift 1105 through `run_shift` with the probes on: 0.80 (16 of
+  20 placed, 60 of 60 probes, no late reply), the same score as on the H200 outside the image. That run was under one
+  user id; `ale validate` itself has not been run.
+  `gpu_types` names the H200, on which every score here was measured; the RTX 5000 Ada ran the image too, but its
+  name is not in `scripts/gpu_types.py`, a file outside this folder.
 - **Licences of fetched assets.** `environment/NOTICE.md`: OmniGibson and the R1Pro model MIT; YCB items and
   Simple_Room from NVIDIA's public Isaac asset bucket (the source `object_finding_and_organizing_on_messy_desk` uses).
   No BEHAVIOR-1K scene or object data.
