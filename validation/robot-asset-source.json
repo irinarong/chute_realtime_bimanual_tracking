@@ -1,0 +1,14 @@
+{
+  "repository": "behavior-1k/zipped-datasets",
+  "revision": "9f0d57d465726976ed98138d3f8b8ca3e2186775",
+  "file": {
+    "rfilename": "omnigibson-robot-assets-3.8.2.zip",
+    "blobId": "1b3977abb8fd67c34aaa306c5f0ac0c1739cdebd",
+    "size": 641004353,
+    "lfs": {
+      "sha256": "3d813b2181e0581cf2300a40892de70f8475fe59346ceeea4fb9bf7ff21ce126",
+      "size": 641004353,
+      "pointerSize": 134
+    }
+  }
+}

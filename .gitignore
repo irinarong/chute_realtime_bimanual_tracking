@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+validation/*.tar.gz
+validation/bootstrap/home/
+validation/host-runs/home*/
+validation/engine/

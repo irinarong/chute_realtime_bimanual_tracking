@@ -1,3 +1,14 @@
+# Upstream result snapshot — not merged-version validation
+
+Imported from `irinarong/chute_realtime_bimanual_tracking` at `bc8ba0cbe9450f962364a9b8354ef100e557d05a`.
+The report below describes the upstream physical-reference configuration. Our merged branch
+retains a separate direct-answer default, corrected CPU accounting and Docker build fixes.
+Use `PR_BODY_DRAFT.md` and `SUBMISSION_PROGRESS.md` for current validation status.
+The upstream checklist's "above 0.5" statement contradicts its table's reward0.41; the table
+and raw measurements are retained here as attributed evidence, not independently verified results.
+
+---
+
 
 ## What this pull request adds
 
@@ -48,7 +59,7 @@ the near half of the tote was fixed after its run had started, and the feed inte
 9 to 13 s. It reported 0.475 on two practice shifts of its own.
 
 An earlier version of this task (parts at about 0.2 m/s, no latency, assisted grasping for everyone, feed paced by the
-robot) was far too easy: the same model scored 0.93 there. 
+robot) was far too easy: the same model scored 0.93 there.
 
 ## Notes for the maintainers
 

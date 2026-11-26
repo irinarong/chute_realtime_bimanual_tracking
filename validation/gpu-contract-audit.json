@@ -1,0 +1,22 @@
+{
+  "purpose": "Restrict rendering task to tested GPU; upstream model-registry addition required before task CI can pass",
+  "ale_lint": "passed",
+  "selected": "RTX-5000-Ada",
+  "matching": {
+    "NVIDIA RTX 5000 Ada Generation": true,
+    "NVIDIA RTX 6000 Ada Generation": false,
+    "NVIDIA GeForce RTX 4090": false,
+    "NVIDIA A100-SXM4-80GB": false,
+    "NVIDIA H200": false
+  },
+  "upstream_gpu_check_errors": [
+    "tasks/arm/chute_realtime_bimanual_tracking/task.toml [environment]: gpu_types name 'RTX-5000-Ada' accepts no known GPU model (a typo? the models: KNOWN_MODELS in scripts/gpu_types.py)",
+    "tasks/arm/chute_realtime_bimanual_tracking/task.toml [verifier.environment]: gpu_types name 'RTX-5000-Ada' accepts no known GPU model (a typo? the models: KNOWN_MODELS in scripts/gpu_types.py)"
+  ],
+  "errors_after_registry_patch": [],
+  "registry_patch": "validation/benchmark-gpu-model.patch",
+  "registry_source_sha256": "bbf4e7cfe8c504b9ba18615e1edc34a0694a58b001f1cad7e24fb05615ec8909",
+  "runtime_source_unchanged": true,
+  "docker_rebuild_required": false,
+  "official_ale_validate": false
+}

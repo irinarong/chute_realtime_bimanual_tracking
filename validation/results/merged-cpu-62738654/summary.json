@@ -1,0 +1,14 @@
+{
+  "cpu_smoke_passed": true,
+  "root_to_user_solver": true,
+  "asset_count": 21,
+  "synthetic_oracle_reward": 1,
+  "physical_rollout_tested": false,
+  "pinned_ale_result_sdk": true,
+  "oracle_entrypoint_runs_as_user": true,
+  "agent_uid_cpu_accounting_tests_passed": 3,
+  "physical_entrypoint_root_to_user_startup": true,
+  "physical_entrypoint_removes_stale_fixture": true,
+  "physical_entrypoint_preserves_other_outputs": true,
+  "official_ale_validate": false
+}

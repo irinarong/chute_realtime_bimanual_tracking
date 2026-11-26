@@ -1,0 +1,12 @@
+{
+  "source": "Archived final submission from /cwork/yr111/rax/catch/cell-62701067, previously matched to graded submission",
+  "controller_files": {
+    "controller.py": "f603fa2abdfdc44672bf2595e6958bf7d11e17730eea251de70bf355dc970ea8",
+    "grasp.py": "4aeba0bd17b1781d2ca8a7b066636674ba44247f7d204237e80ec8befd60d51d",
+    "kin.py": "d641ecc578ef26c4fd07a6ea38502517bd610e69dec5208c7e979b660ad2f434",
+    "r1pro.urdf": "b0d76760cbedfbcbe1ddc280380dd5f497bbca380313bc096d7239a2c50dae61",
+    "run.sh": "ccd84a39f31576b8f6c5015f3668604c7fa98a885e22277ec34ae83404528156",
+    "vision.py": "ddd5e3bad989d90c052d3562dd2136136ec234b1707feaca23a602146e9335e0"
+  },
+  "archive_sha256": "167c4c57f7272687b07cfe54969060eca4a64f71b99f665b76c0d628b72474cc"
+}

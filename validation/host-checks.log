@@ -1,0 +1,9 @@
+Installed 1 package in 34ms
+[grader] scoring 0: no submission at /var/folders/t0/f5xfx1c10bqfzwtrsqmdv4140000gn/T/chute-reference-0inm1w4o/submission/run.sh
+[oracle] synthetic ideal-answer fixture ready; no physical rollout
+[grader] scoring 0: invalid ideal-answer fixture: ideal-answer reference is not authorized
+untouched {'reward': 0.0} {'ratio': 0.0, 'anchor_recorded': 1.0}
+oracle-1 {'reward': 1.0} {'ratio': 1.0, 'anchor_recorded': 1.0, 'part_pickup_score': 1.0, 'synthetic_reference': 1.0, 'physical_rollout': 0.0}
+oracle-2 {'reward': 1.0} {'ratio': 1.0, 'anchor_recorded': 1.0, 'part_pickup_score': 1.0, 'synthetic_reference': 1.0, 'physical_rollout': 0.0}
+unauthorized {'reward': 0.0} {'ratio': 0.0, 'anchor_recorded': 1.0, 'synthetic_reference': 1.0, 'physical_rollout': 0.0}
+wrong-answer {'reward': 0.0} {'ratio': 0.0, 'anchor_recorded': 1.0, 'part_pickup_score': 0.0, 'synthetic_reference': 1.0, 'physical_rollout': 0.0}

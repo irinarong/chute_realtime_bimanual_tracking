@@ -1,0 +1,10 @@
+--- a/scripts/gpu_types.py
++++ b/scripts/gpu_types.py
+@@ -35,6 +35,7 @@
+     "NVIDIA GeForce RTX 4090",
+     "NVIDIA GeForce RTX 5090",
+     "NVIDIA RTX A6000",
++    "NVIDIA RTX 5000 Ada Generation",
+     "NVIDIA RTX 6000 Ada Generation",
+     "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+     "Tesla T4",

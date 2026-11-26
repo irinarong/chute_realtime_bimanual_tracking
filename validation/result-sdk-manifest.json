@@ -1,0 +1,24 @@
+{
+  "ale_commit": "bfb75050aca2c54b45c5ab23bae6028a834a468a",
+  "fastjsonschema": "2.21.2",
+  "files": {
+    "engine/ale_verify/__init__.py": "3cb19e613230ac936e3ed3ae2b180e106d196279e5e626cbba5a000819c3b08d",
+    "engine/ale_verify/_agents.py": "07003c8566c13da050da55cfd09956f6b11e9bbf53c3a3d95b234bf4cd001e59",
+    "engine/ale_verify/_io.py": "ae2e39425bc42e04ebb1eac99e386662a693c23541cf2a398d524d23723848ab",
+    "engine/ale_verify/_journal.py": "aaa458621ed7b4bbd7c8ffe190efd96cca5a6eba21c02664e7913e9db8280bb2",
+    "engine/ale_verify/_json.py": "5be9d782c2224fb70d1a12950b3faf3224290a5c70c91edfb2706da073c04bf4",
+    "engine/ale_verify/_llm.py": "f4da99c8b4b551d543f118b35299129b52885df98a4740abf41ceae52a5fddb8",
+    "engine/ale_verify/_records.py": "9d3f8d1604bfc22a5935dbf3816da93374bce443df1c5c04a6b739eef807fb4c",
+    "engine/ale_verify/checks.py": "6cba62c462cec00ab63a98a47a7f288ec4139ecf76b542e15142e72213ad3a5a",
+    "engine/fastjsonschema/__init__.py": "1b30b2c1695a9dd8d042c24b5da6641d8767c9d35c21317aaf6e00bf98106205",
+    "engine/fastjsonschema/__main__.py": "e217dddb7a6bcf199073c5632f47d4b1bb2bbef03bde02761c334f80b2c57402",
+    "engine/fastjsonschema/draft04.py": "9d43f52e18d806b4ccadf848f2734dc469e5073d5c4eb269e5c92024932c66a4",
+    "engine/fastjsonschema/draft06.py": "7123e77e5ab276be84578a74d93fe08785455fb99555da0a0b19cdc270bf3cf0",
+    "engine/fastjsonschema/draft07.py": "0f8a8d36159c8e0d13ac4887434049370be5cafd51a7c832101620441995d9bf",
+    "engine/fastjsonschema/exceptions.py": "c3be3d260a8a8bc72504570e6dd71b655aac985e2827f401ca16754866d414dc",
+    "engine/fastjsonschema/generator.py": "6d866dfd07eb087fefeeb24304cb5e789c78503ca0115ed76633ad14bde2925b",
+    "engine/fastjsonschema/indent.py": "8ee6455bd2d2be60c96cf148526dc63ea74fa89a149eabccf27787379ae4bf35",
+    "engine/fastjsonschema/ref_resolver.py": "3d69eefb6319cd61f9732983bdd72f5dfc7788e5bf32be9cfb15cc626f450fb4",
+    "engine/fastjsonschema/version.py": "319d9c5b54d1d2767e849977d3b020aba35274fcf52450200d3133cc0dd3fbb7"
+  }
+}
