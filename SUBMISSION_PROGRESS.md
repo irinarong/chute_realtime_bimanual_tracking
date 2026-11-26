@@ -11,7 +11,7 @@ Never interpret a synthetic oracle reward as physical robot success.
   now includes corrected process accounting and its Linux regression tests. The
   current source-only snapshot is identified by `chute-validation/PACKAGE.json`;
   it supersedes the `d0f34e0` package. The original image built as `82248cd7aeaa`;
-  its final content-pinned image a35d570a7a6f has now built; export and exact-image checks remain pending.
+  its final content-pinned image a35d570a7a6f has now built; export completed; exact-image checks remain pending.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
   branch `codex/uav-to-uav-tracking`. Current committed source is `4a7077eb5cc00b0d9d30373c0493f9ecdf20d3ae`,
   including verified public box calibration and reference provenance.
@@ -35,9 +35,9 @@ reject corrupted downloads and unsafe ZIP entries.
 | Job | State at latest check | Work |
 |---|---|---|
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
-| 62723900 | RUNNING, image a35d570a7a6f built | Final pinned Docker image export, same VM |
-| 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
-| 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
+| 62723900 | COMPLETED, exit 0, 1h03m47s | Final pinned Docker image build and export |
+| 62722412 | RUNNING after successful 62723900 | Exact-image Docker CPU smoke |
+| 62722552 | RUNNING after successful 62723900 | Saved Docker image to Apptainer SIF |
 | 62725056 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
 
 Recheck job states before any restart. VM disk:
@@ -242,3 +242,13 @@ subsequent checks remain pending. The inspect output is preserved as
 chute-validation/pinned-docker-image.json. Watcher exec session 9721 now follows
 62723900, 62722412, 62722552, 62725056 and corrected UAV build 62725367;
 old watcher 38785 exited after the intentional cancellation of 62725136.
+
+
+Final image export completed: job 62723900 exited zero in 1h03m47s. Current archive
+is 20,311,928,397 bytes, SHA256
+`83eb182723aa03abfd482635d6b03487131e8e3a5547c303e550407875354ea4`.
+The original archive at this shared pathname has been replaced; do not use its old
+17bb1312 hash to identify the current file. Build log, inspect and hash records are
+collected under chute-validation/pinned-*. CPU smoke 62722412 and SIF conversion
+62722552 are now RUNNING. GPU 62725056 still depends on conversion. These are not
+ALE GPU admission results.
