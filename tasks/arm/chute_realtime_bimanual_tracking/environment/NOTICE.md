@@ -1,6 +1,7 @@
 # Third-party material used by this task
 
-Nothing below is stored in this folder; the Dockerfile fetches each item at build time from its public source.
+Large third-party packages and assets are fetched at build time. The small compatibility
+patch and Kit experience configuration are included in this folder.
 
 | Material | Source | Licence |
 |---|---|---|
@@ -18,3 +19,9 @@ Build integrity: `fetch_robot_assets.py` verifies the robot archive SHA256 befor
 measured from the original exact-Docker download layer. The mirror verifies both downloads
 and existing cached files. `usd-core==26.11` is fixed to the version observed in that build.
 These pins do not change the licences or permit redistribution beyond their terms.
+
+`omnigibson_6_1_0.kit` is the Isaac 6.1 experience from the original DCC port,
+copied byte-for-byte (SHA256 `36d0df3b6fdee2c8a83a63a2ee0f6818f8ef4c1c272a0de32cdc5d3be74f0c79`).
+It accompanies the OmniGibson compatibility patch. `check_sim_assets.py` checks
+that the installed simulator version selects a readable experience and logo as
+the agent UID; an import-only check does not cover these launch-time files.

@@ -78,3 +78,9 @@ ENV MPLBACKEND=Agg
 RUN python3 -c "import sys; assert sys.version_info >= (3, 12); import numpy, PIL; print('[image] python3', sys.version.split()[0])" \
     && test -s /opt/cell_items/items.json && test -s "$CELL_ROOM" && test -d /opt/og_data/omnigibson-robot-assets/models/r1pro \
     && runuser -u user -- /opt/sim/bin/python -c "import isaacsim, numpy, PIL; print('[image] agent-UID isaacsim import OK')"
+
+# The port references this custom experience; a git diff of tracked upstream files
+# alone omits it. Keep it in the build context and check the launch selection as user.
+COPY omnigibson_6_1_0.kit /opt/BEHAVIOR-1K/OmniGibson/omnigibson/omnigibson_6_1_0.kit
+COPY check_sim_assets.py /opt/cell-check-sim-assets.py
+RUN runuser -u user -- /opt/sim/bin/python -I /opt/cell-check-sim-assets.py
