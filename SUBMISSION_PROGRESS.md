@@ -10,8 +10,8 @@ This section supersedes older in-progress job descriptions below. Requery Slurm.
 - UAV job 62725367 built both fresh Linux/amd64 images: agent 603fa53eb7d4
   (23,142,587,187 bytes), verifier 7fab623064e3 (5,915,258,566 bytes). Its six
   current-source CPU cases passed across 2,475 hidden frames / 10 sequences;
-  embedded BSD licence matches source. Exports are running. Evidence:
-  uav-validation/final-images-62725367/cpu-smoke-evidence.json.
+  embedded BSD licence matches source. Both exports completed; the job exited0
+  in1h11m50s. Final evidence: uav-validation/final-images-62725367/evidence.json.
 - Friend final Docker build/export and exact-image CPU checks remain verified.
   Conversion62726037 failed with a confirmed mksquashfs OOM (exit137), after
   successful local-disk extraction. Unlike the earlier file-cache observation,
@@ -343,3 +343,18 @@ directory licence-layout-verification.json. No image rebuild, repeated training
 or candidate replacement was needed; live jobs retain their own source/candidate
 identities. UAV agent image finished building; verifier image build is in progress.
 Friend OCI conversion reached SIF creation on node-local scratch.
+
+
+UAV62725367 completed with exit0 in1h11m50s. Both images and archives are now
+verified build outputs: agent archive21,878,762,372bytes, SHA256
+2b131f7e4b8182d9f84148b25a0281a69a63756418fbaabb8875a6c9529dc133;
+verifier archive4,652,762,722bytes, SHA256
+4717ca49b9bf30c80383dfb69612336d6d4d9a54666e40df4bf6d9ac37d876e4.
+The evidence collector checked terminal scheduler state, all completion markers,
+six CPU cases and exact image identities. No archive download or official GPU
+validation is claimed. Do not rebuild these images absent new image-input changes.
+
+Friend conversion62726378 is still compressing. Its actual mksquashfs command
+contains -mem8G/-processors8; a later observation found3.5GBRSS and1.4GB output
+with noOOM. This is confirmed progress past the earlier failure behavior, not yet
+a completed SIF or GPU feasibility result.
