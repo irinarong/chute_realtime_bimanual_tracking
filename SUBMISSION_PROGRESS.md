@@ -53,7 +53,7 @@ capabilities; that GPU lifecycle is still untested here.
 |62728569|PENDING after62728568|Final-image archived visual replay with NGX|
 |62728301|COMPLETED7m46s/exit0|Noisy-RGB overlay visual:0/20,0/28 probes, no timing violation|
 |62728432|COMPLETED8m02s/exit0|Controlled NGX/no-NGX static rendering|
-|62728570|PENDING|Clean-RGB overlay archived visual replay|
+|62728570|RUNNING; NGX and GPU preflights pass|Clean-RGB overlay archived visual replay|
 
 Pending62728290 and62728300 were replaced/canceled before execution to add NGX.
 No active job was interrupted. Rendering evidence is in
@@ -85,4 +85,3 @@ with no answer; do not repeat that question. Keep missing evidence explicitly mi
 Evidence root:
 /Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/
 Use LIVE_PIPELINE.json, ADMISSION_GATES.json, each PACKAGE.json and PR_BODY_DRAFT.md.
-
