@@ -1,7 +1,7 @@
 # chute_realtime_bimanual_tracking: status and measured results (2026-11-26)
 
-This file is the draft of the pull-request text for the Agentic Robotics Benchmark. The task itself is the folder
-`tasks/arm/chute_realtime_bimanual_tracking/`; this file is not part of it.
+The pull-request text for the Agentic Robotics Benchmark (also in `PR_BODY.md`, ready to paste). The task itself is the
+folder `tasks/arm/chute_realtime_bimanual_tracking/`; this file is not part of it.
 
 ## What this pull request adds
 
@@ -22,7 +22,8 @@ speed, lane, part mass, camera latency, the schedule). The agent leaves a contro
 - [x] The folder sits at `tasks/arm/chute_realtime_bimanual_tracking/`; `task.toml` has
       `name = "grounded-intelligence-initiative/chute_realtime_bimanual_tracking"`; platform `arm`.
 - [x] `ale lint <folder>` passes on the engine commit pinned at `vendor/ale` (bfb7505).
-- [ ] `ale validate <folder>` passes. Not run: the author's cluster has no Docker; see the notes.
+- [ ] `ale validate <folder>` passes. **Not run**: the author's cluster has no Docker. The grading path was run outside
+      the engine (see the notes); the validator is asked to run it.
 - [x] Difficulty measured with one frontier model (below). It scored well above the 0.5 target: see the note.
 - [x] `tests/anchor.json`: `value` 0.8583 is my own measured number (the reference on the 6 hidden shifts over the real
       grading path); `source` says so; `full_at` 0.95 from two independent runs, which agreed shift by shift.
@@ -51,7 +52,7 @@ the near half of the tote was fixed after its run had started, and the feed inte
 9 to 13 s. It reported 0.475 on two practice shifts of its own.
 
 An earlier version of this task (parts at about 0.2 m/s, no latency, assisted grasping for everyone, feed paced by the
-robot) was far too easy: the same model scored 0.93 there. That version is commit 67528ed of the author's repository.
+robot) was far too easy: the same model scored 0.93 there. 
 
 ## Notes for the maintainers
 
@@ -88,12 +89,17 @@ robot) was far too easy: the same model scored 0.93 there. That version is commi
   Simple_Room from NVIDIA's public Isaac asset bucket (the source `object_finding_and_organizing_on_messy_desk` uses).
   No BEHAVIOR-1K scene or object data.
 
+## What CI will show
+
+`tests/test_task_cards.py` fails until the task has a card in `tasks/cards.toml` (a maintainer's file; a suggestion is
+below). `ale lint`, the domain lint over the whole repository and the vendored-kit comparison pass on this branch.
+
 ## Suggested card (`tasks/cards.toml`)
 
 ```toml
 [chute_realtime_bimanual_tracking]
 title = "Take moving parts off a chute with an R1Pro"
-summary = "Program a mobile dual-arm robot to take 20 different parts off an inclined chute while they move, seeing them only through its cameras, and put them in a tote."
+summary = "Program a mobile dual-arm robot to take 20 different parts off a chute while they accelerate past, seeing them only through late camera frames, and put them in a tote."
 platforms = ["arm"]
 stages = ["behavior"]
 ```
