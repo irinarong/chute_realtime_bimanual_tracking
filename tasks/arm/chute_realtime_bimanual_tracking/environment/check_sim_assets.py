@@ -30,6 +30,17 @@ def main():
     icon = package.parent.parent / 'docs/assets/OmniGibson_logo.png'
     assert icon.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
     print(f'[image] readable Isaac {installed} launch kit and logo OK: {kit}')
+    isaac = util.find_spec('isaacsim')
+    assert isaac is not None and isaac.origin is not None
+    bundles = list((Path(isaac.origin).parent / 'extscache').glob('omni.warp.core-*'))
+    bundled_versions = {p.name.removeprefix('omni.warp.core-').split('+')[0] for p in bundles}
+    standalone = metadata.version('warp-lang')
+    assert bundled_versions == {standalone}, (
+        f'Warp version mismatch: standalone={standalone}, Isaac bundles={bundled_versions}'
+    )
+    import warp
+    assert warp.__version__ == standalone, (warp.__version__, standalone)
+    print(f'[image] standalone and bundled Warp agree: {standalone}')
 
 
 if __name__ == '__main__':

@@ -25,3 +25,8 @@ copied byte-for-byte (SHA256 `36d0df3b6fdee2c8a83a63a2ee0f6818f8ef4c1c272a0de32c
 It accompanies the OmniGibson compatibility patch. `check_sim_assets.py` checks
 that the installed simulator version selects a readable experience and logo as
 the agent UID; an import-only check does not cover these launch-time files.
+
+Standalone `warp-lang` is pinned to 1.16.0 to match Isaac 6.1's bundled
+`omni.warp.core`. Loading standalone 1.19 with the bundled 1.16 modules fails
+during simulator initialization. The build check also verifies that these
+versions agree before the image can be exported.
