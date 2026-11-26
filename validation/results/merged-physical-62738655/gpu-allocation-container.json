@@ -1,0 +1,55 @@
+{
+  "device_nodes": [
+    {
+      "path": "/dev/nvidia0",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia1",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia2",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia3",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia4",
+      "allowed": true
+    },
+    {
+      "path": "/dev/nvidia5",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia6",
+      "allowed": false,
+      "errno": 1
+    },
+    {
+      "path": "/dev/nvidia7",
+      "allowed": false,
+      "errno": 1
+    }
+  ],
+  "vulkan": [
+    {
+      "index": 0,
+      "uuid": "ba203b259be621b97d574935c18c3afe",
+      "name": "NVIDIA RTX 5000 Ada Generation",
+      "vendor_id": 4318
+    }
+  ],
+  "cuda_uuid": "ba203b259be621b97d574935c18c3afe",
+  "active_gpu": 0,
+  "single_allocated_gpu_verified": true,
+  "cgroup": "0::/system.slice/slurmstepd.scope/job_62738655/step_batch/user/task_0\n"
+}

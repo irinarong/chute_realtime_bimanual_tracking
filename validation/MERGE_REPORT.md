@@ -14,7 +14,10 @@ and untouched submissions remain0. Upstream physical anchor0.8583 is kept separa
 Portable tests:21 passed;3 Linux-only tests skipped locally. Added checks that the physical
 entrypoint starts with all its dependencies and cannot accidentally use a stale fixture,
 and that extreme commands do not reach physics. Pinned ALE lint passes; canonical grader
-files remain identical. Domain lint and final merged-image runtime checks are separate gates.
+files remain identical. Domain lint also passed. Exact-image merged runtime checks subsequently passed:
+CPU62738654 validates both entrypoint startup and protected fixture cases; SIF GPU62738655
+completed the first privileged assisted physical shift at16/20 (0.80), with60/60 probes
+and no late replies. Neither check is official ALE GPU lifecycle validation.
 
 The Dockerfile and every copied build input match build source17b6d4f. Only staged runtime
 files and a licence notice changed, so the completed image can be reused without rebuilding.

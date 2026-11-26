@@ -36,7 +36,14 @@ All80 task files match960d2c3. New exact-image Docker CPU job62738654 completed
 in1m06s/exit0; collected evidence confirms all CPU checks passed. It adds the actual merged physical
 entrypoint startup under the agent UID. GPU job62738655 uses the new physical reference
 through unchanged run_shift, first hidden shift only. It is an explicitly labelled
-same-UID Apptainer author check, not official ALE. It is still running at this update.
+same-UID Apptainer author check, not official ALE. It completed9m36s/exit0:
+16/20 placed, raw score0.80,60/60 probes passed, no late replies or time-budget failure.
+It uses ground truth and assisted grasping; it is not a visual-agent result or six-shift
+anchor measurement. Source/dependency/candidate/image identities were checked.
+Evidence: `validation/results/merged-physical-62738655/`.
+
+Integration draft PR: https://github.com/irinarong/chute_realtime_bimanual_tracking/pull/1.
+Code and reviewable CPU/GPU results are pushed to the friend's repository; main is unchanged.
 
 ## UAV
 
@@ -48,10 +55,10 @@ an autonomous-agent trajectory. See fixed-reference-cpu-62728682/evidence.json.
 
 ## Remaining work
 
-Collect merged checks62738654/62738655 and confirm their outcomes;
-complete official ALE GPU lifecycle, repeated anchors/full_at and new agent trajectories;
-qualify numerical portability and observation-lock fairness. Physical solvability on the
-merged task has new upstream evidence but no independent reproduction yet. Prepare the
+Merged checks62738654/62738655 are complete and collected. Remaining: official ALE GPU lifecycle, repeated anchors/full_at and new agent trajectories;
+qualify numerical portability and observation-lock fairness. One assisted privileged
+physical shift has now been independently reproduced; ordinary camera-based feasibility
+and the complete six-shift measurement remain unqualified. Prepare the
 one-line upstream GPU-model registry addition before task CI. No upstream task PR is open.
 A compatible NVIDIA Docker host was already requested; no repeat question needed.
 
