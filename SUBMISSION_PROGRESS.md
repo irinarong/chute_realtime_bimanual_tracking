@@ -85,3 +85,7 @@ with no answer; do not repeat that question. Keep missing evidence explicitly mi
 Evidence root:
 /Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/
 Use LIVE_PIPELINE.json, ADMISSION_GATES.json, each PACKAGE.json and PR_BODY_DRAFT.md.
+
+UAV fixed-reference verifier job62728682 queued: source8c0ae7a, model972cb29f, exact verifier7fab6230, real Docker UID/seccomp on all2475 heldout frames. Author wrapper changes only infer device toCPU; no training/tuning/anchor edits. Uses healthy VM62725367 with its exclusive lock, not the quarantined VM. See uav-validation/fixed-reference-cpu-plan.json.
+
+First CPU-verifier launcher62728667 failed before VM boot because its serial-log directory lacked a Podman mount. Fixed the mount; lock released and replacement62728682 submitted. No image, checkpoint or grading code changed.
