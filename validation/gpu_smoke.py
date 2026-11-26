@@ -22,13 +22,14 @@ from oracle import Oracle
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--grasping", choices=("physical", "assisted"), default="physical")
+parser.add_argument("--server", default=str(TASK / "tests/cell_server.py"))
 args = parser.parse_args()
 assisted = args.grasping == "assisted"
 hidden = json.loads((TASK / "tests/hidden/shifts.json").read_text())
 token = (TASK / "solution/privileged/oracle_token").read_text().strip()
 env = dict(os.environ, CELL_TOKEN_SHA256=(TASK / "tests/oracle_token.sha256").read_text().strip())
 started = time.monotonic()
-sim = SimClient(str(TASK / "tests/cell_server.py"), env=env, log_path=str(OUT / "isaac.log"))
+sim = SimClient(args.server, env=env, log_path=str(OUT / "isaac.log"))
 try:
     # Truth authorization is checked separately by sim.truth(). Omitting the reset
     # token keeps ordinary friction-only grasping while allowing author diagnosis.

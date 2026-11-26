@@ -10,9 +10,13 @@
 #SBATCH --chdir=/work/yr111/chute-direct-answer-20261126
 #SBATCH --output=/work/yr111/chute-direct-answer-20261126/logs/visual-replay-%j.log
 set -euo pipefail
+SCRATCH=$(mktemp -d "/tmp/chute-visual-${SLURM_JOB_ID}.XXXXXX")
+trap 'rm -rf -- "$SCRATCH"' EXIT
+test "$(df -B1 --output=avail "$SCRATCH" | tail -1)" -gt 10737418240
 BASE=/work/yr111/chute-direct-answer-20261126
 R="$BASE/datasets/visual-replay-$SLURM_JOB_ID"
 mkdir -p "$R/home" "$R/cache" "$R/candidate"
+df -B1 "$SCRATCH" > "$R/scratch-filesystem.txt"
 tar -xzf "$BASE/datasets/candidate.tar.gz" -C "$R/candidate"
 mkdir "$R/audit"
 tar -xzf "$BASE/datasets/visual-replay.tar.gz" -C "$R/audit"
@@ -33,7 +37,7 @@ python3 "$BASE/datasets/scripts/prepare_vulkan_icd.py" "${NVIDIA_ICDS[0]}" "$R/n
 export APPTAINERENV_VK_DRIVER_FILES=/results/nvidia_icd.json
 export APPTAINERENV_VK_ICD_FILENAMES=/results/nvidia_icd.json
 apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
-    --bind "$R:/results,$R/candidate/tasks/arm/chute_realtime_bimanual_tracking:/task:ro" \
+    --bind "$R:/results,$R/candidate/tasks/arm/chute_realtime_bimanual_tracking:/task:ro,$SCRATCH:/tmp" \
     --bind "$R/audit:/audit:ro" \
     --bind "$R/apps:/opt/sim/lib/python3.12/site-packages/isaacsim/apps" \
     --bind "$R/cache:/opt/sim/lib/python3.12/site-packages/omni/cache" \

@@ -13,7 +13,13 @@ set -euo pipefail
 BASE=/work/yr111/chute-direct-answer-20261126
 R="$BASE/datasets/gpu-smoke-$SLURM_JOB_ID"
 mkdir -p "$R/home" "$R/cache" "$R/candidate"
+SCRATCH=$(mktemp -d "/tmp/chute-gpu-${SLURM_JOB_ID}.XXXXXX")
+trap 'rm -rf -- "$SCRATCH"' EXIT
+df -B1 "$SCRATCH" > "$R/scratch-filesystem.txt"
+test "$(df -B1 --output=avail "$SCRATCH" | tail -1)" -gt 10737418240
 tar -xzf "$BASE/datasets/candidate.tar.gz" -C "$R/candidate"
+cp "$BASE/datasets/scripts/gpu_smoke.py" "$R/gpu_smoke.py"
+cp "$BASE/datasets/scripts/diagnostic_cell_server.py" "$R/diagnostic_cell_server.py"
 cp "$BASE/datasets/scripts/gpu_preflight.py" "$R/gpu_preflight.py"
 python3 "$R/gpu_preflight.py" --output "$R/gpu-allocation-host.json"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$R/hardware.csv"
@@ -31,11 +37,11 @@ python3 "$BASE/datasets/scripts/prepare_vulkan_icd.py" "${NVIDIA_ICDS[0]}" "$R/n
 export APPTAINERENV_VK_DRIVER_FILES=/results/nvidia_icd.json
 export APPTAINERENV_VK_ICD_FILENAMES=/results/nvidia_icd.json
 apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
-    --bind "$R:/results,$R/candidate/tasks/arm/chute_realtime_bimanual_tracking:/task:ro" \
+    --bind "$R:/results,$R/candidate/tasks/arm/chute_realtime_bimanual_tracking:/task:ro,$SCRATCH:/tmp" \
     --bind "$R/apps:/opt/sim/lib/python3.12/site-packages/isaacsim/apps" \
     --bind "$R/cache:/opt/sim/lib/python3.12/site-packages/omni/cache" \
     "$SIF" /bin/bash -euc '
         /opt/sim/bin/python /results/gpu_preflight.py --host-record /results/gpu-allocation-host.json --output /results/gpu-allocation-container.json
-        exec /opt/venv/bin/python /results/candidate/gpu_smoke.py
+        exec /opt/venv/bin/python /results/gpu_smoke.py --server /results/diagnostic_cell_server.py
     '
 printf 'CHUTE_IMAGE_GPU_SMOKE_COMPLETE\n'

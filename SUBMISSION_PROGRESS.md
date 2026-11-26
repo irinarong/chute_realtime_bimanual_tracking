@@ -1,25 +1,25 @@
 # Two-task submission work — active, admission pending
 
-## Latest verified checkpoint — 2026-11-26 11:14 UTC
+## Latest verified checkpoint — 2026-11-26 (supersedes older job descriptions)
 
-This section supersedes older in-progress job descriptions below. Requery Slurm.
-
-- Source-only task packages: friend 3acb84b (archive 3f8192df…); UAV 8c0ae7a
-  (archive a57f2b0b…). Both exact packages pass ALE lint after moving licence
-  files into permitted stages. Runtime code and image build inputs are unchanged.
-- UAV job 62725367 built both fresh Linux/amd64 images: agent 603fa53eb7d4
-  (23,142,587,187 bytes), verifier 7fab623064e3 (5,915,258,566 bytes). Its six
-  current-source CPU cases passed across 2,475 hidden frames / 10 sequences;
-  embedded BSD licence matches source. Both exports completed; the job exited0
-  in1h11m50s. Final evidence: uav-validation/final-images-62725367/evidence.json.
-- Friend final Docker build/export and exact-image CPU checks remain verified.
-  Conversion62726037 failed with a confirmed mksquashfs OOM (exit137), after
-  successful local-disk extraction. Unlike the earlier file-cache observation,
-  this compressor used ~31GiB anonymous RAM against a32GiB cgroup limit.
-  Replacement62726378 uses explicit8GiB compression buffers and8CPU.
-  GPU62725056 now depends on62726378; visual replay62726049 still follows it.
-- No new official ALE GPU gate or frontier-agent trajectory is claimed. The
-  outstanding suitable NVIDIA Docker host request remains unanswered.
+- Frozen task sources remain friend3acb84b and UAV8c0ae7a. Both source packages
+  pass pinned ALE lint; all nine canonical grader files match. No upstream PR.
+- UAV healthy Docker builds/exports and six current-source CPU cases passed.
+  Final-image CUDA smoke62727211 passed on H200: two optimizer updates plus
+  all1,190 public inference frames, AP50=0.3284880958. Evidence is collected.
+- UAV full in-image training62727576 is RUNNING. It invokes exact solve.sh from
+  scratch, all24k steps, then public validation; no previous UAV checkpoint is
+  mounted. This closes a development reproduction gap, not an ALE/agent gate.
+- Friend SIF conversion62726378 and CUDA/Vulkan GPU identity62727328 passed.
+  Physical smoke62727329 failed before camera startup with a truncated Torch
+  Inductor C++ compiler error. CPU-only probe62727574 reproduced a PCH write
+  failure: No space left on device. g++11.4 and headers are present. Retry62727620
+  passed the import in1m17s with node-local/tmp; corrected GPU62727626 is queued.
+  No Docker rebuild.
+- Visual62727631 follows corrected62727626 with node-local/tmp; old62727330
+  was canceled while DependencyNeverSatisfied after its replacement registered.
+- Official ALE GPU lifecycle, repeated anchors and fresh frontier trajectories
+  remain missing. The compatible NVIDIA Docker host request is unanswered.
 
 
 ## Scope and source of truth
