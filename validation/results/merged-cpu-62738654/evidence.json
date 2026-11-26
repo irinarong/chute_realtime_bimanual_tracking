@@ -1,0 +1,24 @@
+{
+  "job": 62738654,
+  "scope": "Merged source in exact Docker image; author CPU integration",
+  "task_source": "960d2c32f247443b5a4fb057e6bb15c2dbfe39e4",
+  "image_id": "sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd",
+  "results_sha256": "042ceac4d5e97ad0a854d7cd649e7bff5a955b30f3cb7880c5ae32db974fb5ae",
+  "candidate_sha256": "e29745750a5a04a4ee56f04e0bc53f7602df82e3332884eebb5491e0b448a305",
+  "official_ale_validate": false,
+  "summary": {
+    "cpu_smoke_passed": true,
+    "root_to_user_solver": true,
+    "asset_count": 21,
+    "synthetic_oracle_reward": 1,
+    "physical_rollout_tested": false,
+    "pinned_ale_result_sdk": true,
+    "oracle_entrypoint_runs_as_user": true,
+    "agent_uid_cpu_accounting_tests_passed": 3,
+    "physical_entrypoint_root_to_user_startup": true,
+    "physical_entrypoint_removes_stale_fixture": true,
+    "physical_entrypoint_preserves_other_outputs": true,
+    "official_ale_validate": false
+  },
+  "collected_at_utc": "2026-11-26T18:29:00.771083+00:00"
+}

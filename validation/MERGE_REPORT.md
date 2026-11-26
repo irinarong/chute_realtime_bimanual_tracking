@@ -21,4 +21,7 @@ files and a licence notice changed, so the completed image can be reused without
 The old-source Docker/CPU/GPU jobs completed; their scores do not qualify the merged runtime.
 Upstream reported controller scores are attributed evidence, not independently reproduced here.
 
-An attempted push to origin was denied403 for account yuanboP. No remote branch was changed.
+The initial push was denied403 for account yuanboP. After the user granted access,
+`codex/chute-submission-ready` was pushed successfully to origin at7d9d241 on2026-11-26.
+Remote main remainsbc8ba0c. The merged-source CPU Docker checks passed in62738654;
+reviewable result JSON is in `validation/results/merged-cpu-62738654/`.
