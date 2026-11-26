@@ -38,7 +38,7 @@ reject corrupted downloads and unsafe ZIP entries.
 | 62723900 | RUNNING, simulator/OmniGibson cache reused | Final pinned Docker rebuild, same VM |
 | 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
 | 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
-| 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift |
+| 62725056 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
@@ -173,3 +173,23 @@ have been omitted by task-folder packaging. The canonical robotics_grader remain
 byte-identical; its Apache-2.0 licence and upstream NOTICE are included separately
 under task/third_party, with attribution in task/NOTICE.md. No image inputs or
 runtime behavior changed.
+
+## Collected Docker smoke and GPU allocation checks
+
+The original image CPU smoke passed with current task source and pinned SDK:
+three Linux accounting tests under agent UID, root-to-user Solver, untouched zero,
+synthetic oracle one twice, unauthorized zero and wrong-answer zero. Its archive
+was copied from the guest to DCC and local evidence with matching SHA256
+`0b586159dd80367dffe3c99afc75002370361a5227c51885df47900b0bfeb443`.
+See `chute-validation/original-smoke-evidence.json`. This does not replace the
+queued final-image smoke or establish any physical control result.
+
+GPU job 62723043 was held before execution, then replaced by 62725056 and cancelled.
+The replacement checks actual device open permissions and resolves the assigned
+Slurm device to its NVIDIA UUID. DCC confirms ConstrainDevices=yes; probe 62725034
+assigned physical GPU 4 with CUDA_VISIBLE_DEVICES=0, and open() rejected the other
+seven devices with EPERM. The script preserves the assigned UUID through cleanenv,
+restricts the Vulkan loader to the NVIDIA ICD, then requires CUDA and Vulkan to
+expose the same single GPU before Isaac starts. This is a validation-infrastructure
+change; the submitted task/source package and candidate archive are unchanged.
+Container-side UUID verification and rendering results remain pending.
