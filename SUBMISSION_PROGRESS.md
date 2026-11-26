@@ -37,8 +37,8 @@ reject corrupted downloads and unsafe ZIP entries.
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
 | 62723900 | COMPLETED, exit 0, 1h03m47s | Final pinned Docker image build and export |
 | 62722412 | COMPLETED, exit 0, 47s | Exact-image Docker CPU smoke |
-| 62725860 | RUNNING, reuses checked raw archive | Saved Docker image to Apptainer SIF |
-| 62725056 | PENDING afterok 62725860 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
+| 62726037 | RUNNING, local-disk scratch | Saved Docker image to Apptainer SIF |
+| 62725056 | PENDING afterok 62726037 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
@@ -281,3 +281,22 @@ Conversion 62725860 reuses and rechecks the completed raw archive instead of
 repeating decompression. GPU 62725056 now depends on this job. The raw file remains
 at datasets/apptainer-convert-62725756/chute-task-image.tar. Watcher 64051 exited on
 the previous conversion failure. No Docker rebuild or CPU re-test is needed.
+
+
+OCI conversion 62725860 verified format/identity and reached extraction, then failed
+because /work NFS refuses removal of inherited system.nfs4_dacl xattrs. This is an
+extraction-scratch issue. Replacement 62726037 uses a unique node-local /tmp tree
+for rootfs/cache and checks for 80 GiB free local disk (observed 7 TB available).
+It reuses the checked raw archive; GPU 62725056 now depends on 62726037. No Docker
+image or task inputs changed. Earlier high conversion memory was file cache
+(about 22 MB anonymous memory, no OOM events), so no memory-policy change was made.
+
+Diagnostic 62726049 is queued after the basic GPU smoke. It replays the archived
+six-file visual controller unchanged through the current task's run_shift and
+canonical Solver/ProbeLock, with current CPU/deadline accounting and no truth
+access or assisted grasping. Only Solver._spawn is adapted for the same-UID author
+container; clear_account=False and a nonroot guard prevent host-account clearing
+or root controller execution. This is explicitly not ALE isolation or a fresh
+frontier-agent run. Its archive (8 files) SHA256 is
+167c4c57f7272687b07cfe54969060eca4a64f71b99f665b76c0d628b72474cc.
+The current probe is preserved for measurement; there is no untested lock removal.

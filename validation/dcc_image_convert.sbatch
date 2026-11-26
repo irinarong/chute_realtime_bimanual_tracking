@@ -11,8 +11,17 @@ set -euo pipefail
 BASE=/work/yr111/chute-direct-answer-20261126
 D="$BASE/datasets/vm-builder-62721924"
 R="$BASE/datasets/apptainer-convert-$SLURM_JOB_ID"
-mkdir -p "$R/tmp" "$R/cache"
-export APPTAINER_TMPDIR="$R/tmp" APPTAINER_CACHEDIR="$R/cache"
+mkdir -p "$R"
+# OCI unpacking clears xattrs; DCC /work is NFS and rejects removal of its
+# system.nfs4_dacl attribute. Rootfs extraction must use local disk, not NFS/tmpfs.
+S=$(mktemp -d "/tmp/chute-convert-$SLURM_JOB_ID.XXXXXX")
+trap 'chmod -R u+rwX "$S" 2>/dev/null || true; rm -rf -- "$S"' EXIT
+FSTYPE=$(stat -f -c %T "$S")
+case "$FSTYPE" in nfs*|tmpfs) echo "Unsupported conversion scratch filesystem: $FSTYPE" >&2; exit 42;; esac
+df -h "$S" > "$R/scratch-filesystem.txt"
+test "$(df -Pk "$S" | awk 'NR==2 {print $4}')" -ge 83886080 || { echo 'Need 80 GiB local scratch space' >&2; exit 43; }
+mkdir "$S/tmp" "$S/cache"
+export APPTAINER_TMPDIR="$S/tmp" APPTAINER_CACHEDIR="$S/cache" TMPDIR="$S/tmp"
 sha256sum -c "$D/image.sha256"
 # Apptainer 1.5.4 failed on the compressed docker-archive input. Decompress with
 # gzip (which validates its CRC), then use the transport actually present in the
