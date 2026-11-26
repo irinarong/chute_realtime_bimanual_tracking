@@ -1,52 +1,49 @@
-## What this pull request adds
+## Task
 
-`tasks/arm/chute_realtime_bimanual_tracking/` asks an autonomous agent to implement a visual controller that catches moving parts with a two-arm robot and places them in a tote. The submitted `run.sh` and supporting code receive RGB-D images and proprioception; a separate privileged simulator evaluates six hidden shifts.
+The agent writes a visual controller for a two-arm robot to catch moving parts and place
+them in a tote. It receives RGB-D images and proprioception; the privileged verifier runs
+six hidden20-part shifts. Source follows the task author's main atc657bc8, with corrected
+review notes. The task folder alone belongs in the benchmark PR.
 
-**Admission pending. Local draft only; no upstream task PR has been opened.**
+**Admission pending. No benchmark task PR is open.** Integration PR1 in the author's
+repository was merged and is separate from benchmark admission.
 
-## Checklist
+## Reference and scoring
 
-- [x] Folder, manifest name and `arm` platform agree.
-- [x] Pinned ALE lint passes (`bfb75050aca2c54b45c5ab23bae6028a834a468a`).
-- [ ] Official ALE validation records untouched reward 0 and reference reward 1 under the declared GPU resources.
-- [ ] Current frontier-agent results and complete trajectories are archived.
-- [ ] Repeated official reference runs support the anchor and `full_at`.
-- [x] All nine `robotics_grader` files match the canonical package.
-- [x] Practice scoring reports raw metrics without importing hidden tests or the anchor.
-- [x] The task folder contains source and small fixtures, without checkpoints or downloaded simulator assets.
-- [x] Platform, positive metric direction and reported metric name agree.
-- [ ] The upstream known-GPU list includes `NVIDIA RTX 5000 Ada Generation`.
+`solution/solve.sh` stages the real ground-truth controller. Its token authorizes privileged
+state and assisted grasping. It does not emit terminal-answer snapshots. The upstream
+anchor is0.8583/full_at0.95, attributed to two author six-shift measurements. Independent
+official ALE calibration remains outstanding. Ordinary agents receive neither truth nor
+assisted grasping. The upstream reported camera-agent raw mean0.3375/reward0.41 is attributed
+evidence with account separation bypassed, not our qualifying `ale run` trajectory.
 
-## Reference design
+## Build and checks
 
-The requested default reference writes protected terminal snapshots and a reference-only authorization token. The verifier reconstructs the hidden tote layouts and applies the simulator's placement predicates and credit aggregation. Author CPU Docker checks measured reference reward 1 twice and untouched, wrong and unauthorized answers at 0.
+The Docker image includes the pinned Isaac6.1 Kit and matching Warp1.16, immutable robot
+and NVIDIA assets, agent-UID import checks, and preserved licences. Image ID:
+`sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd`.
+Current source changes no build input, so that image is reused. Runtime setup stays light.
 
-These verdicts explicitly report `synthetic_reference=1` and `physical_rollout=0`. They validate the direct-answer scoring path; they do not establish that a feasible physical trajectory exists. Acceptance of this reference design for a closed-loop task remains a maintainer-review item. The stronger upstream privileged controller is available separately as `solution/solve_physical.sh`; all motion/geometry dependencies are staged and any stale synthetic fixture is removed.
+- 7 portable checks pass;3 Linux-only checks skipped locally. ALE/domain/GPU-name lint pass.
+- All9 shared grader files match the canonical source.
+- Current CPU Docker job62742402 passes missing/malformed submission zero cases, normal
+ and reference startup under the agent UID, and all3 Linux process CPU-accounting checks.
+- First-shift author GPU check62738655 onRTX5000Ada placed16/20(raw0.80), with60/60 probes
+ and no late replies. It uses the same controller/scoring but does not qualify H200/ALE.
+- Current H200 source check62742430 and ordinary public-seed camera capture are pending.
 
-## Build and validation evidence
+The declaration is H200,8CPUs,32GiB in both stages, a4h agent budget and3h verifier cap.
+H200 is in the benchmark registry; the previous RTX5000Ada registry patch is superseded.
+The cluster's exact-image SIF runs use a single-UID author adapter. Docker CPU checks test
+UID separation; neither is an official GPU ALE run.
 
-GPU startup exposed two defects that import-only checks missed: a missing `omnigibson_6_1_0.kit` and mismatched standalone/bundled Warp versions. The Dockerfile now copies the pinned Kit, pins standalone Warp to Isaac's 1.16.0, and checks both at build time. The corrected image build/CPU checks/export (62728274), conversion (62728280), and two old-source GPU checks (62728568/62728569) all completed with exit0. Collected image identity is `sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd`; its CPU cases pass. GPU result details still need collection. The upstream merge leaves all Docker build inputs unchanged, but its updated runtime needs separate checks.
+## Before submission
 
-Earlier CPU Docker checks passed the protected-reference cases, root-to-user solver execution and three real Linux child-process CPU-accounting cases. The intermediate Kit-only image also passed those checks but retained the Warp mismatch, so it is historical evidence only.
+- [ ] Official untouched0/reference1 ALE validation under the declared resources.
+- [ ] Repeated reference calibration and numerical portability.
+- [ ] Fresh frontier-agent runs with full trajectories.
+- [ ] Observation-lock fairness and ordinary camera-controller feasibility qualified.
 
-Controlled development rendering on RTX 5000 Ada identified an Apptainer host-library omission: adding the host-matched NGX library restored clean RGB without changing physics, joint state or part poses. Author launch helpers now handle this; no driver library is baked into the task image. The pinned ALE Docker provider already requests all NVIDIA driver capabilities, but its GPU lifecycle has not been run here.
-
-## Frontier-model results
-
-The upstream update at `bc8ba0c` reports a fresh camera-only controller raw mean0.3375 and
-physical-reference mean0.8583. Its reported reward0.41 uses physical normalization0.8583/full_at0.95;
-our requested direct-answer variant uses a synthetic ceiling1.0. Those rewards are not interchangeable.
-The upstream run bypassed account separation and was not `ale run`; its source reports are retained
-as attributed snapshots in RESULTS.md and PR_BODY.md. They have not been independently reproduced
-on this merged configuration. The older zero-contact replay concerned the previous task version.
-The joint-only observation-lock fairness concern remains; no lock was silently removed during merging.
-
-## Notes for maintainers
-
-Both stages request 8 CPUs, 32 GiB RAM and one `RTX-5000-Ada`; the agent budget is four hours and verification up to three hours. The precise model restriction matches the development rendering hardware. The upstream GPU registry does not currently contain that model: the accompanying author-only `benchmark-gpu-model.patch` adds it, and must land before the task's GPU-name CI can pass. The task PR itself should contain only the task folder.
-
-The image uses Isaac Sim 6.1, patched OmniGibson at a fixed commit, the R1Pro model and pinned NVIDIA YCB/Simple_Room assets. Licence details are in `environment/NOTICE.md`. Robot assets have an immutable Hugging Face revision and SHA256; all 277 NVIDIA files have size/hash pins.
-
-Remaining qualifications: merged-runtime image checks, ordinary physical feasibility, fair observation lock, numerical portability, official ALE lifecycle and repeated anchors, and current frontier-agent trajectories. Native/SIF/CPU-container evidence does not replace the official GPU lifecycle.
-
-Current merge provenance and checks: `validation/MERGE_REPORT.md`. Source `960d2c32f247443b5a4fb057e6bb15c2dbfe39e4`; archive SHA256 `1e5f3c80d6a70cd9ec3d34a40257f8a7147d9c13af220f555d66ebce0469d378`.
+Source398d93c,73files; archive SHA256
+`2ff077150eae4b2c8f8151145b0fdd9668849db71797713b345ab763cdfd8b26`.
+Historical synthetic1 results belong to the retired variant and are not current validation.

@@ -52,11 +52,12 @@
     "run_shift": true
   },
   "outcomes_ast_match_excluding_docstring": true,
-  "source_selection": "pending user choice after upstream changed requested reference design",
+  "source_selection": "User selected current friend main physical reference",
   "official_ale_validate": false,
   "limitations": [
     "Current main removes the synthetic verifier path; synthetic reward1 evidence does not validate current main.",
     "The single-shift physical check uses shared unchanged logic, but does not validate current H200 contract, full six-shift anchor or ALE isolation.",
     "Latest validation-only commit f411a0e was pushed after PR1 merged; it is not in main."
-  ]
+  ],
+  "current_selected_task_source": "398d93ca93bbd02e2d718f35f8902ee3a014ec5d"
 }

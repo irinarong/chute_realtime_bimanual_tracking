@@ -63,30 +63,16 @@ def verify(name, expected):
 
 
 verify("untouched", 0)
-# Emulate oracle-only source staging and run the actual solve entry point as user.
-oracle_stage = Path("/tmp/chute-oracle-stage")
-shutil.copytree(TASK / "solution", oracle_stage)
-subprocess.run(["chown", "-R", "user:user", str(oracle_stage)], check=True)
-subprocess.run(["runuser", "-u", "user", "--", "bash", str(oracle_stage / "solve.sh")],
-               env=env, check=True)
-shutil.rmtree(oracle_stage)
-verify("oracle-1", 1)
-verify("oracle-2", 1)
-token = Path("/home/user/submission/.oracle_token")
-saved = token.read_bytes()
-token.write_text("invalid")
-verify("unauthorized", 0)
-token.write_bytes(saved)
-answer = Path("/home/user/submission/ideal_answer.json")
-data = json.loads(answer.read_text())
-for shift in data["shifts"]:
-    for event in shift["events"]:
-        event["position_world_m"] = [10, 10, 10]
-answer.write_text(json.dumps(data))
-verify("wrong-answer", 0)
+# A malformed executable must score zero before any simulator is launched.
+submission = Path("/home/user/submission")
+submission.mkdir(exist_ok=True)
+entry = submission / "run.sh"
+entry.write_text("#!/bin/sh\necho BROKEN\n")
+entry.chmod(0o755)
+subprocess.run(["chown", "-R", "user:user", str(submission)], check=True)
+verify("malformed-wire", 0)
 
 # Exercise real root -> user process isolation through the canonical solver wire.
-answer.unlink()
 subprocess.run(["cp", "/home/user/example_controller/run.sh", "/home/user/submission/run.sh"], check=True)
 subprocess.run(["cp", "/home/user/example_controller/controller.py", "/home/user/submission/controller.py"], check=True)
 subprocess.run(["chown", "-R", "user:user", "/home/user/submission"], check=True)
@@ -103,16 +89,17 @@ finally:
 
 # Stage the merged physical reference through its actual entrypoint. This tests
 # dependency imports and the canonical UID boundary, not a physical rollout.
+oracle_stage = Path("/tmp/chute-oracle-stage")
 shutil.copytree(TASK / "solution", oracle_stage)
 subprocess.run(["chown", "-R", "user:user", str(oracle_stage)], check=True)
 keep = Path("/home/user/submission/keep.txt")
 keep.write_text("preserve user output\n")
-answer.write_text("stale synthetic fixture")
-subprocess.run(["chown", "user:user", str(keep), str(answer)], check=True)
-subprocess.run(["runuser", "-u", "user", "--", "bash", str(oracle_stage / "solve_physical.sh")],
+subprocess.run(["chown", "user:user", str(keep)], check=True)
+subprocess.run(["runuser", "-u", "user", "--", "bash", str(oracle_stage / "solve.sh")],
                env=env, check=True)
 shutil.rmtree(oracle_stage)
-assert not answer.exists()
+assert not (TASK / "tests/ideal_answer.py").exists()
+assert not (submission / "ideal_answer.json").exists()
 assert keep.read_text() == "preserve user output\n"
 solver = Solver(step_timeout=10)
 try:
@@ -123,11 +110,10 @@ finally:
     solver.close()
 (OUT / "summary.json").write_text(json.dumps({
     "cpu_smoke_passed": True, "root_to_user_solver": True, "asset_count": len(items),
-    "synthetic_oracle_reward": 1, "physical_rollout_tested": False,
+    "physical_reference_reward_tested": False, "physical_rollout_tested": False,
     "pinned_ale_result_sdk": True, "oracle_entrypoint_runs_as_user": True,
     "agent_uid_cpu_accounting_tests_passed": 3,
     "physical_entrypoint_root_to_user_startup": True,
-    "physical_entrypoint_removes_stale_fixture": True,
     "physical_entrypoint_preserves_other_outputs": True,
     "official_ale_validate": False,
 }, indent=2) + "\n")
