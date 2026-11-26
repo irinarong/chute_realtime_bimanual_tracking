@@ -5,6 +5,7 @@ This is a CPU integration smoke test, not an official GPU ALE validation.
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -12,8 +13,14 @@ TASK = Path("/opt/ale/source")
 OUT = Path("/tmp/chute-smoke")
 OUT.mkdir(exist_ok=True)
 env = dict(os.environ, ALE_STAGE_DIR=str(TASK / "tests"), ALE_HOME="/home/user",
-           CELL_SIM_PYTHON="/simulator-must-not-start", PYTHONDONTWRITEBYTECODE="1")
-env.pop("ALE_VERIFY_PYTHON", None)
+           CELL_SIM_PYTHON="/simulator-must-not-start", PYTHONDONTWRITEBYTECODE="1",
+           ALE_VERIFY_PYTHON=sys.executable, PYTHONPATH="/opt/ale/engine")
+env.pop("ROBOTICS_GRADER_VERDICT_PATH", None)
+verifier_output = Path("/logs/verifier")
+verifier_output.mkdir(parents=True, exist_ok=True)
+verifier_output.chmod(0o700)
+sys.path.insert(0, "/opt/ale/engine")
+from ale_verify import read_result
 subprocess.run(["bash", "setup.sh"], cwd=TASK / "environment/setup", env=env, check=True)
 subprocess.run(["runuser", "-u", "user", "--", "bash", "-c",
                 'test ! -r /opt/ale/source/tests/anchor.json && test ! -r /opt/ale/source/solution/privileged/oracle_token && test -r /home/user/lab/outcomes.py'],
@@ -34,16 +41,25 @@ assert Path("/opt/og_data/omnigibson-robot-assets/models/r1pro").is_dir()
 
 def verify(name, expected):
     path = OUT / (name + ".json")
-    env["ROBOTICS_GRADER_VERDICT_PATH"] = str(path)
+    for filename in ("reward.json", "verification.json"):
+        (verifier_output / filename).unlink(missing_ok=True)
     subprocess.run([sys.executable, str(TASK / "tests/verify.py")], env=env, check=True)
-    verdict = json.loads(path.read_text())
-    assert verdict["rewards"]["reward"] == expected, verdict
-    print(name, verdict["rewards"], verdict["metrics"], flush=True)
+    verdict = read_result((verifier_output / "reward.json").read_bytes(),
+                          (verifier_output / "verification.json").read_bytes())
+    assert verdict["reward"] == expected, verdict
+    shutil.copyfile(verifier_output / "verification.json", path)
+    shutil.copyfile(verifier_output / "reward.json", OUT / (name + "-reward.json"))
+    print(name, verdict["reward"], verdict["metrics"], flush=True)
 
 
 verify("untouched", 0)
-subprocess.run(["bash", str(TASK / "solution/solve.sh")], env=env, check=True)
-subprocess.run(["chown", "-R", "user:user", "/home/user/submission"], check=True)
+# Emulate oracle-only source staging and run the actual solve entry point as user.
+oracle_stage = Path("/tmp/chute-oracle-stage")
+shutil.copytree(TASK / "solution", oracle_stage)
+subprocess.run(["chown", "-R", "user:user", str(oracle_stage)], check=True)
+subprocess.run(["runuser", "-u", "user", "--", "bash", str(oracle_stage / "solve.sh")],
+               env=env, check=True)
+shutil.rmtree(oracle_stage)
 verify("oracle-1", 1)
 verify("oracle-2", 1)
 token = Path("/home/user/submission/.oracle_token")
@@ -77,6 +93,7 @@ finally:
 (OUT / "summary.json").write_text(json.dumps({
     "cpu_smoke_passed": True, "root_to_user_solver": True, "asset_count": len(items),
     "synthetic_oracle_reward": 1, "physical_rollout_tested": False,
+    "pinned_ale_result_sdk": True, "oracle_entrypoint_runs_as_user": True,
     "official_ale_validate": False,
 }, indent=2) + "\n")
 print("DOCKER_CPU_SMOKE_PASSED", flush=True)

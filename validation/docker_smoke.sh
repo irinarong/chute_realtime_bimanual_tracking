@@ -9,6 +9,7 @@ CID="$(sudo docker run -d --network none --entrypoint /bin/sleep "$IMAGE" infini
 trap 'sudo docker rm -f "$CID" >/dev/null' EXIT
 sudo docker exec "$CID" bash -c 'mkdir -p /opt/ale; chmod 700 /opt/ale'
 sudo docker cp "$TASK" "$CID:/opt/ale/source"
+sudo docker cp "$HERE/engine" "$CID:/opt/ale/engine"
 sudo docker cp "$HERE/docker_smoke.py" "$CID:/opt/ale/docker_smoke.py"
 set +e
 sudo docker exec "$CID" /opt/venv/bin/python /opt/ale/docker_smoke.py > "$OUT/smoke.log" 2>&1

@@ -61,11 +61,11 @@ Buildx installation in this guest was started separately to support the pinned e
 The first H200 rendering smoke job 62722564 was cancelled while queued and replaced with 62723043 on
 RTX 5000 Ada; Isaac camera testing needs an RTX-capable GPU. Only this task's queued validation was changed.
 UAV tiled-inference experiment 62723029 evaluates 512/768-pixel crops of each current RGB frame on public val.
-Tiled evaluation completed: AP50 10.88% at 512 pixels and 12.72% at 768 pixels. Job 62723393 (H200 development inference) compares
+Tiled evaluation completed: AP50 10.88% at 512 pixels and 12.72% at 768 pixels. Job 62723478 (CPU development inference) compares
 a small fixed grid of global box expansion/NMS on public validation, retaining all public predictions for diagnosis. Its first attempt 62723142 failed before inference because the
-author helper passed a relative worker path; the corrected helper uses absolute paths. This was not a model failure. RTX job 62723201 was then cancelled
-while queued and replaced by 62723393 to avoid waiting for the RTX rendering allocation. Its report records
-the actual GPU and includes an unchanged baseline on that same host; this is still not official ALE validation.
+author helper passed a relative worker path; the corrected helper uses absolute paths. This was not a model failure. RTX job 62723201 was then cancelled while queued. H200 replacement 62723393 remained blocked by
+AssocGrpGRES and was cancelled. CPU job 62723478 is confirmed running, with four computation threads,
+and includes an unchanged baseline on the same host; this is still not official ALE validation.
 The GPU diagnostic job 62723003 was replaced by a short CPU diagnostic inside our existing 62721924 allocation.
 CPU diagnosis completed on 24 selected public frames. See `uav-reference-v2/public-predictions.json`,
 `val-predictions-a.jpg`, and `val-predictions-b.jpg` in the visualization directory above. It shows detected targets,
@@ -106,3 +106,17 @@ Current frozen source/package: chute branch `769cafb` (plus this status update);
 The latest UAV source-only package and PR draft are in the adjacent `uav-validation/` directory, with SHA256
 `55ffac738524126bf1382d040b0b5f840637991376cbf96f9d0321b33492770f`. They remain admission-pending and retain
 the old task reference until experimental postprocessing is selected and promoted with a working training recipe.
+
+## Current continuation
+
+- Prior goal turn was progress: task contract checks and asset pins landed. No blocked audit applies while the
+  image build and CPU calibration are live and implementation work continues.
+- Friend CPU container validation now uses the pinned `ale_verify` result SDK and `read_result`, writing/reading
+  actual `/logs/verifier/reward.json` and `verification.json`; it no longer relies on the host envelope override.
+  The reference solve entry point runs as user with oracle-only source staging removed before verification.
+  The prepared candidate archive includes the pinned SDK and fastjsonschema 2.21.2 for this author smoke only;
+  these files are not in the submitted task or Docker build context. Smoke execution remains pending.
+- UAV reference model/train/export helpers are promoted from the successful native experiment, with identical ASTs
+  after formatting. The recipe trains the measured 24k schedule and selects its 12k checkpoint. The selected
+  checkpoint passed the current worker's artifact checks on DCC; 18 host tests and pinned ALE lint passed again.
+  This is a better measured provisional reference, not a calibrated admission anchor.
