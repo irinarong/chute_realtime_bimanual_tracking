@@ -24,7 +24,7 @@ speed, lane, part mass, camera latency, the schedule). The agent leaves a contro
 - [x] `ale lint <folder>` passes on the engine commit pinned at `vendor/ale` (bfb7505).
 - [ ] `ale validate <folder>` passes. Not run: the author's cluster has no Docker; see the notes.
 - [x] Difficulty measured with one frontier model (below). It scored well above the 0.5 target: see the note.
-- [x] `tests/anchor.json`: `value` 0.775 is my own measured number (the reference on the 6 hidden shifts over the real
+- [x] `tests/anchor.json`: `value` 0.8583 is my own measured number (the reference on the 6 hidden shifts over the real
       grading path); `source` says so; `full_at` 0.95 from two independent runs, which agreed shift by shift.
 - [x] `tests/robotics_grader/` is the canonical copy from `shared/robotics_grader/`, unmodified.
 - [x] Nothing under `environment/setup/payload/` reads the anchor or `tests/`; `practice.py` prints the raw metric only.
@@ -35,21 +35,20 @@ speed, lane, part mass, camera latency, the schedule). The agent leaves a contro
 ## Frontier-model results
 
 One run, not through `ale run` (no Docker on the author's cluster): gpt-6-astra with the codex CLI 0.166.0 (reasoning
-effort high), 4 h budget, in a read-only namespace holding the instruction, `~/lab` and `~/example_controller` only, no
-access to `tests/` or `solution/`, grading-related environment variables removed. The numbers below are for the
-controller as it stood 3 h 35 min into the run (the run had 25 min left; the final controller will be graded the same
-way and this table updated). Camera-only controller, physical grasping, graded with `tests/verify.py` on the six
-hidden shifts:
+effort high), the full 4 h budget, in a read-only namespace holding the instruction, `~/lab` and
+`~/example_controller` only, no access to `tests/` or `solution/`, grading-related environment variables removed. Its
+final controller (camera only, physical grasping, 488 lines) graded with `tests/verify.py` on the six hidden shifts:
 
-| shift | 1334 | 2162 | 3070 | 3390 | 4191 | 7168 | mean |
+| shift | 1105 | 1334 | 2162 | 3070 | 3390 | 4191 | mean |
 |---|---|---|---|---|---|---|---|
-| reference (anchor) | 0.80 | 0.80 | 0.75 | 0.70 | 0.80 | 0.80 | 0.775 |
-| gpt-6-astra | 0.40 | 0.225 | 0.0 | 0.55 | 0.55 | 0.425 | 0.358 |
+| reference (anchor) | 0.80 | 0.90 | 0.80 | 0.85 | 0.90 | 0.90 | 0.858 |
+| gpt-6-astra | 0.10 | 0.35 | 0.15 | 0.375 | 0.55 | 0.50 | 0.338 |
 
-Ratio 0.46, reward 0.358 / 0.775 / 0.95 = 0.49. No late reply, no shift cut short, 500 to 610 frames asked for per
-shift. Its code was read: observations and its own files only. Two differences between the lab it practised in and the
-graded version, both in its favour at grading: an error in the judge that lost parts set down in the near half of the
-tote was fixed after its run had started, and the feed interval was lengthened from 7 to 11 s to 9 to 13 s.
+Ratio 0.39, reward 0.338 / 0.858 / 0.95 = 0.41. No late reply, no shift cut short, no bystander moved, 485 to 549
+frames asked for per shift. Its code was read: observations and its own files only. Two differences between the lab it
+practised in and the graded version, both in its favour at grading: an error in the judge that lost parts set down in
+the near half of the tote was fixed after its run had started, and the feed interval was lengthened from 7 to 11 s to
+9 to 13 s. It reported 0.475 on two practice shifts of its own.
 
 An earlier version of this task (parts at about 0.2 m/s, no latency, assisted grasping for everyone, feed paced by the
 robot) was far too easy: the same model scored 0.93 there. That version is commit 67528ed of the author's repository.
@@ -69,12 +68,12 @@ robot) was far too easy: the same model scored 0.93 there. That version is commi
 - **Reference.** Privileged through a token (`.oracle_token`, hash in `tests/oracle_token.sha256`), which gives it
   three things an agent never has: ground truth, what is coming (schedule, items, accelerations), and the simulator's
   assisted grasp (a part held by both fingers for 0.3 s is attached to the hand). It never looks at a camera.
-  `part_pickup_score` 0.775 on the hidden set, identical in two runs shift by shift. It is not a ceiling: it takes all
-  16 parts one gripper can span in four of the six shifts and none of the four wide parts (cracker box, power drill,
-  two clamps), so 0.8 is its ceiling; two-handed grasps for those are being worked on and would raise the anchor.
-  Most of it was written by gpt-6-astra given ground truth and the brief to build a reference.
+  `part_pickup_score` 0.858 on the hidden set, identical in two runs shift by shift. It is not a ceiling: it places 15
+  to 18 of a shift's 20 parts. It takes the two clamps and the drill by their handles with one hand, never takes the
+  cracker box (the one part that needs two hands), and loses the bowl and the scissors in some shifts.
+  Most of it was written by gpt-6-astra given ground truth and the brief to build a reference; the rest by hand.
 - **Hidden set.** `tests/hidden/shift_selection.json`: 12 candidate seeds drawn once by a fixed rule, each graded once
-  with the reference (0.65 to 0.80); the 6 with the highest score are kept and graded a second time.
+  with the reference (0.70 to 0.90); the 6 with the highest score are kept and graded a second time.
   `tests/review/select_shifts.py` states the rule and reproduces the files. Graded shifts are drawn with a secret salt,
   so no seed reproduces one in the lab.
 - **Against shortcuts.** The simulator's files live in a folder only the grader's account can enter; a shift with parts

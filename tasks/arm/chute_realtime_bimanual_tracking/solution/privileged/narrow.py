@@ -285,7 +285,7 @@ class Oracle:
 
             tp,_=self._measured(tr)
             want = self.lift_target; Rg = self.hold_R
-            if self.t_state > 12 and (np.linalg.norm(tp-self.lift_target)<.045 or self.t_state>24): self._go("join" if "grasp_local" in tr else "carry"); self.carry_settle = 0
+            if self.t_state > 12 and (np.linalg.norm(tp-self.lift_target)<.045 or self.t_state>24): self._go("join" if ("grasp_local" in tr and not tr.get("no_join")) else "carry"); self.carry_settle = 0
         elif self.state == "join":
             tp,_=self._measured(tr);part=np.asarray(tr["pos"])
             goal=np.array([self.base_home[0]+.60,self.base_home[1]-.015,low[2]+.32])

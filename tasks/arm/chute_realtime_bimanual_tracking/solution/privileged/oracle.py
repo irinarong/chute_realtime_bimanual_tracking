@@ -28,7 +28,12 @@ class Oracle:
             self.home_steps+=1
         active=tr['phase'] in ('staged','live')
         item=tr['item'] if active else tr.get('upcoming',[{}])[0].get('item','') if tr.get('upcoming') else ''
-        mode='cracker' if item=='003_cracker_box' else 'dual' if item in WIDE else 'narrow'
+        # 2026-11-26, variant C: the clamps and the drill are taken by one hand at a narrow feature (a handle) with
+        # the narrow-part routine and carried by that hand alone. With the left hand joining afterwards (assist.py) the right
+        # hand held 10 of 12 clamps but the two-handed transfer ran out of time (job 62725255); with both hands at once on the
+        # moving part (wide.py) 2 of 16 wide parts were placed (job 62724807).
+        single=item in ('051_large_clamp','052_extra_large_clamp','035_power_drill')
+        mode='cracker' if item=='003_cracker_box' else 'narrow' if single else 'dual' if item in WIDE else 'narrow'
         if mode!=self.mode:
             self.mode=mode
             ctl=self.cracker if mode=='cracker' else self.dual if mode=='dual' else self.narrow
@@ -58,6 +63,9 @@ class Oracle:
         if mode=='narrow' and hasattr(ctl,'flat_R') and active:
             tr=dict(tr);tr['packing_rotation']=ctl.flat_R.tolist()
         derived=self.packing.choose(tr) if active and ctl.state in ('carry','lower','drop','transit','release') else tr
+        if mode=='narrow' and active and tr['item'] in ('051_large_clamp','052_extra_large_clamp','035_power_drill'):
+            pairs,w=self.dual.pair(tr);(lp,la),(rp,ra)=pairs
+            derived=dict(derived);derived.update(grasp_local=rp.tolist(),grasp_axis=ra.tolist(),grasp_width=w,no_join=True)
         row=ctl.act(obs,derived)
         for k in ('state','t_state','event','diag','log'):setattr(self,k,getattr(ctl,k))
         return row
