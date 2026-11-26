@@ -19,13 +19,14 @@ shopt -s nullglob
 ICDS=(/usr/share/vulkan/icd.d/*nvidia*.json /etc/vulkan/icd.d/*nvidia*.json)
 test "${#ICDS[@]}" -eq 1
 cp "${ICDS[0]}" "$R/host-nvidia-icd.json"
+python3 "$BASE/datasets/scripts/prepare_vulkan_icd.py" "${ICDS[0]}" "$R/nvidia_icd.json"
 ldconfig -p | grep -E 'libGLX_nvidia|libnvidia-gl|libnvidia-vulkan|libvulkan' > "$R/host-libraries.txt"
 export APPTAINERENV_CUDA_VISIBLE_DEVICES="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["uuid"])' "$R/host.json")"
 export APPTAINERENV_VK_DRIVER_FILES=/results/nvidia_icd.json
 export APPTAINERENV_VK_ICD_FILENAMES=/results/nvidia_icd.json
 export APPTAINERENV_VK_LOADER_DEBUG=all
 apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
-    --bind "$R:/results,${ICDS[0]}:/results/nvidia_icd.json:ro" \
+    --bind "$R:/results" \
     "$BASE/datasets/chute-task.sif" /opt/sim/bin/python -u - <<'PY'
 import ctypes, json, os, pathlib, subprocess, sys
 print('LD_LIBRARY_PATH', os.environ.get('LD_LIBRARY_PATH'), flush=True)

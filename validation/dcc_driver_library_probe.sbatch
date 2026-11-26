@@ -17,10 +17,11 @@ shopt -s nullglob
 ICDS=(/usr/share/vulkan/icd.d/*nvidia*.json /etc/vulkan/icd.d/*nvidia*.json)
 test "${#ICDS[@]}" -eq 1
 cp "${ICDS[0]}" "$R/host-nvidia-icd.json"
+python3 "$BASE/datasets/scripts/prepare_vulkan_icd.py" "${ICDS[0]}" "$R/nvidia_icd.json"
 ldconfig -p | grep -E 'libGLX_nvidia|libnvidia-gl|libnvidia-vulkan|libvulkan' > "$R/host-libraries.txt"
 # CPU-only dependency inspection: no CUDA/Vulkan initialization or GPU commands.
 apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
-    --bind "$R:/results,${ICDS[0]}:/results/nvidia_icd.json:ro" \
+    --bind "$R:/results" \
     "$BASE/datasets/chute-task.sif" /opt/sim/bin/python -u - <<'PY'
 import ctypes,json,os,pathlib,subprocess
 root=pathlib.Path('/results')
