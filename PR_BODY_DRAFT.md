@@ -30,7 +30,11 @@ Current source changes no build input, so that image is reused. Runtime setup st
  and reference startup under the agent UID, and all3 Linux process CPU-accounting checks.
 - First-shift author GPU check62738655 onRTX5000Ada placed16/20(raw0.80), with60/60 probes
  and no late replies. It uses the same controller/scoring but does not qualify H200/ALE.
-- Current H200 source check62742430 and ordinary public-seed camera capture are pending.
+- Current H200 source check62742430 completed16/20(raw0.80),65/65 probes,no late replies.
+ All20 event records and6697steps match the earlier RTX shift; this is limited one-shift evidence.
+- Ordinary public-seed camera check62742550 returned all3 RGB-D frames without truth,
+ actions or extra renders. Head image is coherent; initial wrist views are largely
+ occluded by close-up robot surfaces. Full dynamic visual coverage is not established.
 
 The declaration is H200,8CPUs,32GiB in both stages, a4h agent budget and3h verifier cap.
 H200 is in the benchmark registry; the previous RTX5000Ada registry patch is superseded.

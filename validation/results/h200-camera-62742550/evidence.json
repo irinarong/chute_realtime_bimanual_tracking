@@ -1,0 +1,85 @@
+{
+  "job": 62742550,
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "scope": "Ordinary initial RGB-D observation; public seed17, no controller",
+  "task_source": "398d93ca93bbd02e2d718f35f8902ee3a014ec5d",
+  "task_tree": "e78e1786bb33c75fe75c8abf9f241f1d36a9f62b",
+  "image_id": "sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd",
+  "sif_sha256": "680741dffceac7953eb5b6d6ab175f8a00a9998f1306ceff519e7c33e4dbf87b",
+  "candidate_sha256": "c2955435a7f61f6d55f142ea1261cb0ebf8a86d49717dd1101b23e2e8dec63ae",
+  "hardware": "NVIDIA H200",
+  "official_ale_validate": false,
+  "uid_isolation_tested": false,
+  "collected_at_utc": "2026-11-26T21:08:45.997309+00:00",
+  "files": {
+    "camera-probe.json": "efa492209eb104e486dc79b431a9f1b5b973364336c7932424f71c462003e5ae",
+    "h200_camera_probe.py": "14eef260c7cfb53ab958116710a45869a11bbddf0d3246e5c44c3e0d7de07a36",
+    "camera-isaac.log": "a38e15d441f379b3815bfa91b9e0d43a49ac2cceb2ac0b5560e61f75d79348a2",
+    "hardware.csv": "7d04d7286fe37ff38932e6874767f3f07dded4faaff804c1a921e4902b33386b",
+    "gpu-allocation-host.json": "2770c655737d4a0c5fb989ed53c92a713de5ade767e1f2c2cae9db6e4eea4c7d",
+    "gpu-allocation-container.json": "f6480976993c6b03d111599171c7f9e7399195e9f35b78b99c30b39f2f40b61e",
+    "candidate.sha256": "340d4eec358bcbca1cba72417a7c6f477d5b399874a009054bcec398e7fcca58",
+    "sif-check.txt": "6b2e353d64f6053e11b44c540429863d7b5f700cc418ea50975c5eb2bcec03f9",
+    "helper-check.txt": "9336d25d467addd53c14e2d37df610a46d9d2eb6b97774fd4cbc5ad634b5947d",
+    "head.png": "d3fbce778ca0f025d85e89cc1e797dae620d38944fa408b3ed954e35657762b5",
+    "left_wrist.png": "a5fbdb0072c77a9fbaea51c5b0d7d41bc0aa1ca406ff5635905a92fa86848c38",
+    "right_wrist.png": "9afb02434f5db609c5423cc92c62a06f3ee9b3ac52bcfdb9451b2ceb73c1bff8",
+    "head-depth.npy": "c76acc963e4bafba3019d53013dbd4378ac51ef2ad0ab93136201de7e62b7441",
+    "left_wrist-depth.npy": "c13ebba1a0d096034e7ea63416cb6cdda2d5c42bce3773c636d8cdb34bb53057",
+    "right_wrist-depth.npy": "9df4253947afd997184dd404562f517d7f37a468f712ca3fc0d7ad575eb0f183",
+    "slurm.log": "109a5a13d5078e35a6168ec0cfbb20316bd9f659bcbfadcbb34fbf88accece1d"
+  },
+  "elapsed": "00:06:11",
+  "cameras": {
+    "head": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 46.316347716670954,
+      "rgb_mean": 138.631806640625,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "d3fbce778ca0f025d85e89cc1e797dae620d38944fa408b3ed954e35657762b5"
+    },
+    "left_wrist": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 49.552020367987296,
+      "rgb_mean": 45.80599283854167,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "a5fbdb0072c77a9fbaea51c5b0d7d41bc0aa1ca406ff5635905a92fa86848c38"
+    },
+    "right_wrist": {
+      "shape": [
+        320,
+        320,
+        3
+      ],
+      "t_capture": 0,
+      "rgb_std": 50.5421500934556,
+      "rgb_mean": 43.550673828125,
+      "depth_nonzero_fraction": 1.0,
+      "png_sha256": "9afb02434f5db609c5423cc92c62a06f3ee9b3ac52bcfdb9451b2ceb73c1bff8"
+    }
+  },
+  "completed": true,
+  "privileged_state": false,
+  "assisted_grasping": false,
+  "actions_sent": 0,
+  "extra_render_calls": 0,
+  "hidden_evaluation": false,
+  "visual_inspection": {
+    "completed": true,
+    "method": "Inspected unmodified head/left_wrist/right_wrist PNG contact sheet",
+    "head": "Coherent chute, red object, walls and floor; no widespread speckling or blank frame",
+    "wrists": "Coherent close-up robot surfaces; views largely occluded/dark at the initial pose",
+    "limitation": "Initial public-seed observation only; not dynamic coverage or perception accuracy"
+  }
+}

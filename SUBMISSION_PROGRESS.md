@@ -25,16 +25,22 @@ build source17b6d4f. Author checks never rebuild this unchanged image.
 - Earlier first-shift physical check62738655:16/20 placed,raw0.80,60/60 probes,
   no late replies. Same physical controller and scoring functions, but RTX5000Ada,
   the prior source wrapper and a single-UID SIF adapter. It is not current H200/ALE proof.
-- Current H200 physical check62742430 is running. An ordinary RGB-D camera capture is
-  queued separately; its public seed, empty token and unmodified reset path test what
-  a visual controller actually receives. No controller optimization or hidden tuning.
+- Current H200 physical check62742430 completed9m39s/exit0:16/20 placed,raw0.80,
+  65/65 probes,no late replies. All20 event records and6697 steps match the prior RTX
+  shift; this is one-shift agreement, not complete numerical portability qualification.
+- H200 camera check62742550 completed6m11s/exit0: all3 cameras returned320x320 RGB and
+  depth. Public seed17,empty token,no actions or extra rendering. Head image is coherent;
+  wrist images show close-up robot surfaces, largely occluded at the initial pose.
+  This does not establish dynamic camera coverage or an ordinary agent's performance.
 
-Reviewable CPU evidence: `validation/results/physical-main-cpu-62742402/`.
+Reviewable evidence: `validation/results/physical-main-cpu-62742402/`,
+`validation/results/physical-main-h200-62742430/`, and `validation/results/h200-camera-62742550/`.
 Author bundle c2955435 contains explicit task provenance and verifies all73 source hashes.
 Source package SHA256:2ff077150eae4b2c8f8151145b0fdd9668849db71797713b345ab763cdfd8b26.
 
 PR1 was merged by irinarong, incorporating the image/accounting fixes. Main then restored
-the physical reference. This branch now follows that choice and carries validation updates.
+the physical reference. This branch now follows that choice and carries validation updates in
+https://github.com/irinarong/chute_realtime_bimanual_tracking/pull/2 (draft, not a benchmark PR).
 No benchmark task PR is open. The old synthetic verdicts do not validate the current task.
 
 ## UAV

@@ -8,6 +8,9 @@
   "registry_errors": 0,
   "registry_notices": 0,
   "registry_patch_required": false,
-  "current_hardware_runtime_pending": true,
-  "supersedes": "RTX-5000-Ada synthetic-variant audit"
+  "current_hardware_runtime_pending": false,
+  "supersedes": "RTX-5000-Ada synthetic-variant audit",
+  "author_gpu_evidence": "validation/results/physical-main-h200-62742430/evidence.json",
+  "author_camera_evidence": "validation/results/h200-camera-62742550/evidence.json",
+  "official_ale_validate": false
 }
