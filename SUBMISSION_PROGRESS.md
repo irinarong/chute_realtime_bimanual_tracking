@@ -376,3 +376,20 @@ If GPU62725056 later reports startup/camera/truth checks passed while the physic
 shift continues, visual62726049 may be released concurrently by changing its
 dependency to the completed converter62726378, avoiding an unnecessary full-shift
 wait while retaining verified image startup. Do not release it before that evidence.
+
+
+Friend SIF conversion62726378 COMPLETED with exit0 in30m45s. Final SIF SHA256
+is6e2ebf77a65e11d7aa3a143aeda5169b7310526fac6eefa29c4cc6cca06f9ef6; evidence
+in chute-validation/final-sif-62726378/evidence.json ties it to the final Docker
+image. GPU62725056 is eligible but both healthy RTX5000Ada nodes had all GPUs
+allocated. Cleared fixed-node restrictions on62725056 and62726049, retaining
+the same GPU type. The scheduler estimated09:42ET for the physical job; that
+is only an estimate and must be requeried, not a reason to restart or mark failed.
+
+UAV conversion62726871 reached SIF creation. Its pending GPU check62726873 was
+changed via scontrol to scavenger-gpu, gpu:2080:1, with no fixed-node restriction,
+because a RTX2080 allocation was free. The helper verifies the assigned CUDA
+UUID and records the actual device; task.toml and declaredRTX4090 requirements
+are unchanged. This is development compatibility evidence only; no reference
+training/full_at or official ALE acceptance is inferred. Override recorded in
+uav-validation/image-gpu-plan.json.
