@@ -10,7 +10,8 @@ parser.add_argument('archive')
 parser.add_argument('image_inspect')
 parser.add_argument('output')
 args = parser.parse_args()
-expected = json.loads(Path(args.image_inspect).read_text())[0]['Id']
+built = json.loads(Path(args.image_inspect).read_text())[0]
+expected = built['Id']
 
 with tarfile.open(args.archive, 'r:') as archive:
     def read(name):
@@ -21,11 +22,18 @@ with tarfile.open(args.archive, 'r:') as archive:
 
     names = set(archive.getnames())
     manifest = json.loads(read('manifest.json'))
-    matching = [entry for entry in manifest
-                if 'sha256:' + hashlib.sha256(read(entry['Config'])).hexdigest() == expected]
+    matching = []
+    for entry in manifest:
+        config = json.loads(read(entry['Config']))
+        if (config.get('config') == built['Config']
+                and config.get('rootfs', {}).get('diff_ids') == built['RootFS']['Layers']
+                and config.get('architecture') == built['Architecture']
+                and config.get('os') == built['Os']):
+            matching.append(entry)
     if len(matching) != 1:
         raise ValueError('Saved image config does not match the built Docker image')
-    record = dict(image_id=expected, config=matching[0]['Config'],
+    config_digest = 'sha256:' + hashlib.sha256(read(matching[0]['Config'])).hexdigest()
+    record = dict(image_id=expected, config=matching[0]['Config'], config_digest=config_digest,
                   layers=len(matching[0]['Layers']), transport='docker-archive')
     if {'oci-layout', 'index.json'} <= names:
         layout = json.loads(read('oci-layout'))
@@ -33,7 +41,7 @@ with tarfile.open(args.archive, 'r:') as archive:
             raise ValueError(f'Unexpected OCI layout: {layout}')
         leaves = []
 
-        def walk(node, depth=0):
+        def walk(node, depth=0, digest=None):
             if depth > 4:
                 raise ValueError('OCI index nesting limit exceeded')
             if 'manifests' in node:
@@ -44,15 +52,30 @@ with tarfile.open(args.archive, 'r:') as archive:
                     raw = read(f'blobs/sha256/{digest}')
                     if hashlib.sha256(raw).hexdigest() != digest:
                         raise ValueError('OCI manifest digest mismatch')
-                    walk(json.loads(raw), depth + 1)
+                    walk(json.loads(raw), depth + 1, descriptor['digest'])
             else:
-                leaves.append(node)
+                leaves.append((digest, node))
 
         walk(json.loads(read('index.json')))
-        selected = [node for node in leaves if node.get('config', {}).get('digest') == expected]
+        # Docker's containerd image store reports a manifest ID in Descriptor/Id;
+        # older graph-driver stores report a config ID. Verify the appropriate
+        # immutable descriptor, rather than equating these different hashes.
+        descriptor = built.get('Descriptor')
+        if descriptor:
+            if descriptor['digest'] != expected:
+                raise ValueError('Docker image ID and descriptor disagree')
+            selected = [(digest, node) for digest, node in leaves if digest == expected]
+        else:
+            selected = [(digest, node) for digest, node in leaves
+                        if node.get('config', {}).get('digest') == expected]
         if len(selected) != 1:
             raise ValueError('OCI layout does not uniquely describe the expected image')
-        record.update(transport='oci-archive', layer_media_types=sorted({
-            layer['mediaType'] for layer in selected[0]['layers']}))
+        digest, node = selected[0]
+        if node['config']['digest'] != config_digest:
+            raise ValueError('OCI and Docker compatibility manifests disagree on config')
+        record.update(transport='oci-archive', manifest_digest=digest, layer_media_types=sorted({
+            layer['mediaType'] for layer in node['layers']}))
+    elif config_digest != expected:
+        raise ValueError('Legacy Docker archive config ID differs from built image')
     Path(args.output).write_text(json.dumps(record, indent=2) + '\n')
     print(record['transport'])

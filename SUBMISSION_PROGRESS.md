@@ -37,8 +37,8 @@ reject corrupted downloads and unsafe ZIP entries.
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
 | 62723900 | COMPLETED, exit 0, 1h03m47s | Final pinned Docker image build and export |
 | 62722412 | COMPLETED, exit 0, 47s | Exact-image Docker CPU smoke |
-| 62725756 | RUNNING, replaces failed 62722552 | Saved Docker image to Apptainer SIF |
-| 62725056 | PENDING afterok 62725756 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
+| 62725860 | RUNNING, reuses checked raw archive | Saved Docker image to Apptainer SIF |
+| 62725056 | PENDING afterok 62725860 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
@@ -268,3 +268,16 @@ against the exact built image ID, detects Docker versus OCI transport, then conv
 and installs the final SIF atomically. GPU job 62725056 now depends on 62725756;
 the dependency update was verified. Do not relaunch the completed image build.
 Watcher 9721 exited on the observed conversion failure; it is no longer active.
+
+
+Conversion 62725756 passed gzip CRC/decompression and wrote the raw archive/hash,
+then stopped at our overly strict config-ID check. Docker's containerd store reports
+an OCI manifest digest as image Id/Descriptor, not the config digest. The corrected
+inspector independently verified the manifest digest equals a35d570a7a6f, config
+05aa3a3b matches the saved config, and rootfs diff_ids/runtime config match docker
+inspect. It passed against the actual raw archive and selected oci-archive. There
+are 38 mixed plain/gzip Docker/OCI layers; use their native OCI metadata.
+Conversion 62725860 reuses and rechecks the completed raw archive instead of
+repeating decompression. GPU 62725056 now depends on this job. The raw file remains
+at datasets/apptainer-convert-62725756/chute-task-image.tar. Watcher 64051 exited on
+the previous conversion failure. No Docker rebuild or CPU re-test is needed.
