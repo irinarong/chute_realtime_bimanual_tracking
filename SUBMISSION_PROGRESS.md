@@ -37,20 +37,27 @@ omnigibson_6_1_0.kit and standaloneWarp1.19 mixed with IsaacWarp1.16. Source17b6
 includes the original pinned Kit and Warp1.16; build-time checks detect both defects.
 Old SIF plus these author overlays completed job62728194 on RTX5000Ada:
 20/20 events completed,1 placement, score.05, assisted=False, zero bystander/mass errors.
-No successful grasp or robust physical feasibility is established. Initial RGB is
-severely speckled despite simple nonzero image/depth checks passing. Host NGX library
-exists but is absent from default Apptainer injection; controlled static comparison
-62728432 will test causation and extra render warmup without advancing physics.
+No successful grasp or robust physical feasibility is established. The observed RGB speckle was isolated by controlled62728432: Apptainer omitted host
+libnvidia-ngx.so.1; making it loadable restores clean RGB at4 renders (AA mode1→3).
+All measured physics time/joint/part-pose deltas stay zero. Extra warmup without NGX
+never fixes it. Author helpers now stage the exact host library read-only with hashes.
+No task/render-setting/scoring change. Official ALE Docker already requests all driver
+capabilities; that GPU lifecycle is still untested here.
 
 | Job | Latest state | Purpose |
 |---|---|---|
-|62728039|RUNNING, export|Intermediate Kit-only Docker, known Warp mismatch; CPU smoke passed|
-|62728274|PENDING after62728039|Exact source17b6d4f Docker rebuild, CPU smoke/export|
+|62728039|COMPLETED27m20s/exit0|Intermediate Kit-only export, known Warp mismatch|
+|62728274|RUNNING|Exact source17b6d4f Docker rebuild, CPU smoke/export|
 |62728280|PENDING after62728274|Convert final image to SIF|
-|62728290|PENDING after62728280|Final-image physical GPU smoke|
-|62728300|PENDING after62728290|Final-image archived visual replay|
-|62728301|RUNNING|Kit/Warp overlay archived visual replay|
-|62728432|PENDING|Author static NGX/no-NGX rendering comparison|
+|62728568|PENDING after62728280|Final-image physical GPU with NGX|
+|62728569|PENDING after62728568|Final-image archived visual replay with NGX|
+|62728301|COMPLETED7m46s/exit0|Noisy-RGB overlay visual:0/20,0/28 probes, no timing violation|
+|62728432|COMPLETED8m02s/exit0|Controlled NGX/no-NGX static rendering|
+|62728570|PENDING|Clean-RGB overlay archived visual replay|
+
+Pending62728290 and62728300 were replaced/canceled before execution to add NGX.
+No active job was interrupted. Rendering evidence is in
+chute-validation/render-ngx-62728432/evidence.json and comparison.png.
 
 Requery jobs; do not restart quiet builds. The180GiB VM disk at
 /work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img
@@ -67,10 +74,9 @@ physical_rollout=0. It is not physical success. Maintainer acceptance is unresol
 Current ProbeLock can reject an image-driven absolute-target policy: archived
 controller had0/100 action changes for constructed carry-phase joint perturbations,
 while depth ablation changed detection/action. Do not remove or trivialize the lock.
-Replay measures raw progress, timing and lock separately; noisy rendering is another
-confound. No fresh frontier trajectory exists for either final task.
+Replay measures raw progress, timing and lock separately; the completed zero-score replay had noisy rendering; clean replay is pending. No fresh frontier trajectory exists for either final task.
 
-Still required: exact final friend image checks; usable cameras and physical feasibility;
+Still required: exact final friend image/camera checks and physical feasibility;
 fair lock/timing; real ALE GPU lifecycle, repeated anchors/full_at, and fresh agent
 trajectories. DCC's Docker VM has no GPU passthrough; native/SIF development results
 cannot replace Docker isolation. A compatible NVIDIA Docker host was already requested,
@@ -79,3 +85,4 @@ with no answer; do not repeat that question. Keep missing evidence explicitly mi
 Evidence root:
 /Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/
 Use LIVE_PIPELINE.json, ADMISSION_GATES.json, each PACKAGE.json and PR_BODY_DRAFT.md.
+

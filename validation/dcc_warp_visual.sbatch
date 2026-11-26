@@ -42,7 +42,10 @@ test "${#NVIDIA_ICDS[@]}" -eq 1
 python3 "$BASE/datasets/scripts/prepare_vulkan_icd.py" "${NVIDIA_ICDS[0]}" "$R/nvidia_icd.json"
 export APPTAINERENV_VK_DRIVER_FILES=/results/nvidia_icd.json
 export APPTAINERENV_VK_ICD_FILENAMES=/results/nvidia_icd.json
-apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
+# DCC's default Apptainer NVIDIA list omits NGX; its absence corrupts RGB quality.
+python3 "$BASE/datasets/scripts/prepare_ngx_library.py" "$R/nvidia-ngx"
+export APPTAINERENV_LD_LIBRARY_PATH=/nvidia-ngx:/.singularity.d/libs
+apptainer exec --nv --cleanenv --containall --bind "$R/nvidia-ngx:/nvidia-ngx:ro" --home "$R/home:/home/user" \
     --bind "$R:/results,$R/candidate/tasks/arm/chute_realtime_bimanual_tracking:/task:ro,$SCRATCH:/tmp" \
     --bind "$R/audit:/audit:ro" \
     --bind "$R/apps:/opt/sim/lib/python3.12/site-packages/isaacsim/apps" \
@@ -50,6 +53,7 @@ apptainer exec --nv --cleanenv --containall --home "$R/home:/home/user" \
     --bind "$WARP_RUNTIME:/warp-runtime:ro" \
     --bind "$R/cache:/opt/sim/lib/python3.12/site-packages/omni/cache" \
     "$SIF" /bin/bash -euc '
+        /opt/sim/bin/python -c '"'"'import ctypes; ctypes.CDLL("libnvidia-ngx.so.1")'"'"'
         /opt/sim/bin/python /results/gpu_preflight.py --host-record /results/gpu-allocation-host.json --output /results/gpu-allocation-container.json
         exec /opt/venv/bin/python /audit/visual_replay.py
     '
