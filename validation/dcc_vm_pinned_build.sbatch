@@ -35,7 +35,9 @@ for attempt in $(seq 1 120); do
  sleep 5
 done
 "${SCP[@]}" "$BASE/datasets/candidate.tar.gz" builder@127.0.0.1:/home/builder/pinned-candidate.tar.gz
-"${SSH[@]}" 'set -e; mkdir -p pinned-candidate; tar -xzf pinned-candidate.tar.gz -C pinned-candidate; test ! -e pinned-context; cp -a pinned-candidate/tasks/arm/chute_realtime_bimanual_tracking/environment pinned-context; rm -rf pinned-context/setup; sudo docker build -t chute-task:20261126 pinned-context' > "$R/docker-build.log" 2>&1
+# Buildx was installed after the original legacy build started. Explicitly retain
+# that builder for this rebuild so the large simulator layer remains cached.
+"${SSH[@]}" 'set -e; mkdir -p pinned-candidate; tar -xzf pinned-candidate.tar.gz -C pinned-candidate; test ! -e pinned-context; cp -a pinned-candidate/tasks/arm/chute_realtime_bimanual_tracking/environment pinned-context; rm -rf pinned-context/setup; sudo env DOCKER_BUILDKIT=0 docker build -t chute-task:20261126 pinned-context' > "$R/docker-build.log" 2>&1
 "${SSH[@]}" 'sudo docker image inspect chute-task:20261126' > "$R/images.json"
 # Downstream smoke/conversion depend on this job, so none can consume the old archive.
 cp "$D/image.sha256" "$R/original-image.sha256"

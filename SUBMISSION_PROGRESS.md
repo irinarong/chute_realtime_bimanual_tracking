@@ -1,122 +1,125 @@
-# Two-task submission work — active, not yet ready
+# Two-task submission work — active, admission pending
 
-## Scope
+## Scope and source of truth
 
-Complete the friend's chute task and our UAV-to-UAV detector-training task through genuine ALE submission gates.
-Keep direct-answer reference results distinct from physical robot success. The UAV agent must actually train its
-model and leave reproducible source, checkpoint and training records. The user clarified that mandatory model training applies to UAV-to-UAV. The friend's task
-continues to allow controller development, with optional model training.
+Complete both the friend's chute controller task and our UAV-to-UAV detector-training
+task. The user confirmed that mandatory agent model training applies to UAV only.
+Preserve the friend's original DCC experiments. No upstream task PR has been opened.
+Never interpret a synthetic oracle reward as physical robot success.
 
-## Authoritative working trees
-
-- Chute: this managed worktree, branch `codex/chute-submission-ready`.
-  The initial async managed worktree creation eventually completed. It was fast-forwarded to the actual work from
-  the temporary visualization worktree; new changes belong here. The original visualization checkout is a historical
-  copy, not the current head.
+- Chute: this managed worktree, branch `codex/chute-submission-ready`. Task source
+  and the SDK-based CPU smoke were frozen at `dce541a`; current changes improve
+  the author build runner and this status, without changing the submitted task.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
-  current task source `7fae778` (training artifact validation). The other chat is idle; no message was sent to it.
+  branch `codex/uav-to-uav-tracking`. Current committed source is `3daa2d123c6f694f4d2b9e883dc52d5e7f0a97da`,
+  including verified public box calibration and reference provenance.
+- ALE: `bfb75050aca2c54b45c5ab23bae6028a834a468a`, installed at
+  `/tmp/chute-ale-pinned-20261126`. The canonical shared grader is unchanged.
 
-## Verified progress
+## Chute: measured work and live jobs
 
-Chute: isolated DCC snapshot imported, direct-answer fixture implemented with protected authorization and independent
-geometric/scoring checks, prior physical controller preserved, 19 host tests passed. Empty submission gives zero;
-two actual host solve/verify runs give full synthetic reference reward. Pinned ALE lint, domain lint, and canonical
-shared-grader byte identity passed. No claim of physical task success is inferred from the synthetic reference.
+Nineteen host tests, pinned ALE lint and domain lint passed. Real host entrypoint
+checks measured untouched zero, synthetic oracle one twice, unauthorized/wrong
+answers zero. The direct-answer fixture independently validates 120 terminal
+snapshots against hidden layouts and the shared scoring. Its verdict explicitly
+labels `synthetic_reference=1`, `physical_rollout=0`. The prior privileged physical
+controller is preserved; neither path establishes ordinary visual-control success.
 
-UAV: original agent and verifier Docker images already built under real Docker in a KVM guest. Public train/val data
-are frozen and hosted; verifier-only frames are reconstructed in its separate image. Existing CPU container checks
-cover missing/truncated artifacts, all hidden frames, user permissions and denied Internet sockets. The native
-reference generalizes poorly and no anchor was fabricated. Public annotation overlays and per-clip box-size statistics
-were inspected again; no obvious annotation displacement was found in the sampled frames.
+Final Docker sources pin the MIT robot ZIP by immutable revision/hash, all 277
+NVIDIA files by measured sizes/hashes, and usd-core 26.11. Build-integrity checks
+reject corrupted downloads and unsafe ZIP entries.
 
-## Live DCC work
-
-| Job | Work | Dependency / location |
+| Job | State at latest check | Work |
 |---|---|---|
-| 62721924 | Build original chute Dockerfile, retain chown/runuser checks, export image | `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/` |
-| 62723330 | Rebuild the final content/version-pinned Dockerfile in the original VM | after successful 62721924 |
-| 62722412 | Exact-image Docker CPU smoke | after successful 62723330 |
-| 62722552 | Convert the saved image to Apptainer for DCC GPU execution | after successful 62723330 |
-| 62723043 | Test cameras and one physical privileged-controller shift in that image | after successful 62722552; not formal ALE UID/lifecycle validation |
-| 62722844 | COMPLETED: UAV current-contract Docker CPU smoke, six cases, all 2,475 hidden frames | `/work/yr111/uav-to-uav-benchmark-20261125/datasets/vm-verify-62722844/` |
-| 62722505 | COMPLETED: UAV 24k training; public AP50 7.08% / 12.03% / 11.91% at 6k/12k/24k | `/work/yr111/uav-to-uav-benchmark-20261125/runs/reference-v2-62722505/` |
+| 62721924 | RUNNING, final import checks passed | Original Docker build and image export |
+| 62723900 | PENDING afterok 62721924 | Final pinned Docker rebuild, same VM |
+| 62722412 | PENDING afterok 62723900 | Exact-image Docker CPU smoke |
+| 62722552 | PENDING afterok 62723900 | Saved Docker image to Apptainer SIF |
+| 62723043 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one privileged physical shift |
 
-UAV experiment sources:
-`/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/uav-reference-v2/`.
-They are author experiments and have not replaced the task reference. Changes: frozen BatchNorm, frozen early backbone,
-lower backbone learning rate, sequence-balanced sampling, multiscale crops, photometric augmentation. Only training
-frames are used for fitting; public validation selects candidates. Do not inspect hidden evaluation results to tune it.
+Recheck job states before any restart. VM disk:
+`/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
+Never boot it concurrently. The original build's large layer commits can be quiet
+for minutes while actively compressing; silence is not a hang.
 
-UAV now validates a nonempty tensor state dictionary, a nonempty config object and finite, increasing step/loss
-records in the deprivileged worker, before importing submitted Python. Public practice uses identical checks.
-All 18 host tests and pinned ALE lint passed. Domain lint still correctly fails on the unmeasured anchor/full_at.
-Format checks are not proof of training; archived agent trajectories and reproduction remain required.
-The experiment export helper keeps the original 24k schedule when selecting a 6k/12k snapshot, and exports an
-exact log prefix plus original full log and artifact hashes.
+Job 62723330 was replaced while pending by 62723900. Buildx 0.30.1 had been installed
+after the original legacy build began; the new script explicitly uses
+`DOCKER_BUILDKIT=0` to retain the original simulator cache. Both downstream
+CPU/conversion dependencies were updated and confirmed before the old queued job
+was cancelled. The submitted replacement script is
+`datasets/dcc_vm_pinned_build_cached.sbatch` under the DCC task root.
 
-Re-poll live jobs before any restart. The chute dependency installation completed with exit zero; Docker was still
-compressing/committing the large layer, with containerd actively using CPU. That is not a hung or failed build.
-Buildx installation in this guest was started separately to support the pinned engine's future image preparation.
+The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
+the oracle entrypoint as user, checks protected files/assets and root-to-user
+Solver communication, and reads real /logs/verifier results. Candidate archive
+SHA256: `007efbc08ea6339a5d4ab8c8adbc7ebe92ed9cd4e3ec04fcaba3dc1851b6cbf9`.
+It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
+when rebuilding that archive. They do not belong to the submitted task/image.
+CPU smoke is not official ALE validation. SIF GPU smoke does not test ALE UID or
+match-lock behavior.
 
-The first H200 rendering smoke job 62722564 was cancelled while queued and replaced with 62723043 on
-RTX 5000 Ada; Isaac camera testing needs an RTX-capable GPU. Only this task's queued validation was changed.
-UAV tiled-inference experiment 62723029 evaluates 512/768-pixel crops of each current RGB frame on public val.
-Tiled evaluation completed: AP50 10.88% at 512 pixels and 12.72% at 768 pixels. Job 62723478 (CPU development inference) compares
-a small fixed grid of global box expansion/NMS on public validation, retaining all public predictions for diagnosis. Its first attempt 62723142 failed before inference because the
-author helper passed a relative worker path; the corrected helper uses absolute paths. This was not a model failure. RTX job 62723201 was then cancelled while queued. H200 replacement 62723393 remained blocked by
-AssocGrpGRES and was cancelled. CPU job 62723478 is confirmed running, with four computation threads,
-and includes an unchanged baseline on the same host; this is still not official ALE validation.
-The GPU diagnostic job 62723003 was replaced by a short CPU diagnostic inside our existing 62721924 allocation.
-CPU diagnosis completed on 24 selected public frames. See `uav-reference-v2/public-predictions.json`,
-`val-predictions-a.jpg`, and `val-predictions-b.jpg` in the visualization directory above. It shows detected targets,
-some tight predicted boxes and high-confidence false positives; it does not establish a dataset error or a full
-validation result. The 12k checkpoint was exported to DCC `runs/reference-v2-62722505/export-12000/`, preserving
-its 24k training schedule, exact tensor-file bytes and the corresponding 12k log prefix. It is not promoted yet.
-`uav-validation/artifact-contract-validation.json` and `cpu-smoke.json` hold current Docker/host evidence.
-Native reference results remain author development results, not autonomous agent training or ALE validation.
+Outstanding grader qualifications: the proprioception-only ProbeLock can reject
+visual absolute-target controllers; CpuMeter can omit short-lived/exited worker
+CPU. The known cumulative-wall-time bug was fixed and tested, but these broader
+issues remain. Do not delete the lock or claim fair difficulty without evidence.
+Synthetic-fixture acceptance for a closed-loop task also needs maintainer review.
 
-## Remaining acceptance evidence
+## UAV: measured reference and current verification
 
-- Chute exact build and CPU/GPU smoke outcomes; fix real failures without bypassing UID checks.
-- Assess the privileged physical controller on the hardened DCC snapshot; synthetic reward cannot establish feasibility.
-- Review/fix visual match-lock and timing behavior using actual controller traces before declaring fair difficulty.
-- Strengthen UAV reference, promote only measured improvements, and retain exact source/checkpoint provenance.
-- Actual autonomous agent training/difficulty runs, with full trajectories and reproducible checkpoints.
-- Repeated official ALE oracle runs, genuine untouched/oracle gates, calibrated UAV anchor/full_at, and all domain gates.
-- Final source-only packages, hashes, reviewer instructions and PR drafts for both tasks. No GitHub task PR has been opened.
+Data is present: all 50 original NPS clips; 51,951 train frames, 1,190 public val
+frames, 2,475 held-out frames. Public asset revision:
+`c1fca946a5936294a2cf23874040493ac148239b`. Source YX ordering and 1-based time
+indices were corrected; exact JPEG overlap is zero. AOT downloads are not used.
 
-## External execution constraint
+Both Docker images were built with real Docker. Current-contract CPU smoke
+62722844 passed six cases across all held-out frames, including actual UID/file/
+network isolation. It did not evaluate reference accuracy. The deprivileged worker
+checks tensor weights, nonempty config and increasing finite training records
+before importing agent code. Those checks do not prove training; trajectories and
+reproduction remain necessary.
 
-The verified DCC KVM Docker guest has no GPU passthrough. DCC's unprivileged host account lacks subordinate UID/GID
-ranges required for full Docker root/user isolation. Native CUDA and Apptainer runs are useful development evidence,
-but must not be reported as official ALE GPU validation. The user has been asked for an alternate NVIDIA Docker SSH
-host while independent work continues. Do not narrow the completion standard because that environment is missing.
+The v2 recipe uses Faster R-CNN/ResNet-18 FPN, frozen BatchNorm and early layers,
+sequence-balanced multiscale crops, augmentation and AdamW. Native job 62722505
+trained 24,000 steps in 1,155.71 seconds. The task reproduces that schedule and
+selects its 12,000-step checkpoint with exact log/source/weight provenance.
+Selected weight SHA256:
+`3853cd1caf386eef5b6134d130d9c0b1c7c84b9e54f62ca241ff62826d9ac8c5`.
 
-## Asset pinning update
+CPU public calibration 62723478 completed successfully: baseline AP50 0.1200373361;
+global box scale 1.75 + NMS 0.3 AP50 0.3298975571. A cached follow-up tested larger
+scales through 3.0; all degraded AP50. No hidden tuning or label edits occurred.
+The packaged postprocessor reproduced every cached box with zero coordinate
+difference. Architecture ASTs are unchanged; training differs only in recording
+postprocessing metadata. Full selected-source public inference job 62723806 completed in 9m51s
+with exit zero; all 1,190 frames reproduce AP50 0.3298975571 and the other metrics
+exactly. Inference took 569.89 seconds on CPU. Eighteen host tests and pinned ALE lint passed. Domain lint
+correctly reports only the null anchor and missing full_at.
 
-Final Docker source adds `fetch_robot_assets.py`, immutable robot zip revision/SHA256, `nvidia-assets.json` with
-277 measured NVIDIA file hashes, and `usd-core==26.11`. Three new build-integrity tests passed (19 total host tests).
-The exact original build 62721924 supplies cached layers; new job 62723330 rebuilds with pins and atomically replaces
-the exported archive. CPU smoke and SIF conversion must wait for 62723330, never boot the same qcow2 concurrently.
-The original and final build logs/image identities remain distinguishable. Do not report the final Dockerfile as
-built until the pinned rebuild succeeds. The metadata/source bundle was refreshed after the NOTICE/README edits; both downstream dependencies were confirmed
-by `scontrol show job` as afterok:62723330.
+Evidence root:
+`/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f/`.
+`uav-reference-v2/` contains calibration/results/source audits; `uav-validation/`
+contains the current package builder, PR draft, status and GPU-host instructions.
+The committed source-only package is 77,560 bytes / 47 files, SHA256
+`98f8324ce191455a3af88952963b1a8b995daa423f1c35fec5a71f793ed29ed9`.
+It is also staged on DCC at `datasets/uav-submission-3daa2d1.tar.gz`. PACKAGE.json
+records its commit/tree/file hashes, and both evaluated model source hashes match
+the package. All 11 recorded Docker build inputs remain byte-identical to the
+already-built images. Repackage only after committing task changes; older package
+hashes must not be described as current.
 
-Current frozen source/package: chute branch `769cafb` (plus this status update); UAV branch `7fae778`.
-The latest UAV source-only package and PR draft are in the adjacent `uav-validation/` directory, with SHA256
-`55ffac738524126bf1382d040b0b5f840637991376cbf96f9d0321b33492770f`. They remain admission-pending and retain
-the old task reference until experimental postprocessing is selected and promoted with a working training recipe.
+## Remaining acceptance evidence and execution constraint
 
-## Current continuation
+1. Finish/collect exact image and reference runs, fix actual failures, freeze packages.
+2. Qualify chute physical feasibility, observation lock and timing; declare only
+   supported rendering hardware after measured evidence.
+3. Run real ALE untouched/oracle/truncated gates under declared GPU resources;
+   measure repeated oracle anchors/full_at, including the UAV retraining recipe.
+4. Run autonomous frontier agents on the final tasks and archive full trajectories.
+5. Refresh final PR drafts with run provenance; only then call either task ready.
 
-- Prior goal turn was progress: task contract checks and asset pins landed. No blocked audit applies while the
-  image build and CPU calibration are live and implementation work continues.
-- Friend CPU container validation now uses the pinned `ale_verify` result SDK and `read_result`, writing/reading
-  actual `/logs/verifier/reward.json` and `verification.json`; it no longer relies on the host envelope override.
-  The reference solve entry point runs as user with oracle-only source staging removed before verification.
-  The prepared candidate archive includes the pinned SDK and fastjsonschema 2.21.2 for this author smoke only;
-  these files are not in the submitted task or Docker build context. Smoke execution remains pending.
-- UAV reference model/train/export helpers are promoted from the successful native experiment, with identical ASTs
-  after formatting. The recipe trains the measured 24k schedule and selects its 12k checkpoint. The selected
-  checkpoint passed the current worker's artifact checks on DCC; 18 host tests and pinned ALE lint passed again.
-  This is a better measured provisional reference, not a calibrated admission anchor.
+The DCC KVM Docker VM lacks GPU passthrough. Native DCC has no subordinate UID/GID
+ranges for full Docker root/user isolation. Native CUDA and Apptainer are useful
+development evidence, not official ALE GPU gates. An alternative NVIDIA Docker
+SSH host has already been requested; do not repeatedly ask the same question.
+Keep the goal active while concrete work continues; no blocked audit threshold
+has been reached in this continuation.
