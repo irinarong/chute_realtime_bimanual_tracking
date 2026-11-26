@@ -1,0 +1,169 @@
+{
+ "format": "chute_realtime_bimanual_tracking shift selection 1",
+ "rule": "(fixed before the screening ran, 2026-11-25): the candidates are 12 seeds drawn once with\nnumpy.random.default_rng(20261125).choice(arange(1000, 10000), 12, replace=False). Every candidate is graded once with\nthe reference over the real grading path (solution/solve.sh + tests/verify.py, 20 parts). The hidden set is the 6\ncandidates with the highest part_pickup_score (ties: the smaller seed). The anchor value is the mean of the reference's\nscore over the hidden set in a SECOND, independent grading run of those 6 shifts; full_at is the lower of the two\nruns' means divided by the higher, less 0.05, capped at 0.98.",
+ "candidates": {
+  "1105": {
+   "part_pickup_score": 0.175,
+   "placed": 3.0,
+   "fell_behind": 0.0,
+   "program_time_s": 12.0,
+   "simulated_time_s": 228.53,
+   "match_lock_ok": 1.0
+  },
+  "1334": {
+   "part_pickup_score": 0.15,
+   "placed": 2.0,
+   "fell_behind": 0.0,
+   "program_time_s": 16.92,
+   "simulated_time_s": 257.1,
+   "match_lock_ok": 1.0
+  },
+  "2162": {
+   "part_pickup_score": 0.175,
+   "placed": 3.0,
+   "fell_behind": 0.0,
+   "program_time_s": 9.75,
+   "simulated_time_s": 242.07,
+   "match_lock_ok": 1.0
+  },
+  "2524": {
+   "part_pickup_score": 0.275,
+   "placed": 5.0,
+   "fell_behind": 0.0,
+   "program_time_s": 17.82,
+   "simulated_time_s": 250.07,
+   "match_lock_ok": 1.0
+  },
+  "2805": {
+   "part_pickup_score": 0.275,
+   "placed": 5.0,
+   "fell_behind": 0.0,
+   "program_time_s": 12.32,
+   "simulated_time_s": 230.17,
+   "match_lock_ok": 1.0
+  },
+  "3070": {
+   "part_pickup_score": 0.3,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 17.42,
+   "simulated_time_s": 252.27,
+   "match_lock_ok": 1.0
+  },
+  "3390": {
+   "part_pickup_score": 0.35,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 7.84,
+   "simulated_time_s": 240.53,
+   "match_lock_ok": 1.0
+  },
+  "3783": {
+   "part_pickup_score": 0.1,
+   "placed": 2.0,
+   "fell_behind": 0.0,
+   "program_time_s": 11.64,
+   "simulated_time_s": 211.37,
+   "match_lock_ok": 1.0
+  },
+  "4191": {
+   "part_pickup_score": 0.325,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 15.26,
+   "simulated_time_s": 250.93,
+   "match_lock_ok": 1.0
+  },
+  "4836": {
+   "part_pickup_score": 0.25,
+   "placed": 5.0,
+   "fell_behind": 0.0,
+   "program_time_s": 17.29,
+   "simulated_time_s": 272.2,
+   "match_lock_ok": 1.0
+  },
+  "7168": {
+   "part_pickup_score": 0.15,
+   "placed": 3.0,
+   "fell_behind": 0.0,
+   "program_time_s": 19.5,
+   "simulated_time_s": 262.37,
+   "match_lock_ok": 1.0
+  },
+  "8803": {
+   "part_pickup_score": 0.35,
+   "placed": 7.0,
+   "fell_behind": 0.0,
+   "program_time_s": 11.86,
+   "simulated_time_s": 250.67,
+   "match_lock_ok": 1.0
+  }
+ },
+ "kept": [
+  2524,
+  2805,
+  3070,
+  3390,
+  4191,
+  8803
+ ],
+ "second_run": {
+  "2524": {
+   "part_pickup_score": 0.275,
+   "placed": 5.0,
+   "fell_behind": 0.0,
+   "program_time_s": 23.58,
+   "simulated_time_s": 250.07,
+   "match_lock_ok": 1.0
+  },
+  "2805": {
+   "part_pickup_score": 0.275,
+   "placed": 5.0,
+   "fell_behind": 0.0,
+   "program_time_s": 18.03,
+   "simulated_time_s": 230.17,
+   "match_lock_ok": 1.0
+  },
+  "3070": {
+   "part_pickup_score": 0.3,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 23.62,
+   "simulated_time_s": 252.27,
+   "match_lock_ok": 1.0
+  },
+  "3390": {
+   "part_pickup_score": 0.35,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 20.91,
+   "simulated_time_s": 240.53,
+   "match_lock_ok": 1.0
+  },
+  "4191": {
+   "part_pickup_score": 0.325,
+   "placed": 6.0,
+   "fell_behind": 0.0,
+   "program_time_s": 14.7,
+   "simulated_time_s": 250.93,
+   "match_lock_ok": 1.0
+  },
+  "8803": {
+   "part_pickup_score": 0.35,
+   "placed": 7.0,
+   "fell_behind": 0.0,
+   "program_time_s": 14.1,
+   "simulated_time_s": 250.67,
+   "match_lock_ok": 1.0
+  }
+ },
+ "frozen": {
+  "tests/verify.py": "5292a1b9cd5e912b6a895f793bcc725ffe5244de9d445009308758a2bf302dea",
+  "tests/cell_env.py": "2eb60f76d899539c90778d3d15f8e1806535820259b745fc703b8200a9c830f0",
+  "tests/shift.py": "c338f12d09ce7bbf19c5296f2495546675fca3ae8c5aa5da46482c2544d3ad96",
+  "tests/props.py": "4819bf3754b95815f74d04104b6450892ad1f52db2d62b3b993904558dbb1c6e",
+  "tests/grader_config.json": "3a9eefd3cf752d0ec27296fb1a488eee3538218233ff94c8645b4d631a9eb496",
+  "solution/privileged/oracle.py": "033d08e7d3080d293551622117efe8ac81980273139f656961065116d0006684",
+  "solution/privileged/reference_params.json": "8807a540a923aa770ddde9eb01ea1eaae83c9e5670ac438171c33590b110a209"
+ }
+}
