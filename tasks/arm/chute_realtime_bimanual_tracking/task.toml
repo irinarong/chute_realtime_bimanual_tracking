@@ -11,7 +11,7 @@ platform = "arm"
 cpus = 8
 memory_mb = 32768
 gpus = 1
-gpu_types = ["RTX-5000-Ada"]
+gpu_types = ["H200"]
 
 [agent]
 timeout_sec = 14400
@@ -25,4 +25,4 @@ environment_mode = "separate"
 cpus = 8
 memory_mb = 32768
 gpus = 1
-gpu_types = ["RTX-5000-Ada"]
+gpu_types = ["H200"]

@@ -1,8 +1,4 @@
-"""Pure scoring predicates shared by real rollouts and privileged synthetic fixtures.
-
-These functions measure supplied state. They do not establish how that state was
-reached; only the ordinary simulator rollout establishes physical execution.
-"""
+"""The scene's random layout draws and the scoring predicates of cell_env.py, as pure functions of the state."""
 import numpy as np
 
 
