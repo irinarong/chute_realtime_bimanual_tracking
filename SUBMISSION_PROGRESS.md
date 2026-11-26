@@ -36,9 +36,9 @@ reject corrupted downloads and unsafe ZIP entries.
 |---|---|---|
 | 62721924 | COMPLETED, 1h55m34s, exit 0 | Original Docker build and image export |
 | 62723900 | COMPLETED, exit 0, 1h03m47s | Final pinned Docker image build and export |
-| 62722412 | RUNNING after successful 62723900 | Exact-image Docker CPU smoke |
-| 62722552 | RUNNING after successful 62723900 | Saved Docker image to Apptainer SIF |
-| 62725056 | PENDING afterok 62722552 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
+| 62722412 | COMPLETED, exit 0, 47s | Exact-image Docker CPU smoke |
+| 62725756 | RUNNING, replaces failed 62722552 | Saved Docker image to Apptainer SIF |
+| 62725056 | PENDING afterok 62725756 | RTX 5000 Ada cameras + one truth-driven friction-only shift, allocation preflight |
 
 Recheck job states before any restart. VM disk:
 `/work/yr111/chute-direct-answer-20261126/datasets/vm-builder-62721924/ubuntu.img`.
@@ -252,3 +252,19 @@ The original archive at this shared pathname has been replaced; do not use its o
 collected under chute-validation/pinned-*. CPU smoke 62722412 and SIF conversion
 62722552 are now RUNNING. GPU 62725056 still depends on conversion. These are not
 ALE GPU admission results.
+
+
+Final-image CPU smoke 62722412 completed with exit zero in 47 seconds. Its archive
+SHA256 is 1ae2d922f8be0866a092f6659b23c11207d74748493ea3bc889952691978f115;
+local archive hash and inspected image ID both match. Untouched/unauthorized/wrong
+answers score zero, synthetic oracle one twice, root-to-user Solver and three Linux
+CPU tests pass. See chute-validation/final-image-smoke-evidence.json. No physical
+result or official ALE gate is inferred from this.
+
+SIF conversion 62722552 FAILED (255) with gzip invalid header. The outer archive
+has a valid gzip header and its SHA256 check passed; its tar begins with OCI blobs.
+Replacement 62725756 first decompresses/CRC-checks the archive, verifies the config
+against the exact built image ID, detects Docker versus OCI transport, then converts
+and installs the final SIF atomically. GPU job 62725056 now depends on 62725756;
+the dependency update was verified. Do not relaunch the completed image build.
+Watcher 9721 exited on the observed conversion failure; it is no longer active.
