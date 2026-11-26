@@ -22,9 +22,19 @@ independently reproduced here or substituted for the synthetic denominator.
 Final corrected Docker build62728274 completed2h15m26s/exit0;imageID:
 sha256:f2155903863e515cb0cda8c7fa764e4e13a3700636bf2ab8f363d99baab901dd.
 Its CPU smoke passes. Conversion62728280 completed24m41s; GPU checks62728568/62728569
-completed7m10s/7m34s,all exit0; detailed GPU result collection pending.
+completed7m10s/7m34s,all exit0; detailed results collected. The old-source privileged
+ordinary-grasp shift placed3/20 (raw0.15); archived visual replay placed0/20 and passed3/45
+lock probes. These are historical diagnostics, not results for the new controller.
 These tests used runtime17b6d4f. The merge changes no Dockerfile or copied build input, so
 reuse the image and verify new staged runtime. Do not restart the image build.
+
+Merged-source author candidate SHA256:
+`e29745750a5a04a4ee56f04e0bc53f7602df82e3332884eebb5491e0b448a305`.
+All80 task files match960d2c3. New exact-image Docker CPU job62738654 completed
+in1m06s/exit0; collected evidence confirms all CPU checks passed. It adds the actual merged physical
+entrypoint startup under the agent UID. GPU job62738655 uses the new physical reference
+through unchanged run_shift, first hidden shift only. It is an explicitly labelled
+same-UID Apptainer author check, not official ALE. It is still running at this update.
 
 ## UAV
 
@@ -36,7 +46,7 @@ an autonomous-agent trajectory. See fixed-reference-cpu-62728682/evidence.json.
 
 ## Remaining work
 
-Collect old-source final GPU evidence; test merged chute runtime in the completed image;
+Collect merged checks62738654/62738655 and confirm their outcomes;
 complete official ALE GPU lifecycle, repeated anchors/full_at and new agent trajectories;
 qualify numerical portability and observation-lock fairness. Physical solvability on the
 merged task has new upstream evidence but no independent reproduction yet. Prepare the
@@ -45,5 +55,5 @@ A compatible NVIDIA Docker host was already requested; no repeat question needed
 
 Evidence root:`/Users/aaronpang/.codex/visualizations/2026/11/26/01a2166c-f6f9-75e1-99e9-3a49ad48642f`.
 `validation/MERGE_REPORT.md` records merge choices. `LIVE_PIPELINE.json` records job state.
-Both Docker VMs are stopped after completed jobs; always recheck ownership before booting.
+Always recheck VM ownership before booting; new source-only smoke uses an exclusive lock.
 Old-controller diagnostics remain closed; merged-reference verification is a separate task.

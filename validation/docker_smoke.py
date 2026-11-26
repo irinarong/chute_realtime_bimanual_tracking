@@ -100,11 +100,35 @@ try:
     assert len(action) == 26
 finally:
     solver.close()
+
+# Stage the merged physical reference through its actual entrypoint. This tests
+# dependency imports and the canonical UID boundary, not a physical rollout.
+shutil.copytree(TASK / "solution", oracle_stage)
+subprocess.run(["chown", "-R", "user:user", str(oracle_stage)], check=True)
+keep = Path("/home/user/submission/keep.txt")
+keep.write_text("preserve user output\n")
+answer.write_text("stale synthetic fixture")
+subprocess.run(["chown", "user:user", str(keep), str(answer)], check=True)
+subprocess.run(["runuser", "-u", "user", "--", "bash", str(oracle_stage / "solve_physical.sh")],
+               env=env, check=True)
+shutil.rmtree(oracle_stage)
+assert not answer.exists()
+assert keep.read_text() == "preserve user output\n"
+solver = Solver(step_timeout=10)
+try:
+    solver.reset()
+    action = solver.act(0, {"t": 0, "proprio": [0.0] * 61, "odometry": [0, 0, 0], "cameras": {}})
+    assert len(action) == 26
+finally:
+    solver.close()
 (OUT / "summary.json").write_text(json.dumps({
     "cpu_smoke_passed": True, "root_to_user_solver": True, "asset_count": len(items),
     "synthetic_oracle_reward": 1, "physical_rollout_tested": False,
     "pinned_ale_result_sdk": True, "oracle_entrypoint_runs_as_user": True,
     "agent_uid_cpu_accounting_tests_passed": 3,
+    "physical_entrypoint_root_to_user_startup": True,
+    "physical_entrypoint_removes_stale_fixture": True,
+    "physical_entrypoint_preserves_other_outputs": True,
     "official_ale_validate": False,
 }, indent=2) + "\n")
 print("DOCKER_CPU_SMOKE_PASSED", flush=True)

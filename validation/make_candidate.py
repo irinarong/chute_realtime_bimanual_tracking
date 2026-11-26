@@ -14,7 +14,7 @@ with tarfile.open(ARCHIVE) as old:
         if member.isfile() and member.name.startswith('engine/'):
             entries[member.name] = (old.extractfile(member).read(), 0o644)
 assert len(entries) == 18, 'the pinned ale_verify and fastjsonschema sources are required'
-for name in ('docker_smoke.py', 'docker_smoke.sh', 'gpu_smoke.py'):
+for name in ('docker_smoke.py', 'docker_smoke.sh', 'gpu_smoke.py', 'merged_physical_smoke.py'):
     p = ROOT / 'validation' / name
     entries[name] = (p.read_bytes(), 0o755 if p.suffix == '.sh' else 0o644)
 task = ROOT / 'tasks/arm/chute_realtime_bimanual_tracking'
