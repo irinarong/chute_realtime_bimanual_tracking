@@ -14,7 +14,7 @@ Never interpret a synthetic oracle reward as physical robot success.
   its final content-pinned image a35d570a7a6f has now built; export completed; exact-image checks remain pending.
 - UAV: `/Users/aaronpang/.codex/worktrees/uav-to-uav-task/agentic-robotics-benchmark-review-20261125`,
   branch `codex/uav-to-uav-tracking`. Current committed source is `4a7077eb5cc00b0d9d30373c0493f9ecdf20d3ae`,
-  including verified public box calibration and reference provenance.
+  including verified public box calibration and reference provenance. Current source is now 8c0ae7a after the licence-layout correction below; runtime and Docker build inputs are unchanged.
 - ALE: `bfb75050aca2c54b45c5ab23bae6028a834a468a`, installed at
   `/tmp/chute-ale-pinned-20261126`. The canonical shared grader is unchanged.
 
@@ -300,3 +300,24 @@ or root controller execution. This is explicitly not ALE isolation or a fresh
 frontier-agent run. Its archive (8 files) SHA256 is
 167c4c57f7272687b07cfe54969060eca4a64f71b99f665b76c0d628b72474cc.
 The current probe is preserved for measurement; there is no untested lock removal.
+
+
+## Current package correction: licence placement
+
+Fresh pinned ALE lint rejected the recently added top-level licence files in both
+tasks. Friend source 3acb84b moves its MIT/Apache notices under tests/, and UAV
+source 8c0ae7a moves Apache notices under tests/licenses and fixes source data-card
+paths. Both exact sources now pass ALE lint; friend domain lint also passes and
+UAV domain lint reports only missing measured anchor/full_at. The package builders
+now enforce lint before writing an archive, avoiding stale pre-edit lint evidence.
+
+Current source-only archives are friend 3f8192dfeb6803517c48d6f5dbc113ec162113060a47a9521dee2521a8a83b67
+(68 files, 146439 bytes) and UAV a57f2b0b37f47cb6f77055126ef4ac9b1c710d17877fea55e0b860bb1e8cd8bb
+(50 files, 82818 bytes). Both were checked against manifests and uploaded under
+commit-specific DCC names. Prior local archives are preserved in snapshots/.
+Nine grader files remain canonical, all runtime sources are unchanged, and all
+Docker build inputs match the jobs already in progress. See each task evidence
+directory licence-layout-verification.json. No image rebuild, repeated training
+or candidate replacement was needed; live jobs retain their own source/candidate
+identities. UAV agent image finished building; verifier image build is in progress.
+Friend OCI conversion reached SIF creation on node-local scratch.
