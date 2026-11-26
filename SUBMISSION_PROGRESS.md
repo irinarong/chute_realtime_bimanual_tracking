@@ -101,7 +101,9 @@ frames, 2,475 held-out frames. Public asset revision:
 `c1fca946a5936294a2cf23874040493ac148239b`. Source YX ordering and 1-based time
 indices were corrected; exact JPEG overlap is zero. AOT downloads are not used.
 
-Both Docker images were built with real Docker. Current-contract CPU smoke
+Both Docker images were built with real Docker. Their original guest disk was later
+quarantined after filesystem/containerd corruption and cannot serve as the delivery
+artifact; a healthy rebuild/export is in progress (62725136). Current-contract CPU smoke
 62722844 passed six cases across all held-out frames, including actual UID/file/
 network isolation. It did not evaluate reference accuracy. The deprivileged worker
 checks tensor weights, nonempty config and increasing finite training records
@@ -193,3 +195,20 @@ restricts the Vulkan loader to the NVIDIA ICD, then requires CUDA and Vulkan to
 expose the same single GPU before Isaac starts. This is a validation-infrastructure
 change; the submitted task/source package and candidate archive are unchanged.
 Container-side UUID verification and rendering results remain pending.
+
+## UAV image recovery
+
+Rechecking DCC storage found the original UAV builder disk was already quarantined
+after documented concurrent-VM writes (62722692 and 62722844). Do not boot
+`datasets/vm-builder-62720446/ubuntu.img.quarantined-20261126` or reuse its old
+launchers. Historical build and CPU-smoke logs survive, but the image store is not
+a verified deliverable. Datasets, native training and evaluation results are outside
+that VM and remain available.
+
+Fresh job 62725136 uses source archive 3daa2d1 on its own new 200 GB sparse VM disk,
+an atomic ownership lock, cached official base archives and the recorded QEMU
+digest. It rebuilds both unchanged Dockerfiles, reruns the six current-source CPU
+contract/isolation cases, streams both Docker image archives to host storage with
+SHA256 records, and gracefully shuts down the guest. Its script/provenance are in
+`uav-validation/dcc_vm_rebuild_export.sbatch` and `image-recovery.json`. This is not
+a GPU ALE gate; completion and export integrity still need checking.
