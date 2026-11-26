@@ -46,6 +46,9 @@ try:
         pass
     else:
         raise AssertionError("truth gate allowed a wrong token")
+    print(json.dumps({"camera_check_passed": True, "truth_gate_passed": True,
+                      "assisted_grasping": assisted,
+                      "startup_elapsed_s": time.monotonic()-started}), flush=True)
     oracle = Oracle(**json.loads((TASK / "solution/privileged/reference_params.json").read_text()))
     for step in range(30000):
         if obs["done"]:
@@ -54,7 +57,13 @@ try:
         row = oracle.act({"proprio": np.asarray(truth["proprio"], float)}, truth)
         obs = sim.step(row, cameras=("head",) if step == 0 else ())
         if step % 1000 == 0:
-            print(json.dumps({"step": step, "t": obs["t"], "elapsed_s": time.monotonic()-started}), flush=True)
+            progress = sim.summary()
+            progress.update(completed_shift=False, official_ale_validate=False,
+                            privileged_state=True, assisted_grasping=assisted,
+                            elapsed_s=time.monotonic()-started)
+            (OUT / "physical-progress.json").write_text(json.dumps(progress, indent=2) + "\n")
+            print(json.dumps({k: progress[k] for k in
+                              ("steps", "events_done", "parts", "placed", "elapsed_s")}), flush=True)
     result = sim.summary()
     result.update(
         scope="Built Docker image converted to Apptainer; one truth-driven controller shift",
@@ -62,8 +71,11 @@ try:
         official_ale_validate=False, uid_isolation_tested=False, match_lock_tested=False,
         elapsed_s=time.monotonic()-started, rgb_std=float(rgb.std()),
         depth_nonzero_fraction=float(np.mean(depth > 0)),
+        completed_shift=bool(obs["done"]) and result["events_done"] == result["parts"],
     )
     (OUT / "physical-smoke.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({k:v for k,v in result.items() if k not in {"records", "constants"}}), flush=True)
+    if not result["completed_shift"]:
+        raise RuntimeError("GPU smoke did not finish its complete shift; partial result was preserved")
 finally:
     sim.close()

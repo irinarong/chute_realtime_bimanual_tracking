@@ -56,8 +56,8 @@ was cancelled. The submitted replacement script is
 
 The CPU smoke uses the actual pinned ale_verify result SDK and read_result, runs
 the oracle entrypoint as user, checks protected files/assets and root-to-user
-Solver communication, and reads real /logs/verifier results. Candidate archive
-SHA256: `74739d9a339e6142e017e2eeed1296d345ffb5ad5e2e32d3efbcad7e50828824`.
+Solver communication, and reads real /logs/verifier results. Current candidate archive
+SHA256: `cb604cff5b9bd683039f2d538a798977a2e6a27e1a4307b2827cd38cb1e33eca`.
 It includes 18 SDK/fastjsonschema Python files for author smoke only; preserve these
 when rebuilding that archive. `validation/make_candidate.py` does so reproducibly
 and records hashes in candidate-manifest.json. This bundle adds an actual agent-UID
@@ -212,3 +212,13 @@ contract/isolation cases, streams both Docker image archives to host storage wit
 SHA256 records, and gracefully shuts down the guest. Its script/provenance are in
 `uav-validation/dcc_vm_rebuild_export.sbatch` and `image-recovery.json`. This is not
 a GPU ALE gate; completion and export integrity still need checking.
+
+
+GPU smoke now preserves startup checks and per-1000-step outcome snapshots, labels
+partial progress explicitly, and only prints its completion marker after all parts
+finish. This avoids confusing a horizon-limited or timed-out rollout with a complete
+shift. Only its author helper changed; the 89-file candidate was refreshed while
+preserving all 18 SDK files, verified on DCC, and installed atomically. The previous
+candidate 74739d9 is retained as datasets/candidate-74739d9.tar.gz and remains the
+identity of the collected original-image CPU smoke. The new candidate is cb604cff;
+task-only submission packages and Docker image inputs are unchanged.
