@@ -38,7 +38,10 @@ fi
 TRANSPORT=$(python3 "$BASE/datasets/scripts/inspect_image_archive.py" \
     "$INPUT_ARCHIVE" "$BASE/datasets/vm-pinned-62723900/images.json" "$R/archive-format.json")
 cat "$R/archive-format.json"
-apptainer build "$R/chute-task.sif" "$TRANSPORT:$INPUT_ARCHIVE"
+# mksquashfs otherwise sizes its buffers from host RAM, which can exceed this
+# Slurm job's 32 GiB cgroup limit. Leave space for unpacking and the page cache.
+apptainer build --mksquashfs-args "-mem 8G -processors ${SLURM_CPUS_PER_TASK:-8}" \
+    "$R/chute-task.sif" "$TRANSPORT:$INPUT_ARCHIVE"
 mv "$R/chute-task.sif" "$BASE/datasets/chute-task.sif"
 sha256sum "$BASE/datasets/chute-task.sif" > "$R/sif.sha256"
 if [ "$INPUT_ARCHIVE" = "$R/chute-task-image.tar" ]; then rm "$INPUT_ARCHIVE"; fi
